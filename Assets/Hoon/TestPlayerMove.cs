@@ -10,10 +10,13 @@ public class TestPlayerMove : MonoBehaviour
     public float playerRotSpeed = 500;
     Vector3 dir;
     GameObject playerModel;
+    GameObject plyerPoint;
     void Start()
     {
         playerCharacterController = GetComponent<CharacterController>();
         playerModel = GameObject.Find("Ch21");
+        plyerPoint = GameObject.Find("PlayerPoint");
+        transform.position = plyerPoint.transform.position;
     }
 
     // Update is called once per frame
