@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class TestPlayerMove : MonoBehaviour
@@ -11,6 +13,8 @@ public class TestPlayerMove : MonoBehaviour
     Vector3 dir;
     GameObject playerModel;
     GameObject plyerPoint;
+
+    float posY;
     void Start()
     {
         playerCharacterController = GetComponent<CharacterController>();
@@ -35,8 +39,30 @@ public class TestPlayerMove : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         dir = new Vector3(-h, 0, -y);
         dir = transform.TransformDirection(dir);
-        dir.Normalize();
-        playerCharacterController.Move(dir * playerMoveSpeed * Time.deltaTime);
+        Vector3 playerPos = transform.position;
+        
+        //0보다 크면
+        if (playerPos.y > -0.1f)
+        {
+            print(playerPos.y);
+            float posY = transform.position.y;
+            posY -= 1;
+            //playerPos.y = posY;
+            //transform.position = playerPos;
+
+            //playerPos.y -= 2*Time.deltaTime;
+            //transform.position = playerPos;
+            dir.y = posY;
+            dir.Normalize();
+            playerCharacterController.Move(dir * playerMoveSpeed * Time.deltaTime);
+
+        }
+        else
+        {
+            dir.Normalize();
+            playerCharacterController.Move(dir * playerMoveSpeed * Time.deltaTime);
+        }
+       
         //로컬방향으로 변경
         //transform.Translate(dir * playerMoveSpeed * Time.deltaTime);
         //transform.position += dir * Time.deltaTime;
