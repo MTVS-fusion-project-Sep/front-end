@@ -13,14 +13,17 @@ public class TestPlayerMove : MonoBehaviour
     Vector3 dir;
     GameObject playerModel;
     GameObject plyerPoint;
-
+    Animator animator;
     float posY;
+
     void Start()
     {
         playerCharacterController = GetComponent<CharacterController>();
         playerModel = GameObject.Find("Ch21");
         plyerPoint = GameObject.Find("PlayerPoint");
         transform.position = plyerPoint.transform.position;
+        animator = GetComponentInChildren<Animator>();
+        
     }
 
     // Update is called once per frame
@@ -39,28 +42,38 @@ public class TestPlayerMove : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         dir = new Vector3(-h, 0, -y);
         dir = transform.TransformDirection(dir);
+
+        print("vertical" + y);
+
+        if( y == 0 && h == 0)
+        {
+            animator.SetBool("Walk", false);
+        }
+        else
+        {
+            animator.SetBool("Walk", true);
+        }
+       
+
         Vector3 playerPos = transform.position;
         
         //0보다 크면
         if (playerPos.y > -0.1f)
         {
-            print(playerPos.y);
+            //print(playerPos.y);
             float posY = transform.position.y;
             posY -= 1;
-            //playerPos.y = posY;
-            //transform.position = playerPos;
-
-            //playerPos.y -= 2*Time.deltaTime;
-            //transform.position = playerPos;
+          
             dir.y = posY;
             dir.Normalize();
             playerCharacterController.Move(dir * playerMoveSpeed * Time.deltaTime);
-
+            //animator.SetBool("Walk", true);
         }
         else
         {
             dir.Normalize();
             playerCharacterController.Move(dir * playerMoveSpeed * Time.deltaTime);
+            animator.SetBool("Walk", true);
         }
        
         //로컬방향으로 변경
