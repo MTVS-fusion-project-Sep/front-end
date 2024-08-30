@@ -32,8 +32,19 @@ public class TestPlayerMove : MonoBehaviour
         Move();
         //Rotate();
         //RotateDir();
+        ExpressionFeelingHi();
 
     }
+    void ExpressionFeelingHi()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            //print(1111);
+            animator.CrossFade("Hi", 0);
+        }
+    }
+
+
 
     void Move()
     {
@@ -54,7 +65,6 @@ public class TestPlayerMove : MonoBehaviour
             animator.SetBool("Walk", true);
         }
        
-
         Vector3 playerPos = transform.position;
         
         //0보다 크면
