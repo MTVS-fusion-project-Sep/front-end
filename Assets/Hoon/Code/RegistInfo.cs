@@ -45,23 +45,23 @@ public class RegistInfo : MonoBehaviour
         //인풋필드 아이디 오브젝트
         if_ID_Obejct = GameObject.Find("IF_Regist_ID");
         //인풋필드 컴포넌트
-        id_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
+        if(id_Regist_InputField != null) id_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
         //플레이스홀드 오브젝트
         ph_Regist_ID_Object = GameObject.Find("Ph_Regist_ID");
         //플레이스홀드 아이드 텍스트 
-        ph_Regist_ID_Text = ph_Regist_ID_Object.GetComponent<Text>();
+        if (ph_Regist_ID_Text != null)  ph_Regist_ID_Text = ph_Regist_ID_Object.GetComponent<Text>();
 
         //인풋필드 패스 오브젝트
         if_Pass_Obejct = GameObject.Find("IF_Regist_Pass");
         //인풋필드 컴포넌트
-        pass_Regist_InputField = if_Pass_Obejct.GetComponent<InputField>();
+        if (pass_Regist_InputField != null) pass_Regist_InputField = if_Pass_Obejct.GetComponent<InputField>();
         //플레이스홀드
         ph_Rigist_Pass_Obejct = GameObject.Find("Ph_Regist_Pass");
         //플레이스홀드 패스 텍스트
-        ph_Regist_Pass_Text = ph_Rigist_Pass_Obejct.GetComponent <Text>();
+        if(ph_Regist_Pass_Text != null) ph_Regist_Pass_Text = ph_Rigist_Pass_Obejct.GetComponent <Text>();
 
         if_Name_Obejct = GameObject.Find("IF_Regist_Name");
-        name_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
+        if(name_Regist_InputField != null) name_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
         ph_Rigist_Name_Obejct = GameObject.Find("Ph_Regist_Name");
 
         //mainUI.imgLogin_Object.SetActive(true);

@@ -54,7 +54,7 @@ public class TestPlayerMove : MonoBehaviour
         dir = new Vector3(-h, 0, -y);
         dir = transform.TransformDirection(dir);
 
-        print("vertical" + y);
+        //print("vertical" + y);
 
         if( y == 0 && h == 0)
         {
