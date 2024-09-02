@@ -29,11 +29,11 @@ public class MemoManager_GH : MonoBehaviour
 
     //메모 저장 버튼
     public GameObject saveButton;
-    
+
     //메모 저장 버튼 활성화
     bool onSaveButton = true;
 
-    void Start()
+    void Awake()
     {
         //기록되어 있는 메모에 따른 메모 생성
         for (int i = 0; i < memoCount; i++)
@@ -48,16 +48,22 @@ public class MemoManager_GH : MonoBehaviour
 
     public void memoWrite()
     {
-        memoCount++;
-        memoSwipe.memoPageUpdate(memoCount);
-        memoList.Add(Instantiate(memoFactory, GameObject.Find("ContentMemo").transform));
-        memoSwipe.currentPage = memoCount-1;
+        if (onSaveButton)
+        {
 
-        TMP_Text text = memoList[memoCount - 1].GetComponentInChildren<TMP_Text>();
-        text.text = "";
-        onSaveButton = false;
-        print("현재 페이지" + memoSwipe.currentPage);
-        print("마지막 페이지" + memoSwipe.maxPage);
+            memoCount++;
+            memoSwipe.memoPageUpdate(memoCount);
+            memoList.Add(Instantiate(memoFactory, GameObject.Find("ContentMemo").transform));
+            memoSwipe.currentPage = memoCount - 1;
+
+            TMP_Text text = memoList[memoCount - 1].GetComponentInChildren<TMP_Text>();
+            text.text = "";
+            onSaveButton = false;
+        }
+        else
+        {
+            memoSwipe.currentPage = memoSwipe.maxPage -1;
+        }
 
     }
 
@@ -76,8 +82,8 @@ public class MemoManager_GH : MonoBehaviour
 
     void Update()
     {
-        
-        if(memoSwipe.currentPage + 1 == memoSwipe.maxPage && !onSaveButton)
+
+        if (memoSwipe.currentPage + 1 == memoSwipe.maxPage && !onSaveButton)
         {
             saveButton.SetActive(true);
         }
