@@ -17,8 +17,8 @@ public class MainUI : MonoBehaviour
     //아바타
     GameObject playerImg_Object;
     //로그인화면
-    GameObject imgLogin_Object;
-    //로그아웃화면
+    public GameObject imgLogin_Object;
+    //로그아웃
     GameObject imgLogout_Object;
     //ID
     GameObject loginID_Text_Obejct;
@@ -32,6 +32,9 @@ public class MainUI : MonoBehaviour
     GameObject inputField_ID_Obejct;
     //pass_Input
     GameObject inputField_Pass_Obejct;
+    //img_resit
+    GameObject img_Regist_Object;
+
 
     //아아디 필드
     InputField id_InputField;
@@ -95,7 +98,8 @@ public class MainUI : MonoBehaviour
         //
         inputField_Pass_Obejct = GameObject.Find("IF_Pass");
         pass_InputField = inputField_Pass_Obejct.GetComponent<InputField>();
-
+        //
+        img_Regist_Object = GameObject.Find("Img_Regist");
 
         //패스
 
@@ -107,10 +111,21 @@ public class MainUI : MonoBehaviour
     void Update()
     {
 
-
+       
 
     }//업데이트
 
+    public void MoveNewRegist()
+    {
+        imgLogin_Object.SetActive(false);
+    }
+
+    public void MoveLogin()
+    {
+        //img_Regist_Object.SetActive(false);
+        imgLogin_Object.SetActive(true);
+    }
+        
     public void ViewPass()
     {
         //print(1111);
@@ -173,8 +188,8 @@ public class MainUI : MonoBehaviour
             phPass_Text.text = "비밀번호 틀림";
             phPass_Text.color = Color.red;
         }
-
         
+
 
 
     }
@@ -210,6 +225,7 @@ public class MainUI : MonoBehaviour
     {
         //변수이름 잘 확인하자.
         if (imgLogin_Object != null) imgLogin_Object.SetActive(true);
+
     }
     
 
