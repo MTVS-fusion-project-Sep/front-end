@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TestPlayerMove : MonoBehaviour
 {
-   CharacterController playerCharacterController;
+    CharacterController playerCharacterController;
     
     public float playerMoveSpeed = 3;
     public float playerRotSpeed = 500;
@@ -163,8 +163,6 @@ public class TestPlayerMove : MonoBehaviour
     }
     
     
-    
-    
     void Rotate()
     {
         float h = Input.GetAxisRaw("Horizontal");
@@ -174,5 +172,3 @@ public class TestPlayerMove : MonoBehaviour
     }
 
 }
-
-

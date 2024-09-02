@@ -22,9 +22,6 @@ public class LobbyUI : MonoBehaviour
     void Update()
     {
         
-
-
-
     }
     public void LobbyExit()
     {
