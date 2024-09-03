@@ -53,7 +53,11 @@ public class MainUI : MonoBehaviour
     GameObject inputField_Pass_Obejct;
     //img_resit
     public GameObject img_Regist_Object;
+    //Looby button
+    GameObject btn_Lobby_Obejct;
 
+    //버튼
+    public Button move_Lobby_Btn;
 
     //아아디 필드
     InputField id_InputField;
@@ -93,6 +97,9 @@ public class MainUI : MonoBehaviour
         MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Login");
         MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Regist");
 
+        //Lobbybutton
+        btn_Lobby_Obejct = GameObject.Find("Btn_Lobby");
+        move_Lobby_Btn = btn_Lobby_Obejct.GetComponent<Button>();
         //bg
         bg_Object = GameObject.Find("BG");
         //mainRoom
@@ -234,7 +241,7 @@ public class MainUI : MonoBehaviour
 
 
     }
-    public void TestChickLogin()
+    public void TestCheckLogin()
     {
         //아이디 필드의 텍스트 가져오기
         string enteredID = id_InputField.text;
