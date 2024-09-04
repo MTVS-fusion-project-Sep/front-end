@@ -24,7 +24,6 @@ public class SwipeUI_GH : MonoBehaviour
     //페이지 번호 넘기기
     public TextMeshProUGUI scrollPagecNum;
 
-
     //메모매니저 갖고오기
     MemoManager_GH memoManag;
 

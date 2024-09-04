@@ -3,15 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-// 게임오브젝트 리스트로 메모를 담을 공간을 만든다.
-// 시작과 동시에 리스트에 있는 메모들을 캔버스 안에 생성한다.
-// 메모가 추가나 삭제 기능을 넣는다.
-
-
-// 메모 추가 기능
-// 메모 붙이기를 누르면 메모 리스트에 하나가 추가가 되고 현재 페이지도 맥스 페이지로 이동을 한다.
-// 메모를 붙인 것과 안 붙인것은 메모 붙이기와 붙이기로 바뀐다. (bool)
-// 메모를 작성한 후 붙이기를 누르게 되면 메모가 저장이 된다.
 
 public class MemoManager_GH : MonoBehaviour
 {
