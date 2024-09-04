@@ -11,7 +11,7 @@ using System.Linq;
 //using UnityEditor.Experimental.GraphView;
 
 
-//부모를 바꿉니다. 
+//부모를 MonoBehaviourPunCallbacks 바꿉니다. 
 public class ConnectionManager : MonoBehaviourPunCallbacks
 {
     //RoomInfo 리스트 초기화 
