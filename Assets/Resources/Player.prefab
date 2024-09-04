@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMoveSpeed: 3
   playerRotSpeed: 500
+  trackingSpeed: 3
 --- !u!114 &4026201708933567141
 MonoBehaviour:
   m_ObjectHideFlags: 0

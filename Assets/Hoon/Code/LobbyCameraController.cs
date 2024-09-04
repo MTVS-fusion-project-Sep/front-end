@@ -21,7 +21,7 @@ public class LobbyCameraController : MonoBehaviour
         //mainCamera_Object = GameObject.Fin("MainCamera");
         //if(mainCamera_Object != null ) print("카메라 있음");
         //cam = GetComponentInChildren<Camera>();
-        if (Camera.main.transform != null) print("내캠 있다");
+        //if (Camera.main.transform != null) print("내캠 있다");
         
        
     }
@@ -34,7 +34,7 @@ public class LobbyCameraController : MonoBehaviour
         {
             if (Camera.main.transform != null)
             {
-                print("카메라를 위치를 설정하자");
+                //print("카메라를 위치를 설정하자");
                 Camera.main.transform.transform.localPosition = transform.position + new Vector3(0, 2, 5);
                 Camera.main.transform.transform.localEulerAngles = transform.localEulerAngles + new Vector3(0, 180, 0);
               
