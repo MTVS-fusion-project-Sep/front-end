@@ -84,6 +84,8 @@ public class MainUI : MonoBehaviour
     //비밀번호
     string current_Pass = "2024";
 
+    //로그출력
+    string log;
 
 
     bool isRoomActive = false;
@@ -416,6 +418,11 @@ public class MainUI : MonoBehaviour
 
     }
 
+    public void PrintLog(string message)
+    {
+        log += message + '\n';
+        //text_logText.text = log;
+    }
 
 
 }

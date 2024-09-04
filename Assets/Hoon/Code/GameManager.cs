@@ -4,12 +4,19 @@ using UnityEngine;
 //포톤을 쓰기위해 추가
 using Photon.Pun;
 
-public class GameManager : MonoBehaviour
+//동기화 용도 클래스를 부모로 MonoBehaviourPun
+public class GameManager : MonoBehaviourPun
 {
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(SpawnPlayer());
+
+        // OnPhotonSerializeView 에서 데이터 전송 빈도수 설정하기 (perSeconds) 
+        PhotonNetwork.SerializationRate = 30;
+        // 대부분의 데이터 전송빈도 (perSeconds). 입장, Instantiate, Load, 나감
+        PhotonNetwork.SendRate = 30;
+
     }
     IEnumerator SpawnPlayer()
     {
@@ -22,6 +29,7 @@ public class GameManager : MonoBehaviour
         //플레이어 생성하자, 이름,위치.회전
         PhotonNetwork.Instantiate("Player", initPosition, Quaternion.identity);
 
+        // 생성후 소유권을 Owner인 플레이어게만 권한을주자. Owner가 접속을 종료하면 같이 사라짐.
     }
     // Update is called once per frame
     void Update()

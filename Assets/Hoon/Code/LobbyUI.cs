@@ -14,8 +14,6 @@ public class LobbyUI : MonoBehaviour
     {
         btn_LobbyExit = GameObject.Find("Btn_LobbyExit");
     
-
-
     }
 
     // Update is called once per frame
