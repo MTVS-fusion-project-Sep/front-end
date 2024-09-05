@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -21,7 +21,6 @@ public class RegistInfo : MonoBehaviour
     InputField name_Regist_InputField;
     InputField age_Regist_InputField;
 
-
     GameObject ph_Regist_ID_Object;
     GameObject ph_Rigist_Pass_Obejct;
     GameObject ph_Rigist_Name_Obejct;
@@ -42,32 +41,34 @@ public class RegistInfo : MonoBehaviour
 
         mainUI = gameObject.GetComponent<MainUI>();
 
-        //ÀÎÇ²ÇÊµå ¾ÆÀÌµğ ¿ÀºêÁ§Æ®
+        //ì¸í’‹í•„ë“œ ì•„ì´ë”” ì˜¤ë¸Œì íŠ¸
         if_ID_Obejct = GameObject.Find("IF_Regist_ID");
-        //ÀÎÇ²ÇÊµå ÄÄÆ÷³ÍÆ®
-        if(id_Regist_InputField != null) id_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
-        //ÇÃ·¹ÀÌ½ºÈ¦µå ¿ÀºêÁ§Æ®
+        //ì¸í’‹í•„ë“œ ì»´í¬ë„ŒíŠ¸
+        if (id_Regist_InputField == null)
+        {
+            print("ì•„ì´ë”” ë“±ë¡ ì¸í’‹í•„ë“œ");
+            id_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
+        }
+            
+            //í”Œë ˆì´ìŠ¤í™€ë“œ ì˜¤ë¸Œì íŠ¸
         ph_Regist_ID_Object = GameObject.Find("Ph_Regist_ID");
-        //ÇÃ·¹ÀÌ½ºÈ¦µå ¾ÆÀÌµå ÅØ½ºÆ® 
-        if (ph_Regist_ID_Text != null)  ph_Regist_ID_Text = ph_Regist_ID_Object.GetComponent<Text>();
+        //í”Œë ˆì´ìŠ¤í™€ë“œ ì•„ì´ë“œ í…ìŠ¤íŠ¸ 
+        if (ph_Regist_ID_Text == null)  ph_Regist_ID_Text = ph_Regist_ID_Object.GetComponent<Text>();
 
-        //ÀÎÇ²ÇÊµå ÆĞ½º ¿ÀºêÁ§Æ®
+        //ì¸í’‹í•„ë“œ íŒ¨ìŠ¤ ì˜¤ë¸Œì íŠ¸
         if_Pass_Obejct = GameObject.Find("IF_Regist_Pass");
-        //ÀÎÇ²ÇÊµå ÄÄÆ÷³ÍÆ®
-        if (pass_Regist_InputField != null) pass_Regist_InputField = if_Pass_Obejct.GetComponent<InputField>();
-        //ÇÃ·¹ÀÌ½ºÈ¦µå
+        //ì¸í’‹í•„ë“œ ì»´í¬ë„ŒíŠ¸
+        if (pass_Regist_InputField == null) pass_Regist_InputField = if_Pass_Obejct.GetComponent<InputField>();
+        //í”Œë ˆì´ìŠ¤í™€ë“œ
         ph_Rigist_Pass_Obejct = GameObject.Find("Ph_Regist_Pass");
-        //ÇÃ·¹ÀÌ½ºÈ¦µå ÆĞ½º ÅØ½ºÆ®
-        if(ph_Regist_Pass_Text != null) ph_Regist_Pass_Text = ph_Rigist_Pass_Obejct.GetComponent <Text>();
+        //í”Œë ˆì´ìŠ¤í™€ë“œ íŒ¨ìŠ¤ í…ìŠ¤íŠ¸
+        if(ph_Regist_Pass_Text == null) ph_Regist_Pass_Text = ph_Rigist_Pass_Obejct.GetComponent <Text>();
 
         if_Name_Obejct = GameObject.Find("IF_Regist_Name");
-        if(name_Regist_InputField != null) name_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
+        if(name_Regist_InputField == null) name_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
         ph_Rigist_Name_Obejct = GameObject.Find("Ph_Regist_Name");
 
         //mainUI.imgLogin_Object.SetActive(true);
-
-
-
 
 
     }
@@ -83,71 +84,68 @@ public class RegistInfo : MonoBehaviour
         string idText = id_Regist_InputField.text;
         string passText = pass_Regist_InputField.text;
 
-        //¾ÆÀÌµğ ÀÔ·ÂÇÑ°Ô ¾ø°í nullÀÌ¸é
+        //ì•„ì´ë”” ì…ë ¥í•œê²Œ ì—†ê³  nullì´ë©´
         if (string.IsNullOrEmpty(idText))
         {
-            ph_Regist_ID_Text.text = "¾ÆÀÌµğ¸¦ÀÔ·ÂÇÏ¼¼¿ä";
+            ph_Regist_ID_Text.text = "ì•„ì´ë””ë¥¼ì…ë ¥í•˜ì„¸ìš”";
             ph_Regist_ID_Text.color = Color.red;
         }
-        //ºñ¹Ğ¹øÈ£ ÀÔ·ÂÇÑ°Ô ¾ø°í nullÀÌ¸é
+        //ë¹„ë°€ë²ˆí˜¸ ì…ë ¥í•œê²Œ ì—†ê³  nullì´ë©´
         if (string.IsNullOrEmpty(passText))
         {
-            ph_Regist_Pass_Text.text = "ºñ¹Ğ¹øÈ£¸¦ÀÔ·ÂÇÏ¼¼¿ä";
+            ph_Regist_Pass_Text.text = "ë¹„ë°€ë²ˆí˜¸ë¥¼ì…ë ¥í•˜ì„¸ìš”";
             ph_Regist_Pass_Text.color = Color.red;
         }
-        //ÀÔ·ÂÇÑ°Ô ÀÖ´Ù¸é
+        //ì…ë ¥í•œê²Œ ìˆë‹¤ë©´
         else
         {
            
-            //¹®ÀÚ¿­·Î ÀúÀåÇÒ°æ·Î + ÆÄÀÏÀÌ¸§.
+            //ë¬¸ìì—´ë¡œ ì €ì¥í• ê²½ë¡œ + íŒŒì¼ì´ë¦„.
             //C:\Users\Admin\AppData\LocalLow\DefaultCompany\front-end
             string path = Application.persistentDataPath + "/SaveRegist.txt";
-            //ÆÄÀÏ¿¡ ÀúÀåµÉ ¸ğ¾ç°ú °ª.
+            //íŒŒì¼ì— ì €ì¥ë  ëª¨ì–‘ê³¼ ê°’.
             string content = "ID" + ":" + idText + "," + "Password" + ":" + passText +"\n";
-            // 
-            // ÆÄÀÏÀÌ Á¸ÀçÇÏ´ÂÁö, ±×¸®°í µ¿ÀÏÇÑ ³»¿ëÀÌ ÀÖ´ÂÁö È®ÀÎ
+   
+            // íŒŒì¼ì´ ì¡´ì¬í•˜ëŠ”ì§€, ê·¸ë¦¬ê³  ë™ì¼í•œ ë‚´ìš©ì´ ìˆëŠ”ì§€ í™•ì¸
             if (File.Exists(path))
             {
-                //pahÀÇ ¸ğµç ÅÃ½ºÆ®¸¦ °¡Á®¿ÀÀÚ.
+                //pahì˜ ëª¨ë“  íƒìŠ¤íŠ¸ë¥¼ ê°€ì ¸ì˜¤ì.
                 existingContent = File.ReadAllText(path);
 
-                //content°¡ Æ÷ÇÔµÇ¾î ÀÖ´Ù¸é
+                //contentê°€ í¬í•¨ë˜ì–´ ìˆë‹¤ë©´
                 if (existingContent.Contains(content))
                 {
                     id_Regist_InputField.text = "";
-                    ph_Regist_ID_Text.text = "¾ÆÀÌµğ°¡Áßº¹µË´Ï´Ù";
+                    ph_Regist_ID_Text.text = "ì•„ì´ë””ê°€ì¤‘ë³µë©ë‹ˆë‹¤";
                     ph_Regist_ID_Text.color = Color.red;
                     return;
 
                 }
                 
-                print("SaveComplite");
+              
                 existingContent = existingContent + content;
 
                 
             }
 
-            //using System.IO; ÀÎÅ¬·çµå ÇØÁà¾ßÇÔ. //ÆÄÀÏÀ» ÅØ½ºÆ®¿¡ ÀúÀåÇØÁÖÀÚ.
+            //using System.IO; ì¸í´ë£¨ë“œ í•´ì¤˜ì•¼í•¨. //íŒŒì¼ì„ í…ìŠ¤íŠ¸ì— ì €ì¥í•´ì£¼ì.
             File.WriteAllText(path, existingContent);
-
+            print("SaveComplite");
         }
 
 
-
-
-
-
-
     }
+   
+
     public void SaveReistInfo()
     {
-
+        string loginId_Text = id_Regist_InputField.text;
     }
 
 
 
 
-}//Å¬·¡½º³¡
+}//í´ë˜ìŠ¤ë
 
 
 

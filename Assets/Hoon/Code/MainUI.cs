@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.XR;
+//파일불러오기
+using System.IO;
 
 public class MainUI : MonoBehaviour
 {
@@ -37,6 +39,8 @@ public class MainUI : MonoBehaviour
     GameObject playerImg_Object;
     //로그인화면
     public GameObject imgLogin_Object;
+    //회원가입
+    GameObject imgRegist_Object;
     //로그아웃
     GameObject imgLogout_Object;
     //ID
@@ -61,6 +65,10 @@ public class MainUI : MonoBehaviour
     GameObject panel_MyInfo_Object;
     //로비이동 버튼
     public Button move_Lobby_Btn;
+    //종료패널
+    GameObject panel_Exit;
+
+    GameObject btnExit_Menu_Object;
 
     //아아디 필드
     InputField id_InputField;
@@ -90,20 +98,33 @@ public class MainUI : MonoBehaviour
     //로그출력
     string log;
 
+    string enteredID;
+    string enteredPass;
+    //유저정보 불러오기
+    string loadUserInfo;
 
     bool isRoomActive = false;
     //
     bool isViewPass = false;
     bool isViewMyInfo = false;
+    bool isViewExitMenu = false;
 
     //로비를 제외하고 버튼은 계속 유지합니다.
     // Start is called before the first frame update
     void Start()
     {
-        MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Login");
-        MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Regist");
-
-        //Lobbybutton
+        //로그인 오브젝트
+        imgLogin_Object = GameObject.Find("Img_Login");
+        //회원가입 오브젝트
+        imgRegist_Object = GameObject.Find("Img_Regist");
+        if (imgLogin_Object != null)
+        {
+            print("imgLogin_Object true");
+            imgLogin_Object = GameObject.Find("Img_Login");
+            //로그인 오브젝트 끄기
+            //imgLogin_Object.SetActive(false);
+        }
+        //Lobby button
         btn_Lobby_Obejct = GameObject.Find("Btn_Lobby");
         move_Lobby_Btn = btn_Lobby_Obejct.GetComponent<Button>();
         //bg
@@ -115,11 +136,7 @@ public class MainUI : MonoBehaviour
         //playerImg
         playerImg_Object = GameObject.Find("PlayerImage");
         //
-        if (imgLogin_Object != null)
-        {
-            print("imgLogin_Object true");
-            imgLogin_Object = GameObject.Find("Img_Login");
-        }
+       
        /* else
         {
             print("imgLogin_Object null");
@@ -164,8 +181,10 @@ public class MainUI : MonoBehaviour
             inputField_Pass_Obejct = GameObject.Find("IF_Pass");
             if (inputField_Pass_Obejct != null)  pass_InputField = inputField_Pass_Obejct.GetComponent<InputField>();
         }
+        
         //
         img_Regist_Object = GameObject.Find("Img_Regist");
+        //img_Regist_Object.SetActive(false);
 
         //내정보버튼
         btn_MyInfo_Obejct = GameObject.Find("Btn_MyInfo");
@@ -173,10 +192,15 @@ public class MainUI : MonoBehaviour
 
         //내정보 패널을 가져오자.
         panel_MyInfo_Object = GameObject.Find("Panel_MyInfo");
-        //내정보 패널을 끄자.
         panel_MyInfo_Object.SetActive(false);
 
 
+        panel_Exit = GameObject.Find("Panel_Exit");
+        panel_Exit.SetActive(false);
+
+        //버튼exit
+         btnExit_Menu_Object = GameObject.Find("Btn_ExitMenu");
+        
 
 
 
@@ -189,6 +213,65 @@ public class MainUI : MonoBehaviour
        
 
     }//업데이트
+
+    public void LoadTest()
+    {
+        //입력된 아이디 가져오기
+        string idText = id_InputField.text;
+        //입력된 패스워드 가져오기
+        string passText = pass_InputField.text;
+
+        //문자열로 저장할경로 + 파일이름.
+        //C:\Users\Admin\AppData\LocalLow\DefaultCompany\front-end
+        string path = Application.persistentDataPath + "/SaveRegist.txt";
+        //파일에 저장될 모양과 값.
+        string content = "ID" + ":" + idText + "," + "Password" + ":" + passText + "\n";
+
+        // 파일이 존재하는지, 그리고 동일한 내용이 있는지 확인
+        if (File.Exists(path))
+        {
+            //pah의 모든 택스트를 가져오자.
+            loadUserInfo = File.ReadAllText(path);
+
+            //content가 포함되어 있다면
+            if (loadUserInfo.Contains(content))
+            {
+               /* id_Regist_InputField.text = "";
+                ph_Regist_ID_Text.text = "아이디가중복됩니다";
+                ph_Regist_ID_Text.color = Color.red;
+                return;*/
+                
+            }
+
+            //갱신
+            //loadUserInfo = loadUserInfo + content;
+
+
+        }
+
+        //using System.IO; 인클루드 해줘야함. //파일을 텍스트에 저장해주자.
+        //File.WriteAllText(path, loadUserInfo);
+        print("LoadComplite");
+
+    }
+
+
+
+    public void ViewExitPanel()
+    {
+        if(isViewExitMenu == false)
+        {
+            panel_Exit.SetActive(true);
+            isViewExitMenu = true;
+        }
+        else
+        {
+            panel_Exit.SetActive(false);
+            isViewExitMenu = false;
+        }
+
+    }
+
     public void ViewMyInfo()
     {
         if(isViewMyInfo == false)
@@ -235,8 +318,6 @@ public class MainUI : MonoBehaviour
         ResetLoginText();
 
 
-
-
     }
 
     public void MoveLogin()
@@ -271,20 +352,93 @@ public class MainUI : MonoBehaviour
     }
     public void TestCheckLogin()
     {
-        //아이디 필드의 텍스트 가져오기
-        string enteredID = id_InputField.text;
-        //패스 필드의 텍스트 가져오기
-        string enteredPass = pass_InputField.text;
-        
+       
+        //입력된 아이디 가져오기
+        string idText = id_InputField.text;
+        //입력된 패스워드 가져오기
+        string passText = pass_InputField.text;
+
+        //문자열로 저장할경로 + 파일이름.
+        //C:\Users\Admin\AppData\LocalLow\DefaultCompany\front-end
+        string path = Application.persistentDataPath + "/SaveRegist.txt";
+        //파일에 저장될 모양과 값.
+        string content = "ID" + ":" + idText + "," + "Password" + ":" + passText + "\n";
+
+        // 파일이 존재하는지, 그리고 동일한 내용이 있는지 확인
+        if (File.Exists(path))
+        {
+            //pah의 모든 택스트를 가져오자.
+            loadUserInfo = File.ReadAllText(path);
+
+            //content가 포함되어 있다면
+            if (loadUserInfo.Contains(content))
+            {
+                //로그인해주기
+                Login();
+                print("LoadComplite");
+                return;
+                /* id_Regist_InputField.text = "";
+                 ph_Regist_ID_Text.text = "아이디가중복됩니다";
+                 ph_Regist_ID_Text.color = Color.red;
+                 return;*/
+
+            }
+            else 
+            {
+                if (loadUserInfo.Contains(idText))
+                {
+                    print("아이디가 틀림");
+                    //빈문자열로 해줍니다. //영어로만 들어 갑니다.
+                    id_InputField.text = "";
+                    phID_Text.text = "아이디가 틀림";
+                    phID_Text.color = Color.red;
+                }
+                if (loadUserInfo.Contains(passText))
+                {
+                    print("비밀번호가 틀림");
+                    pass_InputField.text = "";
+                    phPass_Text.text = "비밀번호 틀림";
+                    phPass_Text.color = Color.red;
+                }
+            }
+            
+                  
+            //갱신
+            //loadUserInfo = loadUserInfo + content;
+
+
+        }
+
+        //using System.IO; 인클루드 해줘야함. //파일을 텍스트에 저장해주자.
+        //File.WriteAllText(path, loadUserInfo);
+       
+
+       /* if (id_InputField != null)
+        {
+            //아이디 필드의 텍스트 가져오기
+            enteredID = id_InputField.text;
+        }
+        else
+        {
+            print("아이디 인풋필드 없음");
+        }
+        if (pass_InputField != null)
+        {
+            //패스 필드의 텍스트 가져오기
+            enteredPass = pass_InputField.text;
+        }
+        else
+        {
+            print("패스 인풋필드 없음");
+        }
+
         //아이디와 비밀번호 일치하면 로그인
         if (enteredID == test_Id && enteredPass == test_Pass)
         {
             //로그인해주기
             Login();
-          
-
-
             return;
+
         }
         if (enteredID == test_Id)
         {
@@ -311,21 +465,18 @@ public class MainUI : MonoBehaviour
             pass_InputField.text = "";
             phPass_Text.text = "비밀번호 틀림";
             phPass_Text.color = Color.red;
-        }
+        }*/
         
 
-
-
     }
-
 
 
     public void CheckLogin()
     {
         //아이디 필드의 텍스트 가져오기
-        string enteredID = idText.text;
+         enteredID = idText.text;
         //패스 필드의 텍스트 가져오기
-        string enteredPass = passText.text;
+         enteredPass = passText.text;
 
         if(enteredID == current_Id)
         {
@@ -335,8 +486,6 @@ public class MainUI : MonoBehaviour
         {
             print(222);
         }
-
-
 
 
     }
@@ -355,6 +504,7 @@ public class MainUI : MonoBehaviour
             if (canVas != null) print(1111);
             GameObject imgLogin = canVas.transform.Find("Img_Login").gameObject;
             imgLogin.SetActive(true);
+            imgRegist_Object.SetActive(true);
             //MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Login");
             //MainUI.Instance.imgLogin_Object.SetActive(true);
 
@@ -386,7 +536,7 @@ public class MainUI : MonoBehaviour
         }*/
 
     }
-   
+       
     public void Login()
     {
         if(imgLogin_Object != null) imgLogin_Object.SetActive(false);
