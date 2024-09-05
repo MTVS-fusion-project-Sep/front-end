@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,40 +12,40 @@ public class MainUI : MonoBehaviour
 
     private void Awake()
     {
-        //ÀÎ½ºÅÏ½º°¡ ¾øÀ¸¸é
+        //ì¸ìŠ¤í„´ìŠ¤ê°€ ì—†ìœ¼ë©´
         if (Instance == null)
         {
-            //³ª¸¦ »ı¼º
+            //ë‚˜ë¥¼ ìƒì„±
             Instance = this;
-            // ¿ÀºêÁ§Æ®¸¦ ÆÄ±«ÇÏÁö ¾Ê°í À¯Áö. // ÇÊ¿ä¿¡ µû¶ó Ãß°¡
+            // ì˜¤ë¸Œì íŠ¸ë¥¼ íŒŒê´´í•˜ì§€ ì•Šê³  ìœ ì§€. // í•„ìš”ì— ë”°ë¼ ì¶”ê°€
             //DontDestroyOnLoad(gameObject); 
         }
         else
         {
-            //ÀÎ½ºÅÏ½º°¡ ÀÕÀ¸¸é »èÁ¦
+            //ì¸ìŠ¤í„´ìŠ¤ê°€ ì‡ìœ¼ë©´ ì‚­ì œ
             Destroy(gameObject);
         }
     }
 
-    //¹è°æ
+    //ë°°ê²½
     GameObject bg_Object;
-    //¸ŞÀÎ·ë
+    //ë©”ì¸ë£¸
     GameObject mainRoom_Object;
-    //³»Á¤º¸
+    //ë‚´ì •ë³´
     GameObject myInfo_Object;
-    //¾Æ¹ÙÅ¸
+    //ì•„ë°”íƒ€
     GameObject playerImg_Object;
-    //·Î±×ÀÎÈ­¸é
+    //ë¡œê·¸ì¸í™”ë©´
     public GameObject imgLogin_Object;
-    //·Î±×¾Æ¿ô
+    //ë¡œê·¸ì•„ì›ƒ
     GameObject imgLogout_Object;
     //ID
     GameObject loginID_Text_Obejct;
     //Pass
     GameObject loginPass_Text_Obejct;
-    //ID ¹Ì¸®º¸±â
+    //ID ë¯¸ë¦¬ë³´ê¸°
     GameObject phID_Obejct;
-    //pass¹Ì¸®º¸±â
+    //passë¯¸ë¦¬ë³´ê¸°
     GameObject phPass_Object;
     //id_Input 
     GameObject inputField_ID_Obejct;
@@ -55,13 +55,16 @@ public class MainUI : MonoBehaviour
     public GameObject img_Regist_Object;
     //Looby button
     GameObject btn_Lobby_Obejct;
-
-    //¹öÆ°
+    //MyInfo btn
+    GameObject btn_MyInfo_Obejct;
+    //MyInfo Panel
+    GameObject panel_MyInfo_Object;
+    //ë¡œë¹„ì´ë™ ë²„íŠ¼
     public Button move_Lobby_Btn;
 
-    //¾Æ¾Æµğ ÇÊµå
+    //ì•„ì•„ë”” í•„ë“œ
     InputField id_InputField;
-    //ÆĞ½º ÇÊµå
+    //íŒ¨ìŠ¤ í•„ë“œ
     InputField pass_InputField;
 
     Text idText;
@@ -69,30 +72,31 @@ public class MainUI : MonoBehaviour
     Text phID_Text;
     Text phPass_Text;
 
-    string phID_STR = "¾ÆÀÌµğ(ÀÌ¸ŞÀÏ)";
-    string phPass_STR = "ºñ¹Ğ¹øÈ£";
+    string phID_STR = "ì•„ì´ë””(ì´ë©”ì¼)";
+    string phPass_STR = "ë¹„ë°€ë²ˆí˜¸";
 
 
-    //test ¾ÆÀÌµğ
+    //test ì•„ì´ë””
     string test_Id = "1111";
-    //test ºñ¹Ğ¹øÈ£
+    //test ë¹„ë°€ë²ˆí˜¸
     string test_Pass = "2222";
 
 
-    //¾ÆÀÌµğ
+    //ì•„ì´ë””
     string current_Id = "mtvs3th";
-    //ºñ¹Ğ¹øÈ£
+    //ë¹„ë°€ë²ˆí˜¸
     string current_Pass = "2024";
 
-    //·Î±×Ãâ·Â
+    //ë¡œê·¸ì¶œë ¥
     string log;
 
 
     bool isRoomActive = false;
     //
     bool isViewPass = false;
+    bool isViewMyInfo = false;
 
-    //·Îºñ¸¦ Á¦¿ÜÇÏ°í ¹öÆ°Àº °è¼Ó À¯ÁöÇÕ´Ï´Ù.
+    //ë¡œë¹„ë¥¼ ì œì™¸í•˜ê³  ë²„íŠ¼ì€ ê³„ì† ìœ ì§€í•©ë‹ˆë‹¤.
     // Start is called before the first frame update
     void Start()
     {
@@ -130,7 +134,7 @@ public class MainUI : MonoBehaviour
             if(loginID_Text_Obejct != null) idText = loginID_Text_Obejct.GetComponent<Text>();
         }
         
-        //ÆĞ½º¿öµåÅÃ½ºÆ®
+        //íŒ¨ìŠ¤ì›Œë“œíƒìŠ¤íŠ¸
         if(loginPass_Text_Obejct == null)
         {
             loginPass_Text_Obejct = GameObject.Find("Text_Pass");
@@ -138,13 +142,13 @@ public class MainUI : MonoBehaviour
         }
         if(phID_Obejct == null)
         {
-            //ID ¹Ì¸®º¸±â
+            //ID ë¯¸ë¦¬ë³´ê¸°
             phID_Obejct = GameObject.Find("Ph_ID");
             if (phID_Obejct != null)  phID_Text = phID_Obejct.GetComponent<Text>();
         }
         if(phPass_Object == null)
         {
-            //Pass ¹Ì¸®º¸±â
+            //Pass ë¯¸ë¦¬ë³´ê¸°
             phPass_Object = GameObject.Find("Ph_Pass");
             if (phPass_Object != null)  phPass_Text = phPass_Object.GetComponent<Text>();
         }
@@ -160,12 +164,19 @@ public class MainUI : MonoBehaviour
             inputField_Pass_Obejct = GameObject.Find("IF_Pass");
             if (inputField_Pass_Obejct != null)  pass_InputField = inputField_Pass_Obejct.GetComponent<InputField>();
         }
-       
-       
         //
         img_Regist_Object = GameObject.Find("Img_Regist");
 
-        //ÆĞ½º
+        //ë‚´ì •ë³´ë²„íŠ¼
+        btn_MyInfo_Obejct = GameObject.Find("Btn_MyInfo");
+        Button myinfo_Button = btn_MyInfo_Obejct.GetComponent<Button>();
+
+        //ë‚´ì •ë³´ íŒ¨ë„ì„ ê°€ì ¸ì˜¤ì.
+        panel_MyInfo_Object = GameObject.Find("Panel_MyInfo");
+        //ë‚´ì •ë³´ íŒ¨ë„ì„ ë„ì.
+        panel_MyInfo_Object.SetActive(false);
+
+
 
 
 
@@ -177,34 +188,49 @@ public class MainUI : MonoBehaviour
 
        
 
-    }//¾÷µ¥ÀÌÆ®
+    }//ì—…ë°ì´íŠ¸
+    public void ViewMyInfo()
+    {
+        if(isViewMyInfo == false)
+        {
+            panel_MyInfo_Object.SetActive(true);
+            isViewMyInfo = true;
+        }
+        else
+        {
+            panel_MyInfo_Object.SetActive(false);
+            isViewMyInfo = false;
+        }
+      
+    }
+
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // ¿øÇÏ´Â ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+        // ì›í•˜ëŠ” ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
        imgLogin_Object.SetActive(false);
        img_Regist_Object.SetActive(false);
 
-        // ÀÌº¥Æ® ÇØÁ¦
+        // ì´ë²¤íŠ¸ í•´ì œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     public void ResetLoginText()
     {
-        //¾ÆÀÌµğ ÅØ½ºÆ® ÃÊ±âÈ­
+        //ì•„ì´ë”” í…ìŠ¤íŠ¸ ì´ˆê¸°í™”
         id_InputField.text = "";
-        //ºñ¹Ğ¹øÈ£ ÅØ½ºÆ® ÃÊ±âÈ­
+        //ë¹„ë°€ë²ˆí˜¸ í…ìŠ¤íŠ¸ ì´ˆê¸°í™”
         pass_InputField.text = "";
-        //¾ÆÀÌµğ È¦µå ÅØ½ºÆ® ÃÊ±âÈ­
+        //ì•„ì´ë”” í™€ë“œ í…ìŠ¤íŠ¸ ì´ˆê¸°í™”
         phID_Text.text = phID_STR;
         phID_Text.color = Color.gray;
-        //ÆĞ½º È¦µå ÅØ½ºÆ® ÃÊ±âÈ­
+        //íŒ¨ìŠ¤ í™€ë“œ í…ìŠ¤íŠ¸ ì´ˆê¸°í™”
         phPass_Text.text = phPass_STR;
         phPass_Text.color = Color.gray;
     }
 
     public void MoveNewRegist()
     {
-        //·Î±×ÀÎÀÌ¹ÌÁö¸¦ ²¨ÁÖÀÚ.
+        //ë¡œê·¸ì¸ì´ë¯¸ì§€ë¥¼ êº¼ì£¼ì.
         imgLogin_Object.SetActive(false);
         ResetLoginText();
 
@@ -216,7 +242,7 @@ public class MainUI : MonoBehaviour
     public void MoveLogin()
     {
         //img_Regist_Object.SetActive(false);
-        //·Î±×ÀÎÀÌ¹ÌÁö¸¦ ÄÑÁÖÀÚ.
+        //ë¡œê·¸ì¸ì´ë¯¸ì§€ë¥¼ ì¼œì£¼ì.
         imgLogin_Object.SetActive(true);
     }
         
@@ -235,7 +261,7 @@ public class MainUI : MonoBehaviour
             pass_InputField.contentType = InputField.ContentType.Password;
             isViewPass = false;
         }
-        // ÅØ½ºÆ®¸¦ °­Á¦·Î Àç¼³Á¤ÇÏ¿© º¯°æµÈ contentType ¹İ¿µ
+        // í…ìŠ¤íŠ¸ë¥¼ ê°•ì œë¡œ ì¬ì„¤ì •í•˜ì—¬ ë³€ê²½ëœ contentType ë°˜ì˜
         pass_InputField.ForceLabelUpdate();
         string currentText = pass_InputField.text;
         pass_InputField.text = "";
@@ -245,15 +271,15 @@ public class MainUI : MonoBehaviour
     }
     public void TestCheckLogin()
     {
-        //¾ÆÀÌµğ ÇÊµåÀÇ ÅØ½ºÆ® °¡Á®¿À±â
+        //ì•„ì´ë”” í•„ë“œì˜ í…ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
         string enteredID = id_InputField.text;
-        //ÆĞ½º ÇÊµåÀÇ ÅØ½ºÆ® °¡Á®¿À±â
+        //íŒ¨ìŠ¤ í•„ë“œì˜ í…ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
         string enteredPass = pass_InputField.text;
         
-        //¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£ ÀÏÄ¡ÇÏ¸é ·Î±×ÀÎ
+        //ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ ì¼ì¹˜í•˜ë©´ ë¡œê·¸ì¸
         if (enteredID == test_Id && enteredPass == test_Pass)
         {
-            //·Î±×ÀÎÇØÁÖ±â
+            //ë¡œê·¸ì¸í•´ì£¼ê¸°
             Login();
           
 
@@ -262,28 +288,28 @@ public class MainUI : MonoBehaviour
         }
         if (enteredID == test_Id)
         {
-            print("¾ÆÀÌµğ°¡ ¸Â½À´Ï´Ù");
+            print("ì•„ì´ë””ê°€ ë§ìŠµë‹ˆë‹¤");
            
         }
         else
         {
-            print("¾ÆÀÌµğ°¡ Æ²¸²" );
-            //ºó¹®ÀÚ¿­·Î ÇØÁİ´Ï´Ù. //¿µ¾î·Î¸¸ µé¾î °©´Ï´Ù.
+            print("ì•„ì´ë””ê°€ í‹€ë¦¼" );
+            //ë¹ˆë¬¸ìì—´ë¡œ í•´ì¤ë‹ˆë‹¤. //ì˜ì–´ë¡œë§Œ ë“¤ì–´ ê°‘ë‹ˆë‹¤.
             id_InputField.text = "";
-            phID_Text.text = "¾ÆÀÌµğ°¡ Æ²¸²";
+            phID_Text.text = "ì•„ì´ë””ê°€ í‹€ë¦¼";
             phID_Text.color = Color.red;
 
         }
         if (enteredPass == test_Pass)
         {
-            print("ºñ¹Ğ¹øÈ£°¡ ¸Â½À´Ï´Ù");
+            print("ë¹„ë°€ë²ˆí˜¸ê°€ ë§ìŠµë‹ˆë‹¤");
 
         }
         else
         {
-            print("ºñ¹Ğ¹øÈ£°¡ Æ²¸²");
+            print("ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦¼");
             pass_InputField.text = "";
-            phPass_Text.text = "ºñ¹Ğ¹øÈ£ Æ²¸²";
+            phPass_Text.text = "ë¹„ë°€ë²ˆí˜¸ í‹€ë¦¼";
             phPass_Text.color = Color.red;
         }
         
@@ -296,9 +322,9 @@ public class MainUI : MonoBehaviour
 
     public void CheckLogin()
     {
-        //¾ÆÀÌµğ ÇÊµåÀÇ ÅØ½ºÆ® °¡Á®¿À±â
+        //ì•„ì´ë”” í•„ë“œì˜ í…ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
         string enteredID = idText.text;
-        //ÆĞ½º ÇÊµåÀÇ ÅØ½ºÆ® °¡Á®¿À±â
+        //íŒ¨ìŠ¤ í•„ë“œì˜ í…ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
         string enteredPass = passText.text;
 
         if(enteredID == current_Id)
@@ -321,8 +347,8 @@ public class MainUI : MonoBehaviour
     }
     public void LogOut()
     {
-        print("³ª°¡±â");
-        //º¯¼öÀÌ¸§ Àß È®ÀÎÇÏÀÚ.
+        print("ë‚˜ê°€ê¸°");
+        //ë³€ìˆ˜ì´ë¦„ ì˜ í™•ì¸í•˜ì.
         if(MainUI.Instance != null)
         {
             GameObject canVas = GameObject.Find("Canvas");
@@ -338,14 +364,14 @@ public class MainUI : MonoBehaviour
 
         /*if (imgLogin_Object != null)
         {
-            print("ÀÌ¹ÌÁö ·Î±×ÀÎ ¿ÀºêÁ§Æ® ÀÖÀ½");
+            print("ì´ë¯¸ì§€ ë¡œê·¸ì¸ ì˜¤ë¸Œì íŠ¸ ìˆìŒ");
             imgLogin_Object.SetActive(true);
         }
         else
         {
-            print("ÀÌ¹ÌÁö ·Î±×ÀÎ ¿ÀºêÁ§Æ® ¾øÀ½ ");
+            print("ì´ë¯¸ì§€ ë¡œê·¸ì¸ ì˜¤ë¸Œì íŠ¸ ì—†ìŒ ");
             imgLogin_Object = GameObject.Find("Img_Login");
-            if (imgLogin_Object == null) print("ÀÌ¹ÌÁö ·Î±×ÀÎÀ» Ã£À»¼ö ¾øÀ½");
+            if (imgLogin_Object == null) print("ì´ë¯¸ì§€ ë¡œê·¸ì¸ì„ ì°¾ì„ìˆ˜ ì—†ìŒ");
             //MainUI.Instance.imgLogin_Object.SetActive(true);
         }
         if (img_Regist_Object != null)
@@ -354,52 +380,51 @@ public class MainUI : MonoBehaviour
         } 
         else
         {
-            print("ÀÌ¹ÌÁö µî·Ï ¿ÀºêÁ§Æ® ¾øÀ½ ");
+            print("ì´ë¯¸ì§€ ë“±ë¡ ì˜¤ë¸Œì íŠ¸ ì—†ìŒ ");
             img_Regist_Object = GameObject.Find("img_Regist");
             img_Regist_Object.SetActive(true);
         }*/
 
     }
-    
-
+   
     public void Login()
     {
         if(imgLogin_Object != null) imgLogin_Object.SetActive(false);
-        //·Î±×ÀÎ¿¡ ÀÔ·ÂÇÑ ÅØ½ºÆ® ÃÊ±âÈ­
+        //ë¡œê·¸ì¸ì— ì…ë ¥í•œ í…ìŠ¤íŠ¸ ì´ˆê¸°í™”
         ResetLoginText();
-        //ÀÌ¹ÌÁö È¸¿ø°¡ÀÔ ²ô±â
+        //ì´ë¯¸ì§€ íšŒì›ê°€ì… ë„ê¸°
         img_Regist_Object.SetActive(false);
 
     }
 
-    //¸ŞÀÎÅ°¸¦ ´©¸£¸é ¸ğµç UI¸¦ º¸¿©ÁÖ°ÔÇÏÀÚ.
+    //ë©”ì¸í‚¤ë¥¼ ëˆ„ë¥´ë©´ ëª¨ë“  UIë¥¼ ë³´ì—¬ì£¼ê²Œí•˜ì.
     public void ViewMain()
     {
-        //BG¸¦ ²ôÀÚ.
+        //BGë¥¼ ë„ì.
         bg_Object.SetActive(true);
-        //mainRoom ²ôÀÚ
+        //mainRoom ë„ì
         mainRoom_Object.SetActive(true);
-        //myInfo ²ôÀÚ
+        //myInfo ë„ì
         myInfo_Object.SetActive(true);
-        //PlayerImg ²ôÀÚ
+        //PlayerImg ë„ì
         playerImg_Object.SetActive(true);
 
 
     }
 
-    //Room ¹öÆ°À» ´©¸£¸é ¸ğµç UI¸¦ ²ô°í RoomÀ¸·Î ÀÌµ¿
+    //Room ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ëª¨ë“  UIë¥¼ ë„ê³  Roomìœ¼ë¡œ ì´ë™
     public void ViewRoom()
     {
 
-        //BG¸¦ ²ôÀÚ.
+        //BGë¥¼ ë„ì.
         bg_Object.SetActive(false);
-        //mainRoom ²ôÀÚ
+        //mainRoom ë„ì
         mainRoom_Object.SetActive(false);
-        //myInfo ²ôÀÚ
+        //myInfo ë„ì
         myInfo_Object.SetActive(false);
-        //PlayerImg ²ôÀÚ
+        //PlayerImg ë„ì
         playerImg_Object.SetActive(false);
-        //roomÀ» ÄÑÁÖÀÚ.
+        //roomì„ ì¼œì£¼ì.
         isRoomActive = true;
 
 
