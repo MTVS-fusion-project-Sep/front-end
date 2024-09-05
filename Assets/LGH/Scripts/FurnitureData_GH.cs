@@ -5,11 +5,7 @@ using UnityEngine;
 public class FurnitureData_GH : MonoBehaviour
 {
     public FurnitureInfo furnitureInfo;
-    public List<Transform> Ground_furniturePos = new List<Transform>();
-    public List<Transform> Wall_furniturePos = new List<Transform>();
     
-
-
     void LateStart()
     {
         DragManager_GH dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
@@ -21,4 +17,6 @@ public class FurnitureData_GH : MonoBehaviour
     {
         
     }
+
+ 
 }

@@ -8,19 +8,26 @@ public class RoomUIManager_GH : MonoBehaviour
 {
     // 가구 리스트를 만든다.
     public List<Image> ui_Furniture = new List<Image>();
-    string st_Furniture = "ui_Furniture";
+
+    //가구 리스트
+    public List<GameObject> list_Furniture = new List<GameObject>();
+
 
     // 벽지 리스트를 만든다.
     public List<Image> ui_Wall = new List<Image>();
-    string st_Wall = "ui_Wall";
 
     // 바닥 리스트를 만든다.
     public List<Image> ui_Ground = new List<Image>();
-    string st_Ground = "ui_Ground";
 
 
-    // 셋액티브 true / false
-    bool setAct;
+
+    // 버튼 리스트
+    public List<Button> slot_furnis = new List<Button>();
+
+    // 버튼 프리팹
+    public Button slot_Prefab;
+
+
 
     // 0.방꾸 
     public Button roomSettingBut;
@@ -30,57 +37,46 @@ public class RoomUIManager_GH : MonoBehaviour
 
 
     // 기존 세팅
-
+    public GameObject contentFurniture;
 
     void Start()
     {
 
-
         for (int i = 0; i < ui_Furniture.Count; i++)
         {
-            ui_Furniture[i] = Instantiate(ui_Furniture[i], GameObject.Find("ContentFurniture").transform);
-            ui_Furniture[i].gameObject.SetActive(true);
+            slot_furnis.Add(Instantiate(slot_Prefab, contentFurniture.transform));
+            Image slotImage = slot_furnis[i].transform.GetChild(0).GetComponent<Image>();
+            SlotClick_GH slotClick = slot_furnis[i].GetComponent<SlotClick_GH>();
+            slotClick.IndexSet(i, 0);
+            slotImage.sprite = ui_Furniture[i].sprite;
         }
 
-        for (int i = 0; i < ui_Wall.Count; i++)
-        {
-            ui_Wall[i] = Instantiate(ui_Wall[i], GameObject.Find("ContentFurniture").transform);
-            ui_Wall[i].gameObject.SetActive(false);
-        }
-
-        for (int i = 0; i < ui_Ground.Count; i++)
-        {
-            ui_Ground[i] = Instantiate(ui_Ground[i], GameObject.Find("ContentFurniture").transform);
-            ui_Ground[i].gameObject.SetActive(false);
-        }
         roomSettinfPanel.SetActive(false);
         roomSettingBut.gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
     public void OnFurniture()
     {
-        ForUI(true, false, false);
+        ForUI(ui_Furniture, 0);
     }
 
     public void OnWall()
     {
-        ForUI(false, true, false);
+        ForUI(ui_Wall, 1);
     }
     public void OnGround()
     {
-        ForUI(false, false, true);
+        ForUI(ui_Ground, 2);
     }
 
     public void SettingRoom()
     {
         roomSettinfPanel.SetActive(true);
         roomSettingBut.gameObject.SetActive(false);
-
     }
 
     public void OnSave()
@@ -92,21 +88,31 @@ public class RoomUIManager_GH : MonoBehaviour
     {
         roomSettinfPanel.SetActive(false);
         roomSettingBut.gameObject.SetActive(true);
+    }
+
+    void ForUI(List<Image> cate, int cateindex)
+    {
+        slot_furnis.Clear();
+        UIListReset();
+        for (int i = 0; i < cate.Count; i++)
+        {
+            slot_furnis.Add(Instantiate(slot_Prefab, contentFurniture.transform));
+            Image slotImage = slot_furnis[i].transform.GetChild(0).GetComponent<Image>();
+            SlotClick_GH slotClick = slot_furnis[i].GetComponent<SlotClick_GH>();
+            slotClick.IndexSet(i, cateindex);
+
+            slotImage.sprite = cate[i].sprite;
+            slotImage.material = cate[i].material;
+
+        }
 
     }
 
-
-    public void ForUI(bool furniture, bool wall, bool ground)
+    void UIListReset()
     {
-        for (int i = 0; i < ui_Furniture.Count; i++)
-            ui_Furniture[i].gameObject.SetActive(furniture);
-
-
-        for (int i = 0; i < ui_Wall.Count; i++)
-            ui_Wall[i].gameObject.SetActive(wall);
-
-
-        for (int i = 0; i < ui_Ground.Count; i++)
-            ui_Ground[i].gameObject.SetActive(ground);
+        for(int i = 0; i < contentFurniture.transform.childCount; i++)
+        {
+            Destroy(contentFurniture.transform.GetChild(i).gameObject);
+        }
     }
 }
