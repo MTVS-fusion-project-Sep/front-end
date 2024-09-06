@@ -140,47 +140,52 @@ public class DragManager_GH : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Furniture") | 1 << LayerMask.NameToLayer("NoticeBoard") | 1 << LayerMask.NameToLayer("WallObject")))
         {
-            // 오브젝트 옮기기
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Furniture"))
-            {
-                if (!onMoveFurniture)
+            if (roomUIMag.onRoomPanel)
+                // 오브젝트 옮기기
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Furniture"))
                 {
-                    groundTileLine.SetActive(true);
-                    moveFurniture = hit.transform.gameObject;
-                    moveFurniData = moveFurniture.GetComponent<FurnitureData_GH>();
-                    onMoveFurniture = true;
-                }
-                //주변의 가구 중 furnitur의 위치 정보들을 가져온다.
-                colliders = Physics.OverlapSphere(transform.position, radius, 1 << LayerMask.NameToLayer("Furniture"));
-                FurnitureData_GH collFD;
-                //콜라이더들의 현재 x위치와 사이즈사이를 모두 담는다.
-                for (int i = 0; i < colliders.Length; i++)
-                {
-                    if (colliders[i].gameObject != moveFurniture)
+                    if (!onMoveFurniture)
                     {
-                        collFD = colliders[i].GetComponent<FurnitureData_GH>();
-                        for (int j = collFD.furnitureInfo.furni_Current_X; j < collFD.furnitureInfo.furni_Current_X + collFD.furnitureInfo.furni_Size_X; j++)
+                        groundTileLine.SetActive(true);
+                        moveFurniture = hit.transform.gameObject;
+                        moveFurniData = moveFurniture.GetComponent<FurnitureData_GH>();
+                        onMoveFurniture = true;
+                    }
+                    //주변의 가구 중 furnitur의 위치 정보들을 가져온다.
+                    colliders = Physics.OverlapSphere(transform.position, radius, 1 << LayerMask.NameToLayer("Furniture"));
+                    FurnitureData_GH collFD;
+                    //콜라이더들의 현재 x위치와 사이즈사이를 모두 담는다.
+                    for (int i = 0; i < colliders.Length; i++)
+                    {
+                        if (colliders[i].gameObject != moveFurniture)
                         {
-                            for (int k = collFD.furnitureInfo.furni_Current_Z; k < collFD.furnitureInfo.furni_Current_Z + collFD.furnitureInfo.furni_Size_Z; k++)
+                            collFD = colliders[i].GetComponent<FurnitureData_GH>();
+                            for (int j = collFD.furnitureInfo.furni_Current_X; j < collFD.furnitureInfo.furni_Current_X + collFD.furnitureInfo.furni_Size_X; j++)
                             {
+                                for (int k = collFD.furnitureInfo.furni_Current_Z; k < collFD.furnitureInfo.furni_Current_Z + collFD.furnitureInfo.furni_Size_Z; k++)
+                                {
 
-                                donXZ[j][k] = true;
+                                    donXZ[j][k] = true;
+                                }
                             }
                         }
                     }
                 }
-            }
-            // 방명록들어가기
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("NoticeBoard") && !roomUIMag.onRoomPanel)
-            {
-                noticeBoard.SetActive(true);
-                onNotice = true;
-            }
             // 벽 오브젝트 옮기기 
-            if(hit.transform.gameObject.layer == LayerMask.NameToLayer("WallObject"))
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("WallObject"))
             {
                 wallObject = hit.transform.gameObject;
                 wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
+            }
+            else
+            {
+                // 방명록들어가기
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("NoticeBoard"))
+                {
+                    noticeBoard.SetActive(true);
+                    onNotice = true;
+                }
+
             }
         }
 
@@ -294,9 +299,9 @@ public class DragManager_GH : MonoBehaviour
             }
             if (wallObject != null)
             {
-                for(int i = 0; i < wallPos.Length; i++)
+                for (int i = 0; i < wallPos.Length; i++)
                 {
-                    if(hit.transform.gameObject == wallPos[i].gameObject)
+                    if (hit.transform.gameObject == wallPos[i].gameObject)
                     {
                         wallObjectData.wallObjectInfo.wallPos = (WallType)(i + 1);
                     }
@@ -337,7 +342,7 @@ public class DragManager_GH : MonoBehaviour
             }
         }
 
-        if(wallObject != null)
+        if (wallObject != null)
         {
             wallObjectData = null;
             wallObject = null;

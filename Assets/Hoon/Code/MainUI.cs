@@ -352,7 +352,7 @@ public class MainUI : MonoBehaviour
     }
     public void TestCheckLogin()
     {
-       
+        print("11");
         //입력된 아이디 가져오기
         string idText = id_InputField.text;
         //입력된 패스워드 가져오기
