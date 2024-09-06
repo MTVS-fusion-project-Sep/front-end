@@ -269,7 +269,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5962891446646541371}
-  - component: {fileID: 8672179233492395623}
   - component: {fileID: 132072557829818271}
   m_Layer: 8
   m_Name: NoticeBoard
@@ -286,35 +285,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4766694867355514980}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.38268343, z: -0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
   m_LocalPosition: {x: -3.8749452, y: 4.1976624, z: 1.3109761}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4871655017279866238}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8672179233492395623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4766694867355514980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed842fba70533e41a442af6a61d5d1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  furnitureInfo:
-    furni_Size_X: 0
-    furni_Size_Y: 0
-    onPlace: 0
-    furni_Current_X: 0
-    furni_Current_Y: 0
-    furni_Rotate: 0
-  Ground_furniturePos: []
-  Wall_furniturePos: []
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
 --- !u!65 &132072557829818271
 BoxCollider:
   m_ObjectHideFlags: 0

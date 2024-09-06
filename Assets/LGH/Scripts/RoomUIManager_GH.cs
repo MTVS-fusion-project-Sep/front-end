@@ -34,6 +34,7 @@ public class RoomUIManager_GH : MonoBehaviour
 
     //방꾸 패널
     public GameObject roomSettinfPanel;
+    public bool onRoomPanel = false;
 
 
     // 기존 세팅
@@ -77,17 +78,19 @@ public class RoomUIManager_GH : MonoBehaviour
     {
         roomSettinfPanel.SetActive(true);
         roomSettingBut.gameObject.SetActive(false);
+        onRoomPanel = true;
     }
 
     public void OnSave()
     {
-
+        print("저장되었습니다~");
     }
 
     public void OnExit()
     {
         roomSettinfPanel.SetActive(false);
         roomSettingBut.gameObject.SetActive(true);
+        onRoomPanel = false;
     }
 
     void ForUI(List<Image> cate, int cateindex)
@@ -102,7 +105,7 @@ public class RoomUIManager_GH : MonoBehaviour
             slotClick.IndexSet(i, cateindex);
 
             slotImage.sprite = cate[i].sprite;
-            slotImage.material = cate[i].material;
+           // slotImage.material = cate[i].material;
 
         }
 

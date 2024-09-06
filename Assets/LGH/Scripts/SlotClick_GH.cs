@@ -11,7 +11,7 @@ public class SlotClick_GH : MonoBehaviour
     int myIndex = 0;
     int myCate = 0;
 
-    public MeshRenderer[] Rooms = new MeshRenderer[3];
+    public MeshRenderer[] rooms;
 
     public void IndexSet(int index, int cate)
     {
@@ -20,9 +20,10 @@ public class SlotClick_GH : MonoBehaviour
     }
     void Start()
     {
-        Rooms[0] = GameObject.Find("Wall_L").GetComponent<MeshRenderer>();
-        Rooms[1] = GameObject.Find("Wall_R").GetComponent<MeshRenderer>();
-        Rooms[2] = GameObject.Find("Ground").GetComponent<MeshRenderer>();
+        rooms = new MeshRenderer[3];
+        rooms[0] = GameObject.Find("Wall_L").GetComponent<MeshRenderer>();
+        rooms[1] = GameObject.Find("Wall_R").GetComponent<MeshRenderer>();
+        rooms[2] = GameObject.Find("Ground").GetComponent<MeshRenderer>();
 
         roomUIMa = GameObject.Find("RoomUIManager").GetComponent<RoomUIManager_GH>();
         AddOnClick(GetComponent<Button>());
@@ -55,24 +56,25 @@ public class SlotClick_GH : MonoBehaviour
     {
         if (roomUIMa.list_Furniture[myIndex].activeSelf)
         {
+            roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>().furnitureInfo.onPlace = false;
             roomUIMa.list_Furniture[myIndex].SetActive(false);
         }
         else
         {
             roomUIMa.list_Furniture[myIndex].SetActive(true);
+            roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>().furnitureInfo.onPlace = true;
 
         }
     }
     void WallSet()
     {
-        Image slotImage = roomUIMa.list_Furniture[myIndex].transform.GetChild(0).GetComponent<Image>();
-        Rooms[0].material = slotImage.material;
-        Rooms[1].material = slotImage.material;
-
+        Image slotImage = roomUIMa.ui_Wall[myIndex].GetComponent<Image>();
+        rooms[0].material = slotImage.material;
+        rooms[1].material = slotImage.material;
     }
     void CarpetSet()
     {
-        Image slotImage = roomUIMa.list_Furniture[myIndex].transform.GetChild(0).GetComponent<Image>();
-        Rooms[2].material = slotImage.material;
+        Image slotImage = roomUIMa.ui_Ground[myIndex].GetComponent<Image>();
+        rooms[2].material = slotImage.material;
     }
 }

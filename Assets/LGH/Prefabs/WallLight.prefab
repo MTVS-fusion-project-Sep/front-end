@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4161718412501714401}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 4135618764840046692}
   - {fileID: 8485973345848209090}
   m_Father: {fileID: 1437034290777348065}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &4579035795347742574
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 4579035795347742574}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.53, y: 0, z: 0.72}
+  m_LocalPosition: {x: -0.53, y: -0.361, z: 0.526}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -79,7 +79,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 8
   m_Range: 10
   m_SpotAngle: 73.37
   m_InnerSpotAngle: 21.80208
@@ -161,9 +161,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1437034290777348065}
-  - component: {fileID: 4366941594093746289}
   - component: {fileID: 4559114479857933216}
-  m_Layer: 6
+  - component: {fileID: 1996759247295060500}
+  m_Layer: 10
   m_Name: WallLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,35 +178,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6144841977251075080}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.38268343, z: -0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
   m_LocalPosition: {x: -1.4071425, y: 4.88, z: 3.8820164}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2764663812110682342}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4366941594093746289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6144841977251075080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed842fba70533e41a442af6a61d5d1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  furnitureInfo:
-    furni_Size_X: 0
-    furni_Size_Y: 0
-    onPlace: 0
-    furni_Current_X: 0
-    furni_Current_Y: 0
-    furni_Rotate: 0
-  Ground_furniturePos: []
-  Wall_furniturePos: []
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
 --- !u!65 &4559114479857933216
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -227,7 +206,22 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.81, y: 1, z: 1}
-  m_Center: {x: 0, y: -0.33, z: -0.64}
+  m_Center: {x: 0, y: -0.33, z: 0.5}
+--- !u!114 &1996759247295060500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6144841977251075080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e94b7d2f3c63f4784039ac613e2e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallObjectInfo:
+    wallPos: 1
+    onPlace: 1
 --- !u!1 &7992007102163333420
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 8695660254668067115}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.53, y: 0, z: -0.36}
+  m_LocalPosition: {x: -0.29, y: -0.79, z: -0.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -358,13 +352,13 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 8
   m_Range: 10
   m_SpotAngle: 73.37
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1

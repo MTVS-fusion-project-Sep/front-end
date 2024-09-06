@@ -1,25 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditorInternal.ReorderableList;
 
 public class DragManager_GH : MonoBehaviour
 {
+    #region 땅 전역변수
     //초록색 큐브들 8X8
     GameObject[,] greenTiles;
 
     //초록색큐브
     public GameObject greenTilefPrefab;
 
+    // 큐브 Mat
+    public Material[] cubeMat = new Material[2];
+
     //땅 격자
     public GameObject groundTileLine;
-
 
     public GameObject noticeBoard;
 
     bool onNotice = false;
-
 
     // 바닥 X, Y 축의 기준점들
     public List<Transform> groundPoint = new List<Transform>();
@@ -29,9 +33,11 @@ public class DragManager_GH : MonoBehaviour
 
     GameObject obj_Point;
 
-    public GameObject[] ground_Ys;
     public GameObject[] ground_Xs;
+    public GameObject[] ground_Zs;
+    #endregion
 
+    #region 가구 전역 변수
     //기본 가구의 y값
     float defaultY = 0.25f;
 
@@ -41,14 +47,21 @@ public class DragManager_GH : MonoBehaviour
 
     FurnitureData_GH moveFurniData;
 
-
     //가구 검출하기
     public float radius = 7f;
     Collider[] colliders;
-    List<int> dontX = new List<int>();
-    List<int> dontY = new List<int>();
 
+    List<List<bool>> donXZ = new List<List<bool>>();
+    #endregion
 
+    //벽가구
+    GameObject wallObject;
+
+    public Transform[] wallPos = new Transform[3];
+
+    WallObjectData_GH wallObjectData;
+
+    RoomUIManager_GH roomUIMag;
 
     private void Awake()
     {
@@ -57,7 +70,7 @@ public class DragManager_GH : MonoBehaviour
         obj_Point.transform.position = groundPoint[0].position;
 
         ground_Xs = new GameObject[groundTileNum];
-        ground_Ys = new GameObject[groundTileNum];
+        ground_Zs = new GameObject[groundTileNum];
 
 
         for (int i = 0; i < groundTileNum; i++)
@@ -67,15 +80,25 @@ public class DragManager_GH : MonoBehaviour
 
         for (int i = 0; i < groundTileNum; i++)
         {
-            ground_Ys[i] = Instantiate(obj_Point);
+            ground_Zs[i] = Instantiate(obj_Point);
         }
 
         //타일을 생성합니다
         GroundTile();
+
+        for (int x = 0; x < groundTileNum; x++)
+        {
+            donXZ.Add(new List<bool>());
+            for (int z = 0; z < groundTileNum; z++)
+            {
+                donXZ[x].Add(false);
+            }
+        }
     }
 
     void Start()
     {
+        // 타일 생성
         groundTileLine.SetActive(false);
 
         noticeBoard.SetActive(false);
@@ -87,11 +110,11 @@ public class DragManager_GH : MonoBehaviour
             for (int j = 0; j < groundTileNum; j++)
             {
                 greenTiles[i, j] = Instantiate(greenTilefPrefab, GameObject.Find("GroundTiles").transform);
-                greenTiles[i, j].transform.position = new Vector3(ground_Xs[i].transform.position.x, defaultY, ground_Ys[j].transform.position.z);
+                greenTiles[i, j].transform.position = new Vector3(ground_Xs[i].transform.position.x, defaultY, ground_Zs[j].transform.position.z);
                 greenTiles[i, j].gameObject.SetActive(false);
             }
         }
-
+        roomUIMag = GameObject.Find("RoomUIManager").GetComponent<RoomUIManager_GH>();
     }
     void Update()
     {
@@ -115,8 +138,9 @@ public class DragManager_GH : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         // Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Furniture") | 1 << LayerMask.NameToLayer("Wall") | 1 << LayerMask.NameToLayer("NoticeBoard")))
+        if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Furniture") | 1 << LayerMask.NameToLayer("NoticeBoard") | 1 << LayerMask.NameToLayer("WallObject")))
         {
+            // 오브젝트 옮기기
             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Furniture"))
             {
                 if (!onMoveFurniture)
@@ -126,7 +150,6 @@ public class DragManager_GH : MonoBehaviour
                     moveFurniData = moveFurniture.GetComponent<FurnitureData_GH>();
                     onMoveFurniture = true;
                 }
-
                 //주변의 가구 중 furnitur의 위치 정보들을 가져온다.
                 colliders = Physics.OverlapSphere(transform.position, radius, 1 << LayerMask.NameToLayer("Furniture"));
                 FurnitureData_GH collFD;
@@ -138,22 +161,29 @@ public class DragManager_GH : MonoBehaviour
                         collFD = colliders[i].GetComponent<FurnitureData_GH>();
                         for (int j = collFD.furnitureInfo.furni_Current_X; j < collFD.furnitureInfo.furni_Current_X + collFD.furnitureInfo.furni_Size_X; j++)
                         {
-                            dontX.Add(j);
-                        }
-                        for (int j = collFD.furnitureInfo.furni_Current_Y; j < collFD.furnitureInfo.furni_Current_Y + collFD.furnitureInfo.furni_Size_Y; j++)
-                        {
-                            dontY.Add(j);
+                            for (int k = collFD.furnitureInfo.furni_Current_Z; k < collFD.furnitureInfo.furni_Current_Z + collFD.furnitureInfo.furni_Size_Z; k++)
+                            {
+
+                                donXZ[j][k] = true;
+                            }
                         }
                     }
                 }
             }
-
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("NoticeBoard"))
+            // 방명록들어가기
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("NoticeBoard") && !roomUIMag.onRoomPanel)
             {
                 noticeBoard.SetActive(true);
                 onNotice = true;
             }
+            // 벽 오브젝트 옮기기 
+            if(hit.transform.gameObject.layer == LayerMask.NameToLayer("WallObject"))
+            {
+                wallObject = hit.transform.gameObject;
+                wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
+            }
         }
+
     }
 
 
@@ -161,112 +191,142 @@ public class DragManager_GH : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Wall")) && moveFurniData != null)
+        if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Wall") | 1 << LayerMask.NameToLayer("WallPosColl")))
         {
-            int myX = 99;
-            int myZ = 99;
-
-            float minX = 9999;
-            float minZ = 9999;
-
-            float xDistance = 99f;
-            float zDistance = 99f;
-            // x값의 최댓 값 구하기
-            for (int i = 0; i <= groundTileNum - moveFurniData.furnitureInfo.furni_Size_X; i++)
+            if (moveFurniture != null)
             {
-                xDistance = Vector3.Distance(hit.point, ground_Xs[i].transform.position);
-                //x값을 가지고 ground_Xs[i] 이랑 비교해서 가장 가까운 ground_Xs를 구하고
-                if (minX > xDistance)
+                int myX = 99;
+                int myZ = 99;
+
+                float minX = 9999;
+                float minZ = 9999;
+
+                float xDistance = 99f;
+                float zDistance = 99f;
+                // x값의 최댓 값 구하기
+                for (int i = 0; i <= groundTileNum - moveFurniData.furnitureInfo.furni_Size_X; i++)
                 {
-                    myX = i;
-                    minX = xDistance;
-                }
-
-
-            }
-
-            // z값의 최댓 값 구하기
-            for (int i = 0; i <= groundTileNum - moveFurniData.furnitureInfo.furni_Size_Y; i++)
-            {
-                zDistance = Vector3.Distance(hit.point, ground_Ys[i].transform.position);
-
-                //z값을 가지고 ground_Ys[i] 이랑 비교해서 가장 가까운 ground_Ys 구해서
-                if (minZ > zDistance)
-                {
-                    myZ = i;
-                    minZ = zDistance;
-                }
-            }
-
-            //bool moveaa = false;
-            //for (int i = 0; i < dontX.Count; i++)
-            //{
-            //    for (int j = 0; j < dontY.Count; j++)
-            //    {
-            //        if (myX != dontX[i] && myZ != dontY[j])
-            //        {
-            //            //print("충돌X");
-            //            moveaa = true;
-            //        }
-            //        else
-            //        {
-            //            //print("충돌입니다");
-            //            moveaa = false;
-            //        }
-            //    }
-            //}
-            //if (moveaa)
-            //{
-            //}
-
-            moveFurniture.transform.position = new Vector3(ground_Xs[myX].transform.position.x, defaultY, ground_Ys[myZ].transform.position.z);
-            moveFurniData.furnitureInfo.furni_Current_X = myX;
-            moveFurniData.furnitureInfo.furni_Current_Y = myZ;
-
-            defaultY = 1.5f;
-
-            //타일 그라운드 키고 끄기
-            FurnitureData_GH fd = moveFurniture.GetComponent<FurnitureData_GH>();
-            if (fd != null)
-            {
-                for (int i = 0; i < groundTileNum; i++)
-                {
-                    for (int j = 0; j < groundTileNum; j++)
+                    xDistance = Vector3.Distance(hit.point, ground_Xs[i].transform.position);
+                    //x값을 가지고 ground_Xs[i] 이랑 비교해서 가장 가까운 ground_Xs를 구하고
+                    if (minX > xDistance)
                     {
-                        greenTiles[i, j].SetActive(false);
+                        myX = i;
+                        minX = xDistance;
                     }
                 }
-                for (int i = myX; i < fd.furnitureInfo.furni_Size_X + myX; i++)
+                // z값의 최댓 값 구하기
+                for (int i = 0; i <= groundTileNum - moveFurniData.furnitureInfo.furni_Size_Z; i++)
                 {
-                    for (int j = myZ; j < fd.furnitureInfo.furni_Size_Y + myZ; j++)
+                    zDistance = Vector3.Distance(hit.point, ground_Zs[i].transform.position);
+                    //z값을 가지고 ground_Zs[i] 이랑 비교해서 가장 가까운 ground_Zs 구해서
+                    if (minZ > zDistance)
                     {
-                        greenTiles[i, j].SetActive(true);
+                        myZ = i;
+                        minZ = zDistance;
                     }
                 }
+                bool donMove = false;
+                for (int j = myX; j < myX + moveFurniData.furnitureInfo.furni_Size_X; j++)
+                {
+                    if (j > groundTileNum)
+                    {
+                        break;
+                    }
+
+                    for (int k = myZ; k < myZ + moveFurniData.furnitureInfo.furni_Size_Z; k++)
+                    {
+                        if (k > groundTileNum)
+                        {
+                            break;
+                        }
+
+                        if (donXZ[j][k] == true)
+                        {
+                            donMove = true;
+                        }
+                    }
+                }
+
+
+                if (donMove == false)
+                {
+                    //moveFurniture의 위치를 옮긴다
+                    moveFurniture.transform.position = new Vector3(ground_Xs[myX].transform.position.x, defaultY, ground_Zs[myZ].transform.position.z);
+                    moveFurniData.furnitureInfo.furni_Current_X = myX;
+                    moveFurniData.furnitureInfo.furni_Current_Z = myZ;
+                    defaultY = 1.5f;
+
+                    //타일 색 바꾸기
+                    TileColorSwitch(cubeMat[0]);
+                    //타일 그라운드 키고 끄기
+                    FurnitureData_GH fd = moveFurniture.GetComponent<FurnitureData_GH>();
+                    if (fd != null)
+                    {
+                        for (int i = 0; i < groundTileNum; i++)
+                        {
+                            for (int j = 0; j < groundTileNum; j++)
+                            {
+                                greenTiles[i, j].SetActive(false);
+                            }
+                        }
+
+                        for (int i = myX; i < fd.furnitureInfo.furni_Size_X + myX; i++)
+                        {
+                            for (int j = myZ; j < fd.furnitureInfo.furni_Size_Z + myZ; j++)
+                            {
+                                greenTiles[i, j].SetActive(true);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //타일 색을 빨간색으로 바꾼다.
+                    TileColorSwitch(cubeMat[1]);
+                }
+
+
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    //오브젝트 회전하기
+                    RotateXZ();
+                }
             }
-            if (Input.GetKeyDown(KeyCode.F))
+            if (wallObject != null)
             {
-                //오브젝트 회전하기
-                RotateXZ();
+                for(int i = 0; i < wallPos.Length; i++)
+                {
+                    if(hit.transform.gameObject == wallPos[i].gameObject)
+                    {
+                        wallObjectData.wallObjectInfo.wallPos = (WallType)(i + 1);
+                    }
+                }
             }
         }
     }
 
     private void MouseUp()
     {
+        //타일 색 원래대로 돌리기
+        TileColorSwitch(cubeMat[0]);
+
         if (moveFurniture != null)
         {
-
             //타일 격자 끄기
             groundTileLine.SetActive(false);
-
 
             defaultY = 0.25f;
             moveFurniture.transform.position = new Vector3(moveFurniture.transform.position.x, defaultY, moveFurniture.transform.position.z);
             onMoveFurniture = false;
             moveFurniture = null;
 
-
+            for (int x = 0; x < groundTileNum; x++)
+            {
+                for (int z = 0; z < groundTileNum; z++)
+                {
+                    donXZ[x][z] = false;
+                }
+            }
             //타일 그라운드 끄기
             for (int i = 0; i < groundTileNum; i++)
             {
@@ -276,14 +336,30 @@ public class DragManager_GH : MonoBehaviour
                 }
             }
         }
+
+        if(wallObject != null)
+        {
+            wallObjectData = null;
+            wallObject = null;
+        }
     }
 
     public void GroundTile()
     {
         for (int i = 0; i < groundTileNum; i++)
         {
-            ground_Ys[i].transform.position = Vector3.Lerp(groundPoint[0].position, groundPoint[1].position, ((float)(i) / (float)groundTileNum));
+            ground_Zs[i].transform.position = Vector3.Lerp(groundPoint[0].position, groundPoint[1].position, ((float)(i) / (float)groundTileNum));
             ground_Xs[i].transform.position = Vector3.Lerp(groundPoint[0].position, groundPoint[2].position, ((float)(i) / (float)groundTileNum));
+        }
+    }
+    public void TileColorSwitch(Material tileMat)
+    {
+        for (int i = 0; i < groundTileNum; i++)
+        {
+            for (int j = 0; j < groundTileNum; j++)
+            {
+                greenTiles[i, j].GetComponentInChildren<MeshRenderer>().material = tileMat;
+            }
         }
     }
 
@@ -303,8 +379,8 @@ public class DragManager_GH : MonoBehaviour
 
         // 사이즈 값 바꾸기
         intEmpty = moveFurniData.furnitureInfo.furni_Size_X;
-        moveFurniData.furnitureInfo.furni_Size_X = moveFurniData.furnitureInfo.furni_Size_Y;
-        moveFurniData.furnitureInfo.furni_Size_Y = intEmpty;
+        moveFurniData.furnitureInfo.furni_Size_X = moveFurniData.furnitureInfo.furni_Size_Z;
+        moveFurniData.furnitureInfo.furni_Size_Z = intEmpty;
 
         // 콜라이더 센터값 바꾸기
         VectorEmpty = rotFurnicoll.center;

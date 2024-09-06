@@ -108,14 +108,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3694640558936253949}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.07, y: 0.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8365321820861218937}
   m_Father: {fileID: 8348686213625794116}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &6181388949116686943
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,9 +125,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8348686213625794116}
-  - component: {fileID: 6352028741608551373}
   - component: {fileID: 8792557013684760302}
-  m_Layer: 6
+  - component: {fileID: 5966801823761289908}
+  m_Layer: 10
   m_Name: Mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,35 +142,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6181388949116686943}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.38268343, z: -0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 4.2185993, y: 4.71, z: 1.152584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4139298083268923315}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6352028741608551373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6181388949116686943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed842fba70533e41a442af6a61d5d1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  furnitureInfo:
-    furni_Size_X: 0
-    furni_Size_Y: 0
-    onPlace: 0
-    furni_Current_X: 0
-    furni_Current_Y: 0
-    furni_Rotate: 0
-  Ground_furniturePos: []
-  Wall_furniturePos: []
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
 --- !u!65 &8792557013684760302
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -190,5 +169,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.1, y: 3, z: 2}
-  m_Center: {x: -0.09, y: -0.15, z: 0.1}
+  m_Size: {x: 2, y: 3, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0.1}
+--- !u!114 &5966801823761289908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6181388949116686943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23e94b7d2f3c63f4784039ac613e2e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallObjectInfo:
+    wallPos: 3
+    onPlace: 1
