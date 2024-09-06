@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1403404453294072702}
   - component: {fileID: 4855194852636776046}
   - component: {fileID: 5096578788311692381}
-  - component: {fileID: 8961742889148064622}
   - component: {fileID: 4026201708933567141}
   - component: {fileID: 7723066341968901301}
+  - component: {fileID: 3572127858657888171}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -136,21 +136,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &8961742889148064622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2468765698405002005}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb8d08051542c1e4f9d28aa2f60da8e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMoveSpeed: 3
-  playerRotSpeed: 500
-  trackingSpeed: 3
 --- !u!114 &4026201708933567141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,7 +155,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 8961742889148064622}
+  - {fileID: 3572127858657888171}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -186,6 +171,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df31817dbb94704f90f3af8fcf357c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3572127858657888171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2468765698405002005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540ee1d47641adf44bbad2e642e33f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMoveSpeed: 3
+  playerRotSpeed: 500
+  trackingSpeed: 3
 --- !u!1001 &8234244903091861163
 PrefabInstance:
   m_ObjectHideFlags: 0
