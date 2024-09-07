@@ -39,7 +39,7 @@ public class SlotClick_GH : MonoBehaviour
         {
             button.onClick.AddListener(FunitureSet);
         }
-        else if(myCate == 1)
+        else if (myCate == 1)
         {
             button.onClick.AddListener(WallSet);
 
@@ -56,13 +56,27 @@ public class SlotClick_GH : MonoBehaviour
     {
         if (roomUIMa.list_Furniture[myIndex].activeSelf)
         {
-            roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>().furnitureInfo.onPlace = false;
+            if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("Furniture"))
+            {
+                roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>().furnitureInfo.onPlace = false;
+            }
+            else if(roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
+            {
+                roomUIMa.list_Furniture[myIndex].GetComponent<WallObjectData_GH>().wallObjectInfo.onPlace = false;
+            }
             roomUIMa.list_Furniture[myIndex].SetActive(false);
         }
         else
         {
+            if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("Furniture"))
+            {
+                roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>().furnitureInfo.onPlace = true;
+            }
+            else if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
+            {
+                roomUIMa.list_Furniture[myIndex].GetComponent<WallObjectData_GH>().wallObjectInfo.onPlace = true;
+            }
             roomUIMa.list_Furniture[myIndex].SetActive(true);
-            roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>().furnitureInfo.onPlace = true;
 
         }
     }

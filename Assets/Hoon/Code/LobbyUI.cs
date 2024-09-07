@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -23,48 +23,47 @@ public class LobbyUI : MonoBehaviour
     }
     public void LobbyExit()
     {
-        // ¾ÀÀ» ·ÎµåÇÏ°í ¾À ·Îµå ¿Ï·á ÈÄ È£ÃâµÉ ¸Ş¼­µå¸¦ ÀÌº¥Æ®¿¡ µî·Ï
+        // ì”¬ì„ ë¡œë“œí•˜ê³  ì”¬ ë¡œë“œ ì™„ë£Œ í›„ í˜¸ì¶œë  ë©”ì„œë“œë¥¼ ì´ë²¤íŠ¸ì— ë“±ë¡
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.LoadScene("HoonMainScene");
-
     }
-    // ¾ÀÀÌ ·ÎµåµÈ ÈÄ È£ÃâµÇ´Â Äİ¹é ¸Ş¼­µå
+    // ì”¬ì´ ë¡œë“œëœ í›„ í˜¸ì¶œë˜ëŠ” ì½œë°± ë©”ì„œë“œ
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 
         if (MainUI.Instance != null)
         {
-            print("¸ŞÀÎÀÖÀ½");
+            print("ë©”ì¸ìˆìŒ");
 
-            // ¾ÀÀÌ ·ÎµåµÈ ÈÄ, ¿ÀºêÁ§Æ®¸¦ Ã£°í ÂüÁ¶¸¦ ÀúÀå
+            // ì”¬ì´ ë¡œë“œëœ í›„, ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ê³  ì°¸ì¡°ë¥¼ ì €ì¥
             MainUI.Instance.img_Regist_Object = GameObject.Find("Img_Regist");
             MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Login");
 
-            // ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+            // ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
             MainUI.Instance.img_Regist_Object.SetActive(false);
             MainUI.Instance.imgLogin_Object.SetActive(false);
 
 
             /*if (MainUI.Instance.imgLogin_Object)
             {
-                print("·Î±×ÀÎÀÌ¹ÌÁö ÀÖÀ½");
+                print("ë¡œê·¸ì¸ì´ë¯¸ì§€ ìˆìŒ");
                 MainUI.Instance.imgLogin_Object.SetActive(false);
             }    
            else
             {
-                print("·Î±×ÀÎÀÌ¹ÌÁö ¾øÀ½" + "Ã£±â");
+                print("ë¡œê·¸ì¸ì´ë¯¸ì§€ ì—†ìŒ" + "ì°¾ê¸°");
                 MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Login");
                 MainUI.Instance.imgLogin_Object.SetActive(false);
 
             }
             if(MainUI.Instance.img_Regist_Object)
             {
-                print("µî·ÏÀÌ¹ÌÁö ÀÖÀ½");
+                print("ë“±ë¡ì´ë¯¸ì§€ ìˆìŒ");
                 MainUI.Instance.img_Regist_Object.SetActive(false);
             }
             else
             {
-                print("µî·Ï ÀÌ¹ÌÁö ¾øÀ½" + "Ã£±â");
+                print("ë“±ë¡ ì´ë¯¸ì§€ ì—†ìŒ" + "ì°¾ê¸°");
                 MainUI.Instance.img_Regist_Object = GameObject.Find("Img_Regist");
                 MainUI.Instance.img_Regist_Object.SetActive(false);
 
@@ -72,9 +71,9 @@ public class LobbyUI : MonoBehaviour
         }
         else
         {
-            print("¸ŞÀÎ¾øÀ½");
+            print("ë©”ì¸ì—†ìŒ");
         }
-        // ÀÌº¥Æ® ÇØÁ¦
+        // ì´ë²¤íŠ¸ í•´ì œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
 

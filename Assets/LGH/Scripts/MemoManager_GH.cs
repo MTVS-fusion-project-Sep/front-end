@@ -18,8 +18,10 @@ public class MemoManager_GH : MonoBehaviour
     //메모 스와이프
     public SwipeUI_GH memoSwipe;
 
-    //메모 저장 버튼
-    public GameObject saveButton;
+    //메모 저장 / 붙이기 / 삭제
+    public GameObject[] memoButtons;
+
+    
 
     //메모 저장 버튼 활성화
     bool onSaveButton = true;
@@ -34,7 +36,7 @@ public class MemoManager_GH : MonoBehaviour
             inputfield.gameObject.SetActive(false);
         }
 
-        saveButton.SetActive(false);
+        memoButtons[0].SetActive(false);
     }
 
     public void memoWrite()
@@ -69,18 +71,35 @@ public class MemoManager_GH : MonoBehaviour
 
     }
 
+    public void memoDelete()
+    {
+        //현재 순서에 있는 메모를 삭제 시킨다.
+        Destroy(memoList[memoSwipe.currentPage].gameObject);
+        //메모의 총 숫자를 하나 낮춘다.
+        memoCount--;
+        memoSwipe.memoPageUpdate(memoCount);
+        memoList.RemoveAt(memoSwipe.currentPage);
+        memoSwipe.currentPage = memoCount - 1;
+
+    }
+
 
 
     void Update()
     {
-
+        // 메모붙이기 메모 삭제 안보이게하기
         if (memoSwipe.currentPage + 1 == memoSwipe.maxPage && !onSaveButton)
         {
-            saveButton.SetActive(true);
+            memoButtons[0].SetActive(true);
+            memoButtons[1].SetActive(false);
+            memoButtons[2].SetActive(false);
+
         }
         else
         {
-            saveButton.SetActive(false);
+            memoButtons[0].SetActive(false);
+            memoButtons[1].SetActive(true);
+            memoButtons[2].SetActive(true);
         }
     }
 }

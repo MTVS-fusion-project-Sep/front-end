@@ -36,7 +36,6 @@ public class DragManager_GH : MonoBehaviour
     public GameObject[] ground_Xs;
     public GameObject[] ground_Zs;
     #endregion
-
     #region 가구 전역 변수
     //기본 가구의 y값
     float defaultY = 0.25f;
@@ -53,7 +52,7 @@ public class DragManager_GH : MonoBehaviour
 
     List<List<bool>> donXZ = new List<List<bool>>();
     #endregion
-
+    #region 벽 오브젝트 전역변수
     //벽가구
     GameObject wallObject;
 
@@ -62,6 +61,8 @@ public class DragManager_GH : MonoBehaviour
     WallObjectData_GH wallObjectData;
 
     RoomUIManager_GH roomUIMag;
+    #endregion
+    public GameObject roomSetBut;
 
     private void Awake()
     {
@@ -140,7 +141,9 @@ public class DragManager_GH : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Furniture") | 1 << LayerMask.NameToLayer("NoticeBoard") | 1 << LayerMask.NameToLayer("WallObject")))
         {
+            //룸패널이 켜져있을 때만 발동
             if (roomUIMag.onRoomPanel)
+            {
                 // 오브젝트 옮기기
                 if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Furniture"))
                 {
@@ -171,11 +174,12 @@ public class DragManager_GH : MonoBehaviour
                         }
                     }
                 }
-            // 벽 오브젝트 옮기기 
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("WallObject"))
-            {
-                wallObject = hit.transform.gameObject;
-                wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
+                // 벽 오브젝트 옮기기 
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("WallObject"))
+                {
+                    wallObject = hit.transform.gameObject;
+                    wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
+                }
             }
             else
             {
@@ -184,6 +188,7 @@ public class DragManager_GH : MonoBehaviour
                 {
                     noticeBoard.SetActive(true);
                     onNotice = true;
+                    roomSetBut.SetActive(false);
                 }
 
             }
@@ -289,8 +294,6 @@ public class DragManager_GH : MonoBehaviour
                     //타일 색을 빨간색으로 바꾼다.
                     TileColorSwitch(cubeMat[1]);
                 }
-
-
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     //오브젝트 회전하기
@@ -341,7 +344,6 @@ public class DragManager_GH : MonoBehaviour
                 }
             }
         }
-
         if (wallObject != null)
         {
             wallObjectData = null;
@@ -372,6 +374,7 @@ public class DragManager_GH : MonoBehaviour
     {
         noticeBoard.SetActive(false);
         onNotice = false;
+        roomSetBut.SetActive(true);
     }
 
     public void RotateXZ()

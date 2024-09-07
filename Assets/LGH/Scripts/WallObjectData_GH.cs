@@ -9,12 +9,20 @@ public class WallObjectData_GH : MonoBehaviour
     void Start()
     {
         dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
-       
+        if (wallObjectInfo.onPlace)
+        {
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
     private void Update()
     {
         transform.position = dragM.wallPos[(int)wallObjectInfo.wallPos - 1].transform.position;
         transform.forward = dragM.wallPos[(int)wallObjectInfo.wallPos - 1].transform.forward;
+
     }
 
 }
