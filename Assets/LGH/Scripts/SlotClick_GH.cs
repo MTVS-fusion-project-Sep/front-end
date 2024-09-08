@@ -12,6 +12,7 @@ public class SlotClick_GH : MonoBehaviour
     int myCate = 0;
 
     public MeshRenderer[] rooms;
+    DragManager_GH dragManager;
 
     public void IndexSet(int index, int cate)
     {
@@ -26,6 +27,7 @@ public class SlotClick_GH : MonoBehaviour
         rooms[2] = GameObject.Find("Ground").GetComponent<MeshRenderer>();
 
         roomUIMa = GameObject.Find("RoomUIManager").GetComponent<RoomUIManager_GH>();
+        dragManager = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
         AddOnClick(GetComponent<Button>());
     }
 
@@ -54,15 +56,21 @@ public class SlotClick_GH : MonoBehaviour
 
     void FunitureSet()
     {
+        FurnitureData_GH furnitureData = roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>();
+        WallObjectData_GH wallObjectData = roomUIMa.list_Furniture[myIndex].GetComponent<WallObjectData_GH>();
+        int wallObjectNum = (int)wallObjectData.wallObjectInfo.wallPos - 1;
+
         if (roomUIMa.list_Furniture[myIndex].activeSelf)
         {
             if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("Furniture"))
             {
-                roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>().furnitureInfo.onPlace = false;
+                furnitureData.furnitureInfo.onPlace = false;
+
             }
             else if(roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
             {
-                roomUIMa.list_Furniture[myIndex].GetComponent<WallObjectData_GH>().wallObjectInfo.onPlace = false;
+                wallObjectData.wallObjectInfo.onPlace = false;
+                dragManager.onWallObjects[wallObjectNum] = false;
             }
             roomUIMa.list_Furniture[myIndex].SetActive(false);
         }
@@ -70,11 +78,13 @@ public class SlotClick_GH : MonoBehaviour
         {
             if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("Furniture"))
             {
-                roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>().furnitureInfo.onPlace = true;
+                furnitureData.furnitureInfo.onPlace = true;
             }
             else if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
             {
-                roomUIMa.list_Furniture[myIndex].GetComponent<WallObjectData_GH>().wallObjectInfo.onPlace = true;
+                wallObjectData.wallObjectInfo.onPlace = true;
+                dragManager.onWallObjects[wallObjectNum] = true;
+
             }
             roomUIMa.list_Furniture[myIndex].SetActive(true);
 

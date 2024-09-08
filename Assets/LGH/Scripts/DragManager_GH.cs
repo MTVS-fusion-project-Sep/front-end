@@ -61,7 +61,15 @@ public class DragManager_GH : MonoBehaviour
     WallObjectData_GH wallObjectData;
 
     RoomUIManager_GH roomUIMag;
+
+    //벽에 가구가 있는지 확인
+    public bool[] onWallObjects = new bool[3];
+
+    // 처음 클릭했을 때 벽 오브젝트가 있는 위치;
+    public int beforeWallObPos = 0;
     #endregion
+
+    // 방꾸 버튼
     public GameObject roomSetBut;
 
     private void Awake()
@@ -179,6 +187,7 @@ public class DragManager_GH : MonoBehaviour
                 {
                     wallObject = hit.transform.gameObject;
                     wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
+                    beforeWallObPos = (int)wallObjectData.wallObjectInfo.wallPos - 1;
                 }
             }
             else
@@ -203,6 +212,7 @@ public class DragManager_GH : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Wall") | 1 << LayerMask.NameToLayer("WallPosColl")))
         {
+            //땅 가구 옮기기
             if (moveFurniture != null)
             {
                 int myX = 99;
@@ -307,6 +317,7 @@ public class DragManager_GH : MonoBehaviour
                     if (hit.transform.gameObject == wallPos[i].gameObject)
                     {
                         wallObjectData.wallObjectInfo.wallPos = (WallType)(i + 1);
+                        wallObjectData.SetWallPos(i, beforeWallObPos);
                     }
                 }
             }

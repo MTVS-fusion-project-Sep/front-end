@@ -670,6 +670,8 @@ MonoBehaviour:
   - {fileID: 465683120}
   - {fileID: 460777442}
   - {fileID: 1568989593}
+  onWallObjects: 000000
+  beforeWallObPos: 0
   roomSetBut: {fileID: 234571678}
 --- !u!1 &153686229
 GameObject:
@@ -3025,13 +3027,25 @@ MonoBehaviour:
   - {fileID: 2023003093}
   - {fileID: 502271258}
   ui_Wall:
-  - {fileID: 5160561427928212050, guid: a0c429a6828869d4eb1bc61830f94db4, type: 3}
-  - {fileID: 5735195888578456215, guid: 70492c16b072bcd458ea809c88c4c0db, type: 3}
-  - {fileID: 4784453509811430469, guid: c7b1c5a3daf41c947b161df850253f46, type: 3}
-  ui_Ground:
+  - {fileID: 3295465975428900804, guid: 3226dc987f8aa77439614133175f9bcc, type: 3}
+  - {fileID: 3295465975428900804, guid: 66e0650b1b2abef4cae81bfef091e677, type: 3}
+  - {fileID: 3295465975428900804, guid: 72fe68098b431b74980f81aabf3575c1, type: 3}
   - {fileID: 4784453509811430469, guid: c7b1c5a3daf41c947b161df850253f46, type: 3}
   - {fileID: 3295465975428900804, guid: 7745f8d798e7a1542be6bd2f39a4e4e1, type: 3}
-  - {fileID: 5735195888578456215, guid: 70492c16b072bcd458ea809c88c4c0db, type: 3}
+  - {fileID: 3295465975428900804, guid: 6a925822052486e438f2924eeca34d6d, type: 3}
+  - {fileID: 3295465975428900804, guid: ce9989a415df9674e8e21400fa1dc9ec, type: 3}
+  - {fileID: 3295465975428900804, guid: ffe068e52a22a5c4b9f73eba04edef47, type: 3}
+  - {fileID: 3295465975428900804, guid: 6db8720cd08ec994794fe0a10cea3ef2, type: 3}
+  ui_Ground:
+  - {fileID: 3295465975428900804, guid: 3226dc987f8aa77439614133175f9bcc, type: 3}
+  - {fileID: 3295465975428900804, guid: 66e0650b1b2abef4cae81bfef091e677, type: 3}
+  - {fileID: 3295465975428900804, guid: 72fe68098b431b74980f81aabf3575c1, type: 3}
+  - {fileID: 4784453509811430469, guid: c7b1c5a3daf41c947b161df850253f46, type: 3}
+  - {fileID: 3295465975428900804, guid: 7745f8d798e7a1542be6bd2f39a4e4e1, type: 3}
+  - {fileID: 3295465975428900804, guid: 6a925822052486e438f2924eeca34d6d, type: 3}
+  - {fileID: 3295465975428900804, guid: ce9989a415df9674e8e21400fa1dc9ec, type: 3}
+  - {fileID: 3295465975428900804, guid: ffe068e52a22a5c4b9f73eba04edef47, type: 3}
+  - {fileID: 3295465975428900804, guid: 6db8720cd08ec994794fe0a10cea3ef2, type: 3}
   slot_furnis: []
   slot_Prefab: {fileID: 6731775195367845407, guid: fb140377aab3ebb49a410ee0277c5cd4, type: 3}
   roomSettingBut: {fileID: 234571680}
