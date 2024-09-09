@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Hoon/HoonMainScene.unity
-    guid: af3c2702769826343b86f113df8d5c04
+    path: Assets/LGH/Scenes/ProtoScene_GH.unity
+    guid: 93680343da90eb94ea4a94b503f8acb5
   - enabled: 1
     path: Assets/Hoon/HoonRoomScene.unity
     guid: 6911fa29679720847927f1400eac2e4c

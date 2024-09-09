@@ -500,7 +500,7 @@ public class MainUI : MonoBehaviour
         //변수이름 잘 확인하자.
         if(MainUI.Instance != null)
         {
-            GameObject canVas = GameObject.Find("Canvas");
+            GameObject canVas = GameObject.Find("HoonCanvas");
             if (canVas != null) print(1111);
             GameObject imgLogin = canVas.transform.Find("Img_Login").gameObject;
             imgLogin.SetActive(true);

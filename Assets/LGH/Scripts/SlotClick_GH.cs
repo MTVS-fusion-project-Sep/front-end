@@ -58,7 +58,11 @@ public class SlotClick_GH : MonoBehaviour
     {
         FurnitureData_GH furnitureData = roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>();
         WallObjectData_GH wallObjectData = roomUIMa.list_Furniture[myIndex].GetComponent<WallObjectData_GH>();
-        int wallObjectNum = (int)wallObjectData.wallObjectInfo.wallPos - 1;
+        int wallObjectNum = 0;
+        if (wallObjectData != null)
+        {
+            wallObjectNum = (int)wallObjectData.wallObjectInfo.wallPos - 1;
+        }
 
         if (roomUIMa.list_Furniture[myIndex].activeSelf)
         {
@@ -67,7 +71,7 @@ public class SlotClick_GH : MonoBehaviour
                 furnitureData.furnitureInfo.onPlace = false;
 
             }
-            else if(roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
+            else if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
             {
                 wallObjectData.wallObjectInfo.onPlace = false;
                 dragManager.onWallObjects[wallObjectNum] = false;

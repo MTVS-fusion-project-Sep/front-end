@@ -25,7 +25,7 @@ public class LobbyUI : MonoBehaviour
     {
         // 씬을 로드하고 씬 로드 완료 후 호출될 메서드를 이벤트에 등록
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.LoadScene("HoonMainScene");
+        SceneManager.LoadScene("ProtoScene_GH");
     }
     // 씬이 로드된 후 호출되는 콜백 메서드
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
