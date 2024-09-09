@@ -121,8 +121,7 @@ public class MainUI : MonoBehaviour
         {
             print("imgLogin_Object true");
             imgLogin_Object = GameObject.Find("Img_Login");
-            //로그인 오브젝트 끄기
-            //imgLogin_Object.SetActive(false);
+           
         }
         //Lobby button
         btn_Lobby_Obejct = GameObject.Find("Btn_Lobby");
@@ -184,7 +183,7 @@ public class MainUI : MonoBehaviour
         
         //
         img_Regist_Object = GameObject.Find("Img_Regist");
-        //img_Regist_Object.SetActive(false);
+     
 
         //내정보버튼
         btn_MyInfo_Obejct = GameObject.Find("Btn_MyInfo");
@@ -200,8 +199,8 @@ public class MainUI : MonoBehaviour
 
         //버튼exit
          btnExit_Menu_Object = GameObject.Find("Btn_ExitMenu");
-        
 
+        OFFIMG();
 
 
     }
@@ -213,6 +212,14 @@ public class MainUI : MonoBehaviour
        
 
     }//업데이트
+
+    void OFFIMG()
+    {
+        //로그인 오브젝트 끄기
+        imgLogin_Object.SetActive(false);
+        //회원가입 오브젝트 끄기
+        img_Regist_Object.SetActive(false);
+    }
 
     public void LoadTest()
     {
