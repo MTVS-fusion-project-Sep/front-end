@@ -18,7 +18,6 @@ public class FurnitureData_GH : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-
     }
     private void Update()
     {

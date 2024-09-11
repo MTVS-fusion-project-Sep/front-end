@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 
 
 public class MemoManager_GH : MonoBehaviour
@@ -21,7 +23,7 @@ public class MemoManager_GH : MonoBehaviour
     //메모 저장 / 붙이기 / 삭제
     public GameObject[] memoButtons;
 
-    
+
 
     //메모 저장 버튼 활성화
     bool onSaveButton = true;
@@ -55,7 +57,7 @@ public class MemoManager_GH : MonoBehaviour
         }
         else
         {
-            memoSwipe.currentPage = memoSwipe.maxPage -1;
+            memoSwipe.currentPage = memoSwipe.maxPage - 1;
         }
 
     }
@@ -69,6 +71,22 @@ public class MemoManager_GH : MonoBehaviour
         inputfield.gameObject.SetActive(false);
         onSaveButton = true;
 
+        // 새로운 메모 데이터 보내기
+        MemoInfo memoInfo = new MemoInfo();
+        memoInfo.userID = "이규현";
+        memoInfo.memoText = inputfield.text;
+        memoInfo.writerID = "전성표";
+        memoInfo.writeDate = DateTime.Now.ToString(("yyyy-MM-dd HH:mm"));
+
+        HttpInfo HttpInfo = new HttpInfo();
+        HttpInfo.url = "";
+        HttpInfo.body = JsonUtility.ToJson(memoInfo);
+        HttpInfo.contentType = "";
+        HttpInfo.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            print(downloadHandler.text);
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Post(HttpInfo));
     }
 
     public void memoDelete()
@@ -103,3 +121,12 @@ public class MemoManager_GH : MonoBehaviour
         }
     }
 }
+[System.Serializable]
+public struct MemoInfo
+{
+    public string userID;
+    public string memoText;
+    public string writerID;
+    public string writeDate;
+}
+
