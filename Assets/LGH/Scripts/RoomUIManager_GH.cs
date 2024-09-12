@@ -107,7 +107,6 @@ public class RoomUIManager_GH : MonoBehaviour
                 info.contentType = "application/json";
                 info.onComplete = (DownloadHandler downloadHandler) =>
                 {
-                    print(info.body);
                     print(downloadHandler.text);
                 };
                 StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
@@ -143,6 +142,29 @@ public class RoomUIManager_GH : MonoBehaviour
             print(downloadHandler.text);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Post(roomHttpInfo));
+    }
+
+    public void OnLoad()
+    {
+        //받아올때 아이디 뒤에 붙이게
+        for (int i = 0; i < list_Furniture.Count; i++)
+        {
+            // 땅 가구 데이터 보내기
+            if (list_Furniture[i].layer == LayerMask.NameToLayer("Furniture"))
+            {
+                HttpInfo info = new HttpInfo();
+                info.url = "http://192.168.0.76:8080/ground-furniture/user/user1";
+                info.onComplete = (DownloadHandler downloadHandler) =>
+                {
+                    print(downloadHandler.text);
+                    string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
+                    print(jsonData);
+                    //jsonData를 PostInfoArray 형으로 바꾸자. TodoTOdoTOdoTodoTodoTodoTodoTOdoTGodoTodoTOdoTodo
+                    //allPostInfo = JsonUtility.FromJson<PostInfoArray>(jsonData);
+                };
+                StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
+            }
+        }
     }
 
     public void OnExit()

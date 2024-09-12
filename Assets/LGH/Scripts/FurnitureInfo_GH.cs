@@ -5,14 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class FurnitureInfo
 {
-    public int furni_Size_X;
-    public int furni_Size_Z;
+    public int furniSizeX;
+    public int furniSizeZ;
     public bool onPlace;
-    public int furni_Current_X;
-    public int furni_Current_Z;
-    public bool furni_Rotate;
-    public string furni_cate;
-    public string furni_Name;
-    public string user_iD;
+    public int furniCurrentX;
+    public int furniCurrentZ;
+    public bool furniRotate;
+    public string furniCategory;
+    public string furniName;
+    public string userId;
 
 }

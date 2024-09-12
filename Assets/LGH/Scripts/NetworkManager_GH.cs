@@ -43,6 +43,22 @@ public class NetworkManager_GH : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    //겟
+    public IEnumerator Get(HttpInfo info)
+    {
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(info.url))
+        {
+            //서버 요청 보내기(응답이 올 떄 까지 기다린다. ex)인스타그램에서 작동은 되는데 사진을 부른다.)
+            yield return webRequest.SendWebRequest();
+
+            //서버에게 응답이 왔다.
+            DoneRequest(webRequest, info);
+        }
+
+    }
+
+
     // 서버에게 내가 보내는 데이터를 생성해줘
     public IEnumerator Post(HttpInfo info)
     {
