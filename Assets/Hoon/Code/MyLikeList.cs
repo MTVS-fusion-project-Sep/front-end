@@ -26,6 +26,20 @@ public class MyLikeList : MonoBehaviour
         
     }
 
+    public void LikeMovie()
+    {
+
+    }
+    public void LikeLanguage()
+    {
+
+    }
+    public void LikeSports()
+    {
+
+    }
+
+
  /*   
     void Update()
     {

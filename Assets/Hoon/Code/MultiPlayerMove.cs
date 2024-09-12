@@ -45,14 +45,6 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
         //애니메이션 찾기
         animator = GetComponentInChildren<Animator>();
         
-        //포톤뷰가 내꺼라면 애니메이션 동기화.
-        if (photonView_Comp.IsMine)
-        {
-            //if (playerModel != null) print("모델찾았다");
-          
-
-        }
-
         plyerPoint = GameObject.Find("PlayerPoint");
         if (plyerPoint != null) transform.position = plyerPoint.transform.position;
 
@@ -174,7 +166,8 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
         else
         {
             // 서버에서 받은 위치 및 회전을 부드럽게 동기화
-            transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime * trackingSpeed);
+            transform.position = myPos;
+            //transform.position = Vector3.Lerp(transform.position, myPos, Time.deltaTime * trackingSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, myRot, Time.deltaTime * trackingSpeed);
             playerModel.transform.localEulerAngles = modelLocalRot;
             // 서버에서 받은 로컬 회전을 부드럽게 동기화

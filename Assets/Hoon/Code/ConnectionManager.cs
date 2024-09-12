@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -11,10 +11,11 @@ using System.Linq;
 //using UnityEditor.Experimental.GraphView;
 
 
-//ºÎ¸ğ¸¦ MonoBehaviourPunCallbacks ¹Ù²ß´Ï´Ù. 
+//ë¶€ëª¨ë¥¼ MonoBehaviourPunCallbacks ë°”ê¿‰ë‹ˆë‹¤. 
 public class ConnectionManager : MonoBehaviourPunCallbacks
 {
-    //RoomInfo ¸®½ºÆ® ÃÊ±âÈ­ 
+    //MainUIObject mainUIObject;
+    //RoomInfo ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™” 
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
     string roomName = "LobbyTest";
 
@@ -22,9 +23,10 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        //ºôµå¿¡¼­ À©µµ¿ì Å©±â¸¦ Á¦ÇÑÇÏÀÚ.
+        //ë¹Œë“œì—ì„œ ìœˆë„ìš° í¬ê¸°ë¥¼ ì œí•œí•˜ì.
         Screen.SetResolution(640, 480, FullScreenMode.Windowed);
-        
+        //MainUI.Instance.mainUiObject = new MainUIObject();
+        //mainUIObject.Initialize();
     }
 
     // Update is called once per frame
@@ -35,58 +37,58 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     public void StartLobby()
     {
-        //¸¸¾à »ç¿ëÀÚ ÀÌ¸§ÀÌ ÀÖ´Ù¸é, ÀÌ¸§ÀÇ ±æÀÌ°¡ 0ÀÌ ¾Æ´Ï¾î¾ßÇÑ¤±
-        print("·Î±×ÀÎÇÏ´ÂÁß...");
+        //ë§Œì•½ ì‚¬ìš©ì ì´ë¦„ì´ ìˆë‹¤ë©´, ì´ë¦„ì˜ ê¸¸ì´ê°€ 0ì´ ì•„ë‹ˆì–´ì•¼í•œã…
+        print("ë¡œê·¸ì¸í•˜ëŠ”ì¤‘...");
         //gameVersion 
         PhotonNetwork.GameVersion = "1.0.0";
-        //´Ğ³×ÀÓ
+        //ë‹‰ë„¤ì„
         PhotonNetwork.NickName = "CyworldAvata";
-        //È­¸éµ¿±âÈ­
+        //í™”ë©´ë™ê¸°í™”
         PhotonNetwork.AutomaticallySyncScene = true;
-        // Á¢¼ÓÀ» ¼­¹ö¿¡ ¿äÃ»ÇÏ±â
+        // ì ‘ì†ì„ ì„œë²„ì— ìš”ì²­í•˜ê¸°
         PhotonNetwork.ConnectUsingSettings();
-        //¹öÆ°À» ºñÈ°¼ºÈ­ ÇØÁÖÀÚ.
+        //ë²„íŠ¼ì„ ë¹„í™œì„±í™” í•´ì£¼ì.
         //LobbyUIController.lobbyUI.btn_login.interactable = false;
-        MainUI.Instance.move_Lobby_Btn.interactable = false;
+        MainUI.Instance.mainUiObject.move_Lobby_Btn.interactable = false;
 
     }
-    //¼­¹ö¿¬°áÄİ¹é
+    //ì„œë²„ì—°ê²°ì½œë°±
     public override void OnConnected()
     {
         base.OnConnected();
 
-        // ³×ÀÓ ¼­¹ö¿¡ Á¢¼ÓÀÌ ¿Ï·áµÇ¾úÀ½À» ¾Ë·ÁÁØ´Ù.
+        // ë„¤ì„ ì„œë²„ì— ì ‘ì†ì´ ì™„ë£Œë˜ì—ˆìŒì„ ì•Œë ¤ì¤€ë‹¤.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
 
     }
-    //¼­¹ö²÷±èÄİ¹é
+    //ì„œë²„ëŠê¹€ì½œë°±
     public override void OnDisconnected(DisconnectCause cause)
     {
         base.OnDisconnected(cause);
-        // ½ÇÆĞ ¿øÀÎÀ» Ãâ·ÂÇÑ´Ù.
+        // ì‹¤íŒ¨ ì›ì¸ì„ ì¶œë ¥í•œë‹¤.
 
         print(MethodInfo.GetCurrentMethod().Name + " is call");
-        MainUI.Instance.move_Lobby_Btn.interactable = true;
+        MainUI.Instance.mainUiObject.move_Lobby_Btn.interactable = true;
 
     }
-    //¸¶½ºÅÍ¿¬°á Äİ¹é
+    //ë§ˆìŠ¤í„°ì—°ê²° ì½œë°±
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
 
-        // ¸¶½ºÅÍ ¼­¹ö¿¡ Á¢¼ÓÀÌ ¿Ï·áµÇ¾úÀ½À» ¾Ë·ÁÁØ´Ù.
+        // ë§ˆìŠ¤í„° ì„œë²„ì— ì ‘ì†ì´ ì™„ë£Œë˜ì—ˆìŒì„ ì•Œë ¤ì¤€ë‹¤.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
 
-        // ¼­¹öÀÇ ·Îºñ·Î µé¾î°£´Ù.
+        // ì„œë²„ì˜ ë¡œë¹„ë¡œ ë“¤ì–´ê°„ë‹¤.
         PhotonNetwork.JoinLobby();
 
     }
-    //·Îºñ¿¬°á Äİ¹é
+    //ë¡œë¹„ì—°ê²° ì½œë°±
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
 
-        // ¼­¹ö ·Îºñ¿¡ µé¾î°¬À½À» ¾Ë·ÁÁØ´Ù.
+        // ì„œë²„ ë¡œë¹„ì— ë“¤ì–´ê°”ìŒì„ ì•Œë ¤ì¤€ë‹¤.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
         //LobbyUIController.lobbyUI.ShowRoomPanel();
       
@@ -98,33 +100,33 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         string roomName = "LoobyTest";
         int playerCount = 10;
 
-        //·ë ³×ÀÓ ±æÀÌ°¡ 0º¸´Ù ±æ°í ÇÃ·¹ÀÌ Ä«¿îÆ®°¡ 1º¸´Ù Å©´Ù¸é
+        //ë£¸ ë„¤ì„ ê¸¸ì´ê°€ 0ë³´ë‹¤ ê¸¸ê³  í”Œë ˆì´ ì¹´ìš´íŠ¸ê°€ 1ë³´ë‹¤ í¬ë‹¤ë©´
         if (roomName.Length > 0 && playerCount > 1)
         {
-            // ³ªÀÇ ·ë ¿É¼Ç ¸¸µç´Ù.
+            // ë‚˜ì˜ ë£¸ ì˜µì…˜ ë§Œë“ ë‹¤.
             RoomOptions roomOpt = new RoomOptions();
-            //ÃÖ´ëÀÎ¿ø
+            //ìµœëŒ€ì¸ì›
             roomOpt.MaxPlayers = playerCount;
-            //·ë¿¡ »ç¶÷ÀÌ µé¾î¿À°Ô ÇÏÀÚ.
+            //ë£¸ì— ì‚¬ëŒì´ ë“¤ì–´ì˜¤ê²Œ í•˜ì.
             roomOpt.IsOpen = true;
-            //·ëÀ» °Ë»öÇÒ ¼ö ÀÖ°Ô ÇØÁÖÀÚ. 
+            //ë£¸ì„ ê²€ìƒ‰í•  ìˆ˜ ìˆê²Œ í•´ì£¼ì. 
             roomOpt.IsVisible = true;
 
           
-            //¹æÀ»»ı¼ºÇÏÀÚ.
+            //ë°©ì„ìƒì„±í•˜ì.
             PhotonNetwork.CreateRoom(roomName, roomOpt, TypedLobby.Default);
             
 
         }
 
-        //¹æ»ı¼ºÀÌ ¿Ï·áµÇ¸é
+        //ë°©ìƒì„±ì´ ì™„ë£Œë˜ë©´
         //JoinRoom();
     }
     public void JoinRoom()
     {
         string roomName = "LoobyTest";
         
-        //·ëÀÌ¸§ ±æÀÌ°¡ 0º¸´Ù Å©¸é
+        //ë£¸ì´ë¦„ ê¸¸ì´ê°€ 0ë³´ë‹¤ í¬ë©´
         if (roomName.Length > 0)
         {
             PhotonNetwork.JoinRoom(roomName);
@@ -136,10 +138,10 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         base.OnCreatedRoom();
 
-        // ¼º°øÀûÀ¸·Î ¹æÀÌ °³¼³µÇ¾úÀ½À» ¾Ë·ÁÁØ´Ù.
+        // ì„±ê³µì ìœ¼ë¡œ ë°©ì´ ê°œì„¤ë˜ì—ˆìŒì„ ì•Œë ¤ì¤€ë‹¤.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        print("¹æ ¸¸µé¾îÁü!");
-        //LobbyUIController.lobbyUI.PrintLog("¹æ ¸¸µé¾îÁü!");
+        print("ë°© ë§Œë“¤ì–´ì§!");
+        //LobbyUIController.lobbyUI.PrintLog("ë°© ë§Œë“¤ì–´ì§!");
 
     }
 
@@ -147,12 +149,12 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
 
-        // ¼º°øÀûÀ¸·Î ¹æ¿¡ ÀÔÀåµÇ¾úÀ½À» ¾Ë·ÁÁØ´Ù.
+        // ì„±ê³µì ìœ¼ë¡œ ë°©ì— ì…ì¥ë˜ì—ˆìŒì„ ì•Œë ¤ì¤€ë‹¤.
         print(MethodInfo.GetCurrentMethod().Name + " is Call!");
-        print("¹æ¿¡ ÀÔÀå ¼º°ø");
-        //LobbyUIController.lobbyUI.PrintLog("¹æ¿¡ ÀÔÀå ¼º°ø!");
+        print("ë°©ì— ì…ì¥ ì„±ê³µ");
+        //LobbyUIController.lobbyUI.PrintLog("ë°©ì— ì…ì¥ ì„±ê³µ!");
 
-        // ¹æ¿¡ ÀÔÀåÇÑ Ä£±¸µéÀº ¸ğµÎ 2¹ø ¾ÀÀ¸·Î ÀÌµ¿ÇÏÀÚ! //ºôµå¼¼ÆÃ¿¡ Ãß°¡ÇØ¾ß¸¸ ÀÌµ¿°¡´É idx È®ÀÎ ÇÊ¼ö
+        // ë°©ì— ì…ì¥í•œ ì¹œêµ¬ë“¤ì€ ëª¨ë‘ 2ë²ˆ ì”¬ìœ¼ë¡œ ì´ë™í•˜ì! //ë¹Œë“œì„¸íŒ…ì— ì¶”ê°€í•´ì•¼ë§Œ ì´ë™ê°€ëŠ¥ idx í™•ì¸ í•„ìˆ˜
         PhotonNetwork.LoadLevel(2);
     }
 
@@ -160,61 +162,61 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinRoomFailed(returnCode, message);
 
-        // ·ë¿¡ ÀÔÀåÀÌ ½ÇÆĞÇÑ ÀÌÀ¯¸¦ Ãâ·ÂÇÑ´Ù.
+        // ë£¸ì— ì…ì¥ì´ ì‹¤íŒ¨í•œ ì´ìœ ë¥¼ ì¶œë ¥í•œë‹¤.
         Debug.LogError(message);
-        print("ÀÔÀå ½ÇÆĞ..." + message);
-        //LobbyUIController.lobbyUI.PrintLog("ÀÔÀå ½ÇÆĞ..." + message);
-        MainUI.Instance.move_Lobby_Btn.interactable = true;
+        print("ì…ì¥ ì‹¤íŒ¨..." + message);
+        //LobbyUIController.lobbyUI.PrintLog("ì…ì¥ ì‹¤íŒ¨..." + message);
+        MainUI.Instance.mainUiObject.move_Lobby_Btn.interactable = true;
 
     }
 
-    // ·ë¿¡ ´Ù¸¥ ÇÃ·¹ÀÌ¾î°¡ ÀÔÀåÇßÀ» ¶§ÀÇ Äİ¹é ÇÔ¼ö
+    // ë£¸ì— ë‹¤ë¥¸ í”Œë ˆì´ì–´ê°€ ì…ì¥í–ˆì„ ë•Œì˜ ì½œë°± í•¨ìˆ˜
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         base.OnPlayerEnteredRoom(newPlayer);
 
-        string playerMsg = $"{newPlayer.NickName}´ÔÀÌ ÀÔÀåÇÏ¼Ì½À´Ï´Ù.";
+        string playerMsg = $"{newPlayer.NickName}ë‹˜ì´ ì…ì¥í•˜ì…¨ìŠµë‹ˆë‹¤.";
         print(playerMsg);
         //LobbyUIController.lobbyUI.PrintLog(playerMsg);
     }
-    // ·ë¿¡ ÀÖ´ø ´Ù¸¥ ÇÃ·¹ÀÌ¾î°¡ ÅğÀåÇßÀ» ¶§ÀÇ Äİ¹é ÇÔ¼ö
+    // ë£¸ì— ìˆë˜ ë‹¤ë¥¸ í”Œë ˆì´ì–´ê°€ í‡´ì¥í–ˆì„ ë•Œì˜ ì½œë°± í•¨ìˆ˜
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         base.OnPlayerLeftRoom(otherPlayer);
 
-        string playerMsg = $"{otherPlayer.NickName}´ÔÀÌ ÅğÀåÇÏ¼Ì½À´Ï´Ù.";
+        string playerMsg = $"{otherPlayer.NickName}ë‹˜ì´ í‡´ì¥í•˜ì…¨ìŠµë‹ˆë‹¤.";
         print(playerMsg);
         //LobbyUIController.lobbyUI.PrintLog(playerMsg);
     }
 
-    //·ë¸®½ºÆ® Äİ¹éÀº ·Îºñ¿¡ Á¢¼ÓÇßÀ»¶§ ÀÚµ¿À¸·Î È£Ãâ
-    // //ÇöÀç ·Îºñ¿¡¼­ ·ë ¸®½ºÆ®¸¦ ¹Ş¾Æº¸ÀÚ. ·Îºñ¿¡¼­¸¸ È£Ãâ°¡´É
+    //ë£¸ë¦¬ìŠ¤íŠ¸ ì½œë°±ì€ ë¡œë¹„ì— ì ‘ì†í–ˆì„ë•Œ ìë™ìœ¼ë¡œ í˜¸ì¶œ
+    // //í˜„ì¬ ë¡œë¹„ì—ì„œ ë£¸ ë¦¬ìŠ¤íŠ¸ë¥¼ ë°›ì•„ë³´ì. ë¡œë¹„ì—ì„œë§Œ í˜¸ì¶œê°€ëŠ¥
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         base.OnRoomListUpdate(roomList);
-        print("·ë¸®½ºÆ® ¾÷µ¥ÀÌÆ®");
+        print("ë£¸ë¦¬ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸");
 
 
 
-        //print("¹æÀÌ ÀÖÀ¸´Ï Âü°¡ÇØ¾ßÁö");
-        // ·Îºñ¿¡ µé¾î°¬À¸¸é ¹æÀ» »ı¼º
+        //print("ë°©ì´ ìˆìœ¼ë‹ˆ ì°¸ê°€í•´ì•¼ì§€");
+        // ë¡œë¹„ì— ë“¤ì–´ê°”ìœ¼ë©´ ë°©ì„ ìƒì„±
         //JoinRoom();
 
 
         if (roomList.Count == 0)
         {
             
-            print("¹æ°³¼ö" + roomList.Count + "¹æÀÌ¾øÀ¸´Ï ¸¸µé¾î¾ßÁö...");
+            print("ë°©ê°œìˆ˜" + roomList.Count + "ë°©ì´ì—†ìœ¼ë‹ˆ ë§Œë“¤ì–´ì•¼ì§€...");
             CreateRoom();
         }
         else
         {
-            print("¹æ°³¼ö" + roomList.Count);
+            print("ë°©ê°œìˆ˜" + roomList.Count);
             foreach (RoomInfo roomInfo in roomList)
             {
                 if (roomInfo.Name.Contains("LoobyTest"))
                 {
-                    print("¹æÀÌÀÖÀ¸´Ï±î Âü°¡ÇØ¾ßÁö~");
+                    print("ë°©ì´ìˆìœ¼ë‹ˆê¹Œ ì°¸ê°€í•´ì•¼ì§€~");
                     JoinRoom();
                     return;
                 }
@@ -232,4 +234,4 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
 
 
-    }//Å¬·¡½º³¡
+    }//í´ë˜ìŠ¤ë

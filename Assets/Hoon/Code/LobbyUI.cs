@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class LobbyUI : MonoBehaviour
 {
     GameObject btn_LobbyExit;
-    
+    MainUIObject mainUiObject;
 
     // Start is called before the first frame update
     void Start()
@@ -31,19 +31,32 @@ public class LobbyUI : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 
+        StartCoroutine(WaitAndDisableObjects());
+       
+
+      
+    }
+
+    // Coroutine을 사용하여 씬 로드 후 약간의 지연을 주고 오브젝트를 비활성화
+    IEnumerator WaitAndDisableObjects()
+    {
+
+        yield return new WaitForEndOfFrame(); // 또는 적절한 지연을 줄 수 있음
+
         if (MainUI.Instance != null)
         {
             print("메인있음");
 
             // 씬이 로드된 후, 오브젝트를 찾고 참조를 저장
-            MainUI.Instance.img_Regist_Object = GameObject.Find("Img_Regist");
-            MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Login");
+            //mainUiObject.imgRegist_Object = GameObject.Find("Img_Regist");
+            //mainUiObject.imgLogin_Object = GameObject.Find("Img_Login");
 
             // 오브젝트 비활성화
-            MainUI.Instance.img_Regist_Object.SetActive(false);
-            MainUI.Instance.imgLogin_Object.SetActive(false);
+            mainUiObject.imgRegist_Object.SetActive(false);
+            mainUiObject.imgLogin_Object.SetActive(false);
 
 
+           
             /*if (MainUI.Instance.imgLogin_Object)
             {
                 print("로그인이미지 있음");
@@ -71,12 +84,13 @@ public class LobbyUI : MonoBehaviour
         }
         else
         {
-            print("메인없음");
+            print("메인없음");            
         }
         // 이벤트 해제
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
-
-
+        
     }
-}
+
+
+}//클래스끝
