@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct FurnitureInfo
+public class FurnitureInfo
 {
     public int furni_Size_X;
     public int furni_Size_Z;
@@ -11,4 +11,8 @@ public struct FurnitureInfo
     public int furni_Current_X;
     public int furni_Current_Z;
     public bool furni_Rotate;
+    public string furni_cate;
+    public string furni_Name;
+    public string user_iD;
+
 }

@@ -5,9 +5,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static System.Net.WebRequestMethods;
 
 public class RoomUIManager_GH : MonoBehaviour
 {
+    //http ip
+    public string httpIP = "192.168.0.76";
+
     // 가구 리스트를 만든다.
     public List<Image> ui_Furniture = new List<Image>();
 
@@ -98,29 +102,31 @@ public class RoomUIManager_GH : MonoBehaviour
             {
                 FurnitureData_GH fd = list_Furniture[i].GetComponent<FurnitureData_GH>();
                 HttpInfo info = new HttpInfo();
-                info.url = "";
+                info.url = "http://192.168.0.76:8080/ground-furniture";
                 info.body = JsonUtility.ToJson(fd.furnitureInfo);
-                info.contentType = "";
+                info.contentType = "application/json";
                 info.onComplete = (DownloadHandler downloadHandler) =>
                 {
+                    print(info.body);
                     print(downloadHandler.text);
                 };
                 StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
+
             }
-            // 벽가구 데이터 보내기
-            else if (list_Furniture[i].layer == LayerMask.NameToLayer("WallObject"))
-            {
-                WallObjectData_GH wd = list_Furniture[i].GetComponent<WallObjectData_GH>();
-                HttpInfo info = new HttpInfo();
-                info.url = "";
-                info.body = JsonUtility.ToJson(wd.wallObjectInfo);
-                info.contentType = "";
-                info.onComplete = (DownloadHandler downloadHandler) =>
-                {
-                    print(downloadHandler.text);
-                };
-                StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
-            }
+            //// 벽가구 데이터 보내기
+            //else if (list_Furniture[i].layer == LayerMask.NameToLayer("WallObject"))
+            //{
+            //    WallObjectData_GH wd = list_Furniture[i].GetComponent<WallObjectData_GH>();
+            //    HttpInfo info = new HttpInfo();
+            //    info.url = "http://192.168.0.76:8080/ground-furniture";
+            //    info.body = JsonUtility.ToJson(wd.wallObjectInfo);
+            //    info.contentType = "application/json";
+            //    info.onComplete = (DownloadHandler downloadHandler) =>
+            //    {
+            //        print(downloadHandler.text);
+            //    };
+            //    StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
+            //}
         }
 
         // 방 데이터 보내기
