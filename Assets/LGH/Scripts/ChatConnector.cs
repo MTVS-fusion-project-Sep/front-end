@@ -10,11 +10,11 @@ using WebSocketSharp;
 
 public class ChatConnector : MonoBehaviour
 {
-    private string IP = "192.168.0.23";
-    private string PORT = "8080";
+    public string IP = "192.168.0.23";
+    public string PORT = "8080";
 
     //서버 서비스 이름
-    private string SERVICE_NAME = "/ws/chat";
+    public string SERVICE_NAME = "/ws/chat";
 
     public WebSocket webSocket = null;
 
@@ -103,7 +103,7 @@ public class ChatConnector : MonoBehaviour
         Debug.Log("서버로부터 받은 메시지 : " + e.Data);
 
         //bytes 데이터
-        Debug.Log(e.RawData);
+        //Debug.Log(e.RawData);
 
         HandleServerMessage(e.Data);
     }
@@ -129,6 +129,8 @@ public class ChatConnector : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogError("JSON 데이터 처리 중 오류 발생: " + ex.Message);
+            //여기서 오류 발생
+            //get_isActiveAndEnabled can only be called from the main thread.
         }
     }
 

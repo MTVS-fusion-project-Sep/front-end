@@ -14,5 +14,4 @@ public class FurnitureInfo
     public string furniCategory;
     public string furniName;
     public string userId;
-
 }
