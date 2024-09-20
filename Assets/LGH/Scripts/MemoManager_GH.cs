@@ -24,7 +24,6 @@ public class MemoManager_GH : MonoBehaviour
     public GameObject[] memoButtons;
 
 
-
     //메모 저장 버튼 활성화
     bool onSaveButton = true;
 
@@ -106,6 +105,8 @@ public class MemoManager_GH : MonoBehaviour
         for (int i = 0; i < memoCount; i++)
         {
             memoList.Add(Instantiate(memoFactory, GameObject.Find("ContentMemo").transform));
+            TMP_InputField inputfield = memoList[i].GetComponentInChildren<TMP_InputField>();
+            inputfield.gameObject.SetActive(false);
             MemoData_GH md = memoList[i].GetComponent<MemoData_GH>();
             md.memoInfo = memoInfoList.data[i];
         }

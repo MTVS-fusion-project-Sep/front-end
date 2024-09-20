@@ -49,8 +49,9 @@ public class SwipeUI_GH : MonoBehaviour
 
     void Start()
     {
-        // 최초 시작할 때 0번 페이지를 볼 수 있도록 설정
-        SetScrollBarValue(0);
+        if (maxPage > 0)
+            // 최초 시작할 때 0번 페이지를 볼 수 있도록 설정
+            SetScrollBarValue(0);
     }
 
     public void SetScrollBarValue(int index)
@@ -62,8 +63,12 @@ public class SwipeUI_GH : MonoBehaviour
 
     void Update()
     {
-        UpdateInput();
-        UpdatePageNum();
+        if (maxPage > 0)
+        {
+            UpdateInput();
+            UpdatePageNum();
+
+        }
     }
 
     void UpdateInput()
@@ -136,7 +141,7 @@ public class SwipeUI_GH : MonoBehaviour
 
         isSwipeMode = true;
 
-        while(percent < 1)
+        while (percent < 1)
         {
             current += Time.deltaTime;
             percent = current / swipeTime;

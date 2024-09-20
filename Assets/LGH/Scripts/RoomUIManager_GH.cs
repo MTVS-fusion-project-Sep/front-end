@@ -36,7 +36,7 @@ public class RoomUIManager_GH : MonoBehaviour
     public Button roomSettingBut;
 
     //방꾸 패널
-    public GameObject roomSettinfPanel;
+    public GameObject roomSettingPanel;
     public bool onRoomPanel = false;
 
 
@@ -55,6 +55,9 @@ public class RoomUIManager_GH : MonoBehaviour
     int cur_W_Index = 0;
     int cur_T_Index = 0;
 
+    //유저 아이디 더미 데이터
+    string roomUserId = "규현";
+
     void Start()
     {
 
@@ -67,7 +70,7 @@ public class RoomUIManager_GH : MonoBehaviour
             slotImage.sprite = ui_Furniture[i].sprite;
         }
 
-        roomSettinfPanel.SetActive(false);
+        roomSettingPanel.SetActive(false);
         roomSettingBut.gameObject.SetActive(true);
     }
 
@@ -91,7 +94,7 @@ public class RoomUIManager_GH : MonoBehaviour
 
     public void SettingRoom()
     {
-        roomSettinfPanel.SetActive(true);
+        roomSettingPanel.SetActive(true);
         roomSettingBut.gameObject.SetActive(false);
         onRoomPanel = true;
     }
@@ -160,6 +163,13 @@ public class RoomUIManager_GH : MonoBehaviour
 
     void FurniLoad()
     {
+        //룸 유저 아이디를 보내준다?
+
+        // 로그인하면 룸 유저 아이디를 기본으로 그냥 아이디로 바꾸는걸로 함수 구현
+
+        // 또 로비에서 방 방문을 누르게 되면 그 해당 방 정보를 받아오도록 구현
+
+
         //받아올때 아이디 뒤에 붙이게
         for (int i = 0; i < list_Furniture.Count; i++)
         {
@@ -230,7 +240,7 @@ public class RoomUIManager_GH : MonoBehaviour
     }
     public void OnExit()
     {
-        roomSettinfPanel.SetActive(false);
+        roomSettingPanel.SetActive(false);
         roomSettingBut.gameObject.SetActive(true);
         onRoomPanel = false;
     }
