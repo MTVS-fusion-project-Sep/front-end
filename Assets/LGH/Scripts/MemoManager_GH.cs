@@ -12,7 +12,7 @@ public class MemoManager_GH : MonoBehaviour
     List<GameObject> memoList = new List<GameObject>();
 
     //메모 더미데이터를 위한 갯수
-    public int memoCount = 2;
+    public int memoCount = 0;
 
     //메모 기본 오브젝트
     public GameObject memoFactory;
@@ -28,15 +28,12 @@ public class MemoManager_GH : MonoBehaviour
     //메모 저장 버튼 활성화
     bool onSaveButton = true;
 
+
+    //메모 데이터를 받은 값을 저장
+    public MemoInfoList memoInfoList;
     void Awake()
     {
-        //기록되어 있는 메모에 따른 메모 생성
-        for (int i = 0; i < memoCount; i++)
-        {
-            memoList.Add(Instantiate(memoFactory, GameObject.Find("ContentMemo").transform));
-            TMP_InputField inputfield = memoList[i].GetComponentInChildren<TMP_InputField>();
-            inputfield.gameObject.SetActive(false);
-        }
+       
 
         memoButtons[0].SetActive(false);
     }
@@ -72,7 +69,7 @@ public class MemoManager_GH : MonoBehaviour
         onSaveButton = true;
 
         // 새로운 메모 데이터 보내기
-        MemoInfo memoInfo = new MemoInfo();
+        MemoInfo_GH memoInfo = new MemoInfo_GH();
         memoInfo.userID = "이규현";
         memoInfo.memoText = inputfield.text;
         memoInfo.writerID = "전성표";
@@ -88,9 +85,35 @@ public class MemoManager_GH : MonoBehaviour
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Post(HttpInfo));
     }
+    public void memoLoad()
+    {
+
+        //메모 받아오기
+        HttpInfo info = new HttpInfo();
+        info.url = "";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            print(downloadHandler.text);
+            string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
+            print(jsonData);
+            //jsonData를 PostInfoArray 형으로 바꾸자. 
+            memoInfoList = JsonUtility.FromJson<MemoInfoList>(jsonData);
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
+
+        memoCount = memoInfoList.data.Count;
+        //기록되어 있는 메모에 따른 메모 생성
+        for (int i = 0; i < memoCount; i++)
+        {
+            memoList.Add(Instantiate(memoFactory, GameObject.Find("ContentMemo").transform));
+            MemoData_GH md = memoList[i].GetComponent<MemoData_GH>();
+            md.memoInfo = memoInfoList.data[i];
+        }
+    }
 
     public void memoDelete()
     {
+        // 메모 삭제시 메모 아이디 추가??======================================================
         //현재 순서에 있는 메모를 삭제 시킨다.
         Destroy(memoList[memoSwipe.currentPage].gameObject);
         //메모의 총 숫자를 하나 낮춘다.
@@ -120,13 +143,5 @@ public class MemoManager_GH : MonoBehaviour
             memoButtons[2].SetActive(true);
         }
     }
-}
-[System.Serializable]
-public struct MemoInfo
-{
-    public string userID;
-    public string memoText;
-    public string writerID;
-    public string writeDate;
 }
 

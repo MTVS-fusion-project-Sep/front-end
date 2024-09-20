@@ -48,7 +48,7 @@ public class SlotClick_GH : MonoBehaviour
         }
         else
         {
-            button.onClick.AddListener(CarpetSet);
+            button.onClick.AddListener(TileSet);
 
         }
 
@@ -99,10 +99,13 @@ public class SlotClick_GH : MonoBehaviour
         Image slotImage = roomUIMa.ui_Wall[myIndex].GetComponent<Image>();
         rooms[0].material = slotImage.material;
         rooms[1].material = slotImage.material;
+        roomUIMa.WallIndexSetting(myIndex);
     }
-    void CarpetSet()
+    void TileSet()
     {
         Image slotImage = roomUIMa.ui_Ground[myIndex].GetComponent<Image>();
         rooms[2].material = slotImage.material;
+        roomUIMa.TileIndexSetting(myIndex);
+
     }
 }

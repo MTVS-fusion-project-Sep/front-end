@@ -13,6 +13,13 @@ public enum WallType
 [System.Serializable]
 public class WallObjectInfo
 {
+    public string wallCate;
+    public string wallName;
     public WallType wallPos = WallType.NONE;
     public bool onPlace = true;
+}
+[System.Serializable]
+public class WallObjectInfoList
+{
+    public List<WallObjectInfo> data;
 }

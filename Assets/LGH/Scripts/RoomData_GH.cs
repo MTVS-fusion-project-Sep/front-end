@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+    //채팅룸===========================================================================
 public class RoomData_GH : MonoBehaviour
 {
     public RoomInfo_GH roomInfo;

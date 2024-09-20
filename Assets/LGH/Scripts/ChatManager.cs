@@ -26,10 +26,11 @@ public class ChatManager : MonoBehaviour
     public TMP_InputField input_chat;
     public Button sendmessage_but;
     public Button exitRoom_but;
+    public RectTransform rectTransform;  
 
     //룸 아이디
-    public string roomId = "";
-    public string userId = "";
+    string roomId = "";
+    string userId = "";
 
 
     // 방 리스트
@@ -149,6 +150,8 @@ public class ChatManager : MonoBehaviour
     public void ReceivedMessage(string rm)
     {
         text_chatContent.text += rm + "\n";
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+        Canvas.ForceUpdateCanvases();
     }
 
     // 같은 룸에 다른 사용자로부터 이벤트가 왔을 때 실행되는 함수

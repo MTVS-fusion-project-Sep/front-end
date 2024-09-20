@@ -15,3 +15,8 @@ public class FurnitureInfo
     public string furniName;
     public string userId;
 }
+[System.Serializable]
+public class FurnitureInfoList
+{
+    public List<FurnitureInfo> data;
+}

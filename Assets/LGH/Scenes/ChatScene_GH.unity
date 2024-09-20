@@ -1548,8 +1548,7 @@ MonoBehaviour:
   input_chat: {fileID: 1327797851}
   sendmessage_but: {fileID: 118613094}
   exitRoom_but: {fileID: 0}
-  roomId: 
-  userId: 
+  rectTransform: {fileID: 427078165}
   roomList: []
   RoomListURL: http://125.132.216.190:15530/chat
   allRoomInfo:
