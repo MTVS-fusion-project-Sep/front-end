@@ -2,7 +2,7 @@
   {
     "userId": "bb",
     "userPassword": "bb",
-    "userName": "문재인",
+    "userName": "이재명",
     "likeCount": 3,
     "bigCategory": "건강",
     "smallCategory": "헬스",
@@ -26,13 +26,13 @@
   {
     "userId": "a",
     "userPassword": "a",
-    "userName": "박근혜",
-    "likeCount": 3,
-    "bigCategory": "문화",
-    "smallCategory": "공연",
-    "bigCategory2": "문화",
-    "smallCategory2": "영화",
-    "bigCategory3": "문화",
-    "smallCategory3": "음악"
+    "userName": "윤석열",
+    "likeCount": 0,
+    "bigCategory": "기술",
+    "smallCategory": "모바일",
+    "bigCategory2": "레저",
+    "smallCategory2": "축구",
+    "bigCategory3": "건강",
+    "smallCategory3": "영양제"
   }
 ]

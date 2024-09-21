@@ -175,9 +175,11 @@ public class MainUI : MonoBehaviour
     }
 
     //userId 저장하는 변수
-    string saveUserId;
+    public string saveUserId;
+
 
     //category List
+    List<string> myBigCategory = new List<string>();
     List<string> mySmallCategory = new List<string>();
 
     GameObject firstLikeObject;
@@ -237,8 +239,6 @@ public class MainUI : MonoBehaviour
 
 
         //OFFIMG(); // 이미지 오브젝트 끄기
-        
-
 
     }
 
@@ -346,24 +346,62 @@ public class MainUI : MonoBehaviour
         {
 
             GameObject btnFirst_Like_Object = GameObject.Find("Text_First_Like");
-            Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
-            btnFirst_Like_Text.text = likeText;
+            Text btnt_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
+
+            //myBigCategory에 값이 저장되어 있는지 확인.
+            if (myBigCategory.Count == 1)
+            {
+                btnt_Like_Text.text = myBigCategory[0] + likeText;
+            }
+            else if (myBigCategory.Count == 2)
+            {
+                btnt_Like_Text.text = myBigCategory[1] + likeText;
+            }
+            else if (myBigCategory.Count == 3)
+            {
+                btnt_Like_Text.text = myBigCategory[2] + likeText;
+            }
+
             likeCount++;
         }
         else if (likeCount == 1)
         {
 
             GameObject btnFirst_Like_Object = GameObject.Find("Text_Second_Like");
-            Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
-            btnFirst_Like_Text.text = likeText;
+            Text btnt_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
+            if(myBigCategory.Count == 1)
+            {
+                btnt_Like_Text.text = myBigCategory[0] + likeText;
+            }
+            else if(myBigCategory.Count == 2)
+            {
+                btnt_Like_Text.text = myBigCategory[1] + likeText;
+            }
+            else if(myBigCategory.Count == 3)
+            {
+                btnt_Like_Text.text = myBigCategory[2] + likeText;
+            }
+
             likeCount++;
         }
         else
         {
 
             GameObject btnFirst_Like_Object = GameObject.Find("Text_Third_Like");
-            Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
-            btnFirst_Like_Text.text = likeText;
+            Text btnt_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
+            if (myBigCategory.Count == 1)
+            {
+                btnt_Like_Text.text = myBigCategory[0] + likeText;
+            }
+            else if (myBigCategory.Count == 2)
+            {
+                btnt_Like_Text.text = myBigCategory[1] + likeText;
+            }
+            else if (myBigCategory.Count == 3)
+            {
+                btnt_Like_Text.text = myBigCategory[2] + likeText;
+            }
+
             likeCount = 0;
         }
 
@@ -453,53 +491,54 @@ public class MainUI : MonoBehaviour
 
     }
 
+    string[] themeNameArray;
+    string[] objectNameTextArray;
     public void OnLikeTextJson()
     {
+        Text firstLikeText = firstLikeObject.GetComponent<Text>();
+        mySmallCategory[0] = firstLikeText.text;
+        //print("첫번째관심사" + mySmallCategory[0]);
 
-        //print(likeText);
-        //선택한 이름과, 테마이름을 저장.
-        OnLikeChoiceJson(likeObjectName, themeTextChoice, likeObjectNameText);
-        //print("OnLikeTextJson" + themeTextChoice);
+        Text secondLikeText = secondLikeObject.GetComponent<Text>();
+        mySmallCategory[1] = secondLikeText.text;
+        //print("두번째관심사" + secondLikeText.text);
 
-    }
+        Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
+        mySmallCategory[2] = thirdLikeText.text;
+        //print("세번째관심사" + thirdLikeText.text);
 
-    void OnLikeChoiceJson(string objectName, string themeName, string objectNameText)
-    {
-        string likeText;
-        GameObject textTheater_Object = GameObject.Find(objectName);
-        Text textTheater_Text = textTheater_Object.GetComponent<Text>();
-        likeText = textTheater_Text.text;
+        //배열초기화
+        themeNameArray = new string [mySmallCategory.Count];
+        objectNameTextArray = new string[mySmallCategory.Count];
 
-        //텍스트 저장
-        SaveLikeTextJson(objectNameText, themeName);
-        //print("OnLikeChoiceJson" + themeName);
-        //print("OnLikeChoiceJson" + objectNameText);
+        for (int i = 0; i < mySmallCategory.Count; i++ )
+        {
+            // 문자열을 '>' 기준으로 분리
+            string[] splitResult = mySmallCategory[i].Split('>');
 
-        /* if (likeCount == 0)
-         {
+            // 분리된 문자열을 각각 themeName과 objectNameText에 할당
+            if (splitResult.Length == 2)
+            {
+                themeNameArray[i] = splitResult[0];       // "문화"
+                objectNameTextArray[i] = splitResult[1];  // "음악"
 
-             GameObject btnFirst_Like_Object = GameObject.Find("Text_First_Like");
-             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
-             btnFirst_Like_Text.text = likeText;
-             likeCount++;
-         }
-         else if (likeCount == 1)
-         {
+                //출력
+                //print("Theme Name: " + themeNameArray[i]);
+                //print("Object Name Text: " + objectNameTextArray[i]);
+            }
 
-             GameObject btnFirst_Like_Object = GameObject.Find("Text_Second_Like");
-             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
-             btnFirst_Like_Text.text = likeText;
-             likeCount++;
-         }
-         else
-         {
+           
 
-             GameObject btnFirst_Like_Object = GameObject.Find("Text_Third_Like");
-             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
-             btnFirst_Like_Text.text = likeText;
-             likeCount = 0;
-         }*/
+        }
 
+        SaveLocalLikeTextJson(themeNameArray, objectNameTextArray);
+
+
+
+
+            //선택한 이름과, 테마이름을 저장.
+            //OnLikeChoiceJson(likeObjectName, themeName, objectNameText);
+            //print("OnLikeTextJson" + themeTextChoice);
 
     }
 
@@ -518,6 +557,119 @@ public class MainUI : MonoBehaviour
         public string bigCategory3;
         public string smallCategory3;
     }
+    //관심사, Json, 로컬저장  
+    void SaveLocalLikeTextJson(string[] themeNames, string[] objectNameTexts)
+    {
+        //파일 경로를 불러옵니다.
+        string path = Application.dataPath + "/Resources/SaveRegist.json";
+        //파일이 있으면
+        if (File.Exists(path))
+        {
+            // 파일의 모든 텍스트를 가져온다 (JSON 파일).
+            loadUserInfo = File.ReadAllText(path);
+
+            //파일을 잘 가져왔다면
+            if (loadUserInfo != null)
+            {
+                print("JSON 파일 읽기 완료" + loadUserInfo);
+                // UserData를 List로 만들고 JSON 데이터를 리스트로 파싱
+                List<UserData> users = JsonConvert.DeserializeObject<List<UserData>>(loadUserInfo);
+
+                //유저아이디확인
+                string userStr = saveUserId;
+                //print("유저 아이디 확인" + userStr);
+
+                // ID와 일치하는 부분 찾기
+                UserData matchingUser = users.Find(user => user.userId == saveUserId);
+
+                //ID 가 포함되어 있다면
+                if (matchingUser != null)
+                {
+
+                    //라이크 카운트가 없으면 신규추가
+                    if (matchingUser.likeCount == 0)
+                    {
+
+                        // bigCategory에 themeText, smallCategory에 likeText 설정
+                        matchingUser.bigCategory = themeNames[0];
+                        matchingUser.smallCategory = objectNameTexts[0];
+                        matchingUser.likeCount++;
+
+                        // JSON으로 신규저장
+                        string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
+                        File.WriteAllText(path, updatedJson);
+                        print("JSON 파일 저장 완료: " + updatedJson);
+                    }
+                    //라이크 카운트가 0이 아니면 기존정보에 추가
+                    if (matchingUser.likeCount == 1)
+                    {
+                        // bigCategory에 themeText, smallCategory에 likeText 설정
+                        matchingUser.bigCategory2 = themeNames[1];
+                        matchingUser.smallCategory2 = objectNameTexts[1];
+                        matchingUser.likeCount++;
+
+                        // JSON으로 신규저장
+                        string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
+                        File.WriteAllText(path, updatedJson);
+                        print("JSON 파일 저장 완료: " + updatedJson);
+
+                    }
+                    //라이크 카운트가 0이 아니면 기존정보에 추가
+                    if (matchingUser.likeCount == 2)
+                    {
+                        // bigCategory에 themeText, smallCategory에 likeText 설정
+                        matchingUser.bigCategory3 = themeNames[2];
+                        matchingUser.smallCategory3 = objectNameTexts[2];
+                        matchingUser.likeCount = 0;
+
+                        // JSON으로 신규저장
+                        string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
+                        File.WriteAllText(path, updatedJson);
+                        print("JSON 파일 저장 완료: " + updatedJson);
+
+                    }
+                    
+
+
+                }
+                else
+                {
+                    print("userId 불일치");
+                }
+            }
+            else
+            {
+                print("파일없음");
+            }
+
+        }
+    }
+
+    void OnLikeChoiceJson(string objectName, string themeName, string objectNameText)
+    {
+        
+        string likeText;
+        GameObject textTheater_Object = GameObject.Find(objectName);
+        if (textTheater_Object != null)
+        {
+            Text textTheater_Text = textTheater_Object.GetComponent<Text>();
+            likeText = textTheater_Text.text;
+
+            //텍스트 저장
+            SaveLikeTextJson(objectNameText, themeName);
+            //print("OnLikeChoiceJson" + themeName);
+            //print("OnLikeChoiceJson" + objectNameText);
+        }
+        else
+        {
+            print("저장안됨");
+            return;
+        }
+
+
+    }
+
+    
 
 
     public void SaveLikeTextJson(string likeText, string themeText)
@@ -537,17 +689,16 @@ public class MainUI : MonoBehaviour
                 // UserData를 List로 만들고 JSON 데이터를 리스트로 파싱
                 List<UserData> users = JsonConvert.DeserializeObject<List<UserData>>(loadUserInfo);
 
-                //유저아이디
+                //유저아이디확인
                 string userStr = saveUserId;
-                print("유저 아이디 확인" + userStr);
+                //print("유저 아이디 확인" + userStr);
 
-                // ID가 일치하는 부분 찾기
+                // ID와 일치하는 부분 찾기
                 UserData matchingUser = users.Find(user => user.userId == saveUserId);
 
-                //ID를 확인합니다. 유저 아이디가 포함되어 있다면
+                //ID 가 포함되어 있다면
                 if (matchingUser != null)
                 {
-
 
                     //라이크 카운트가 없으면 신규추가
                     if (matchingUser.likeCount == 0)
@@ -637,9 +788,9 @@ public class MainUI : MonoBehaviour
         print("선택된테마" + likeText);
     }
 
-    //여기에 저장됩니다.
+    //테마가 여기에 저장됩니다.
     string themeTextChoice;
-
+    int bigChategoryCount = 0;
     public void OnLikeTheme(int val)
     {
 
@@ -654,7 +805,8 @@ public class MainUI : MonoBehaviour
                 go[val].SetActive(true);
                 //테마를 문자로 저장하자.
                 themeTextChoice = themeTexts[val].text;
-                print("선택된테마" + themeTextChoice);
+                //print("선택된테마" + themeTextChoice);
+
             }
             else
             {
@@ -663,6 +815,87 @@ public class MainUI : MonoBehaviour
 
         }
 
+        //카운트가 0이면 새로추가
+        if (myBigCategory.Count == 0)
+        {
+            myBigCategory.Add(themeTextChoice + ">");
+            //0번 내용을 출력
+            print("나의빅카테고리0" + myBigCategory[0]);
+            bigChategoryCount++;
+
+        }
+        //이미 값이 있으면 덮어쓰기
+        else
+        {
+            myBigCategory[0] = themeTextChoice + ">";
+            print("나의빅카테고리0" + myBigCategory[0]);
+        }
+
+
+        /* //themeTextChoice 를 myBigCategory List 에 저장
+         if (bigChategoryCount == 0)
+         {
+             //카운트가 0이면 새로추가
+             if (myBigCategory.Count == 0)
+             {
+                 myBigCategory.Add(themeTextChoice + ">");
+                 //0번 내용을 출력
+                 print("나의빅카테고리0" + myBigCategory[0]);
+                 bigChategoryCount++;
+
+             }
+             //이미 값이 있으면 덮어쓰기
+             else
+             {
+                 myBigCategory[0] = themeTextChoice + ">";
+                 print("나의빅카테고리0" + myBigCategory[0]);
+             }
+
+         }
+         else if (bigChategoryCount == 1)
+         {
+             //카운트가 1이면 새로추가
+             if (myBigCategory.Count == 1)
+             {
+                 myBigCategory.Add(themeTextChoice + ">");
+                 //0번 내용을 출력
+                 print("나의빅카테고리1" + myBigCategory[1]);
+                 bigChategoryCount++;
+
+             }
+             //이니면 1번위치에 저장.
+             else
+             {
+                 myBigCategory[1] = themeTextChoice + ">";
+                 print("나의빅카테고리1" + myBigCategory[1]);
+             }
+
+
+         }
+         else if (bigChategoryCount == 2)
+         {
+             //이미 값이 있으면 덮어쓰기
+             if (myBigCategory.Count == 2)
+             {
+                 myBigCategory.Add(themeTextChoice + ">");
+                 //0번 내용을 출력
+                 print("나의빅카테고리2" + myBigCategory[2]);
+                 bigChategoryCount = 0;
+             }
+             else
+             {
+                 myBigCategory[2] = themeTextChoice + ">";
+                 print("나의빅카테고리2" + myBigCategory[2]);
+
+             }
+
+
+         }*/
+        /*else
+        {
+            myBigCategory[bigChategoryCount] = themeTextChoice + ">";
+            print("나의빅카테고리" + bigChategoryCount + myBigCategory[bigChategoryCount]);
+        }*/
 
     }
 
@@ -689,6 +922,7 @@ public class MainUI : MonoBehaviour
         //회원가입 오브젝트 끄기
         mainUiObject.imgRegist_Object.SetActive(false);
     }
+
     public void LoadJSONTest()
     {
 
@@ -769,8 +1003,6 @@ public class MainUI : MonoBehaviour
         }
 
     }
-
-
     //파일로드 테스트 
     public void LoadTest()
     {
@@ -842,7 +1074,6 @@ public class MainUI : MonoBehaviour
         }
 
     }
-
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -957,19 +1188,19 @@ public class MainUI : MonoBehaviour
                     if (userInfo["smallCategory"] != null)
                     {
                         string smallCategory = userInfo["smallCategory"];
-                        print("smallCategory" + smallCategory);
+                        //print("smallCategory" + smallCategory);
                         mySmallCategory.Add(smallCategory);
                     }
                     if (userInfo["smallCategory2"] != null)
                     {
                         string smallCategory = userInfo["smallCategory2"];
-                        print("smallCategory2" + smallCategory);
+                        //print("smallCategory2" + smallCategory);
                         mySmallCategory.Add(smallCategory);
                     }
                     if (userInfo["smallCategory3"] != null)
                     {
                         string smallCategory = userInfo["smallCategory3"];
-                        print("smallCategory3" + smallCategory);
+                        //print("smallCategory3" + smallCategory);
                         mySmallCategory.Add(smallCategory);
                     }
 
@@ -977,15 +1208,15 @@ public class MainUI : MonoBehaviour
                     
                     Text firstLikeText = firstLikeObject.GetComponent<Text>();
                     firstLikeText.text = mySmallCategory[0];
-                    print("첫번째관심사" + firstLikeText.text);
+                    //print("첫번째관심사" + firstLikeText.text);
 
                     Text secondLikeText = secondLikeObject.GetComponent<Text>();
                     secondLikeText.text = mySmallCategory[1];
-                    print("두번째관심사" + secondLikeText.text);
+                    //print("두번째관심사" + secondLikeText.text);
 
                     Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
                     thirdLikeText.text = mySmallCategory[2];
-                    print("세번째관심사" + thirdLikeText.text);
+                    //print("세번째관심사" + thirdLikeText.text);
 
                     //Text secondLikeText = GameObject.Find("Text_Second_Like").GetComponent<Text>();
                     //firstLikeText.text = mySmallCategory[1];
@@ -994,7 +1225,7 @@ public class MainUI : MonoBehaviour
 
                     //로그인처리하기
                     Login();
-                    print("로그인 완료");
+                    //print("로그인 완료");
                     //루틴 나가기
                     break;
 
