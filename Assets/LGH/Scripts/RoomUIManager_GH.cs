@@ -9,8 +9,24 @@ using static System.Net.WebRequestMethods;
 
 public class RoomUIManager_GH : MonoBehaviour
 {
-    //http ip
-    public string furnitureURL = "http://192.168.0.76:8080/ground-furniture";
+    public static RoomUIManager_GH instance;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    //http
+    public string httpIP = "192.168.0.76";
+    public string httpPort = "8080";
+
 
     // 가구 리스트를 만든다.
     public List<Image> ui_Furniture = new List<Image>();
@@ -50,13 +66,15 @@ public class RoomUIManager_GH : MonoBehaviour
     //벽 가구
     public WallObjectInfoList wallObjectInfoList;
 
+    //타일 및 벽
+    public UserRoomInfo userRoomInfo;
 
     //현재의 벽과 땅 타일
     int cur_W_Index = 0;
     int cur_T_Index = 0;
 
     //유저 아이디 더미 데이터
-    string roomUserId = "규현";
+    public string roomUserId = "user1";
 
     void Start()
     {
@@ -107,12 +125,12 @@ public class RoomUIManager_GH : MonoBehaviour
         // 현재 방에 배치되어있는 정보 방정보 보내는 거로 바꾸기.
         for (int i = 0; i < list_Furniture.Count; i++)
         {
-            // 땅 가구 데이터 보내기
+            //땅 가구 데이터 보내기
             if (list_Furniture[i].layer == LayerMask.NameToLayer("Furniture"))
             {
                 FurnitureData_GH fd = list_Furniture[i].GetComponent<FurnitureData_GH>();
                 HttpInfo info = new HttpInfo();
-                info.url = furnitureURL;
+                info.url = "http://" + httpIP + ":" + httpPort + "/ground-furniture";
                 info.body = JsonUtility.ToJson(fd.furnitureInfo);
                 info.contentType = "application/json";
                 info.onComplete = (DownloadHandler downloadHandler) =>
@@ -120,14 +138,13 @@ public class RoomUIManager_GH : MonoBehaviour
                     print(downloadHandler.text);
                 };
                 StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
-
             }
             // 벽가구 데이터 보내기
             else if (list_Furniture[i].layer == LayerMask.NameToLayer("WallObject"))
             {
                 WallObjectData_GH wd = list_Furniture[i].GetComponent<WallObjectData_GH>();
                 HttpInfo info = new HttpInfo();
-                info.url = furnitureURL;
+                info.url = "http://" + httpIP + ":" + httpPort + "/wall-furniture";
                 info.body = JsonUtility.ToJson(wd.wallObjectInfo);
                 info.contentType = "application/json";
                 info.onComplete = (DownloadHandler downloadHandler) =>
@@ -142,9 +159,10 @@ public class RoomUIManager_GH : MonoBehaviour
         UserRoomInfo roomInfo = new UserRoomInfo();
         roomInfo.wallIndex = cur_W_Index;
         roomInfo.tileIndex = cur_T_Index;
+        roomInfo.userId = roomUserId;
 
         HttpInfo roomHttpInfo = new HttpInfo();
-        roomHttpInfo.url = furnitureURL;
+        roomHttpInfo.url = "http://" + httpIP + ":" + httpPort + "/room-info";
         roomHttpInfo.body = JsonUtility.ToJson(roomInfo);
         roomHttpInfo.contentType = "application/json";
         roomHttpInfo.onComplete = (DownloadHandler downloadHandler) =>
@@ -157,8 +175,7 @@ public class RoomUIManager_GH : MonoBehaviour
     public void OnLoad()
     {
         FurniLoad();
-
-       
+        RoomLoad();
     }
 
     void FurniLoad()
@@ -171,54 +188,69 @@ public class RoomUIManager_GH : MonoBehaviour
 
 
         //받아올때 아이디 뒤에 붙이게
-        for (int i = 0; i < list_Furniture.Count; i++)
+
+        HttpInfo info = new HttpInfo();
+        info.url = "http://" + httpIP + ":" + httpPort + "/ground-furniture/user?userId=" + roomUserId;
+        info.onComplete = (DownloadHandler downloadHandler) =>
         {
-            // 벽, 땅 가구 데이터 받기
-            if (list_Furniture[i].layer == LayerMask.NameToLayer("Furniture"))
-            {
-                HttpInfo info = new HttpInfo();
-                info.url = furnitureURL;
-                info.onComplete = (DownloadHandler downloadHandler) =>
-                {
-                    print(downloadHandler.text);
-                    string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-                    print(jsonData);
-                    //jsonData를 PostInfoArray 형으로 바꾸자. 
-                    furnitureInfoList = JsonUtility.FromJson<FurnitureInfoList>(jsonData);
-                };
-                StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
-            }
-            else if (list_Furniture[i].layer == LayerMask.NameToLayer("WallObject"))
-            {
-                HttpInfo info = new HttpInfo();
-                info.url = furnitureURL;
-                info.onComplete = (DownloadHandler downloadHandler) =>
-                {
-                    print(downloadHandler.text);
-                    string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-                    print(jsonData);
-                    //jsonData를 PostInfoArray 형으로 바꾸자. 
-                    wallObjectInfoList = JsonUtility.FromJson<WallObjectInfoList>(jsonData);
-                };
-                StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
-            }
-        }
+            print(downloadHandler.text);
+            string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
+            print(jsonData);
+            //jsonData를 PostInfoArray 형으로 바꾸자. 
+            furnitureInfoList = JsonUtility.FromJson<FurnitureInfoList>(jsonData);
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
+
+        HttpInfo info2 = new HttpInfo();
+        info2.url = "http://" + httpIP + ":" + httpPort + "/wall-furniture/user?userId=" + roomUserId;
+        info2.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            print(downloadHandler.text);
+            string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
+            print(jsonData);
+            //jsonData를 PostInfoArray 형으로 바꾸자. 
+            wallObjectInfoList = JsonUtility.FromJson<WallObjectInfoList>(jsonData);
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Get(info2));
+
+        StartCoroutine(Setting());
+
+    }
+
+    IEnumerator Setting()
+    {
+
+        yield return new WaitForSeconds(3);
+        Set();
+    }
+    public void Set()
+    {
         //벽, 땅가구 데이터 세팅
         for (int i = 0; i < list_Furniture.Count; i++)
         {
             if (list_Furniture[i].layer == LayerMask.NameToLayer("Furniture"))
             {
-                int furni = 0;
-                FurnitureData_GH fd = list_Furniture[i].GetComponent<FurnitureData_GH>();
-                fd.furnitureInfo = furnitureInfoList.data[furni];
-                furni++;
+                print("가구 돼라");
+                for (int j = 0; j < furnitureInfoList.data.Count; j++)
+                {
+                    FurnitureData_GH fd = list_Furniture[i].GetComponent<FurnitureData_GH>();
+                    if (list_Furniture[i].name == furnitureInfoList.data[j].furniName)
+                    {
+                        fd.furnitureInfo = furnitureInfoList.data[j];
+                    }
+                }
             }
             else if (list_Furniture[i].layer == LayerMask.NameToLayer("WallObject"))
             {
-                int wall = 0;
-                WallObjectData_GH wd = list_Furniture[i].GetComponent<WallObjectData_GH>();
-                wd.wallObjectInfo = wallObjectInfoList.data[wall];
-                wall++;
+                print("벽 돼라");
+                for (int j = 0; j < wallObjectInfoList.data.Count; j++)
+                {
+                    WallObjectData_GH wd = list_Furniture[i].GetComponent<WallObjectData_GH>();
+                    if (list_Furniture[i].name == wallObjectInfoList.data[j].furniName)
+                    {
+                        wd.wallObjectInfo = wallObjectInfoList.data[j];
+                    }
+                }
             }
         }
     }
@@ -227,19 +259,21 @@ public class RoomUIManager_GH : MonoBehaviour
     {
         // 방정보 받아오기
         HttpInfo info = new HttpInfo();
-        info.url = furnitureURL;
+        info.url = "http://" + httpIP + ":" + httpPort + "/room-info?userId=" + roomUserId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
             print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자. todo리스트 어떻게 받을지 물어보기
-            //wallObjectInfoList = JsonUtility.FromJson<UserRoomInfo>(jsonData);
+            userRoomInfo = JsonUtility.FromJson<UserRoomInfo>(jsonData);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
     }
     public void OnExit()
     {
+        //OnLoad();
+
         roomSettingPanel.SetActive(false);
         roomSettingBut.gameObject.SetActive(true);
         onRoomPanel = false;
@@ -292,9 +326,6 @@ public struct UserRoomInfo
 {
     public int wallIndex;
     public int tileIndex;
+    public string userId;
 }
 
-// 룸 세팅 함수 만들기
-// 처음 시작할 때 벽과 땅의 받은 인덱스를 적용시킨다.
-// ui에서 클릭한 벽과 땅 인덱스를 이쪽 함수로 보내고 각각 저장한다..
-// 저장 버튼을 누르면 그 값을 보낸다.

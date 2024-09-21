@@ -61,7 +61,7 @@ public class SlotClick_GH : MonoBehaviour
         int wallObjectNum = 0;
         if (wallObjectData != null)
         {
-            wallObjectNum = (int)wallObjectData.wallObjectInfo.wallPos - 1;
+            wallObjectNum = (int)wallObjectData.wallObjectInfo.furniPos - 1;
         }
 
         if (roomUIMa.list_Furniture[myIndex].activeSelf)
@@ -73,7 +73,7 @@ public class SlotClick_GH : MonoBehaviour
             }
             else if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
             {
-                wallObjectData.wallObjectInfo.onPlace = false;
+                wallObjectData.wallObjectInfo.furniOnPlace = false;
                 dragManager.onWallObjects[wallObjectNum] = false;
             }
             roomUIMa.list_Furniture[myIndex].SetActive(false);
@@ -86,7 +86,7 @@ public class SlotClick_GH : MonoBehaviour
             }
             else if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
             {
-                wallObjectData.wallObjectInfo.onPlace = true;
+                wallObjectData.wallObjectInfo.furniOnPlace = true;
                 dragManager.onWallObjects[wallObjectNum] = true;
 
             }

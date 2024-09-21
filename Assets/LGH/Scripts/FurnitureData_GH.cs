@@ -5,10 +5,10 @@ using UnityEngine;
 public class FurnitureData_GH : MonoBehaviour
 {
     public FurnitureInfo furnitureInfo;
-    
+    DragManager_GH dragM;
     void Start()
     {
-        DragManager_GH dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
+        dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
         transform.position = new Vector3(dragM.ground_Xs[furnitureInfo.furniCurrentX].transform.position.x, 0.25f, dragM.ground_Zs[furnitureInfo.furniCurrentZ].transform.position.z);
         if (furnitureInfo.onPlace)
         {
@@ -21,6 +21,7 @@ public class FurnitureData_GH : MonoBehaviour
     }
     private void Update()
     {
-        
+        transform.position = new Vector3(dragM.ground_Xs[furnitureInfo.furniCurrentX].transform.position.x, 0.25f, dragM.ground_Zs[furnitureInfo.furniCurrentZ].transform.position.z);
+
     }
 }

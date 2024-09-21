@@ -10,7 +10,7 @@ public class MemoData_GH : MonoBehaviour
     {
 
         TMP_Text memoText = GetComponentInChildren<TMP_Text>();
-        memoText.text = memoInfo.memoText;
+        memoText.text = memoInfo.content;
 
     }
 

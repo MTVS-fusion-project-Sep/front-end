@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+using static System.Net.WebRequestMethods;
 
 
 public class MemoManager_GH : MonoBehaviour
 {
     [SerializeField]
     List<GameObject> memoList = new List<GameObject>();
+
 
     //메모 더미데이터를 위한 갯수
     public int memoCount = 0;
@@ -32,7 +35,6 @@ public class MemoManager_GH : MonoBehaviour
     public MemoInfoList memoInfoList;
     void Awake()
     {
-       
 
         memoButtons[0].SetActive(false);
     }
@@ -69,27 +71,27 @@ public class MemoManager_GH : MonoBehaviour
 
         // 새로운 메모 데이터 보내기
         MemoInfo_GH memoInfo = new MemoInfo_GH();
-        memoInfo.userID = "이규현";
-        memoInfo.memoText = inputfield.text;
-        memoInfo.writerID = "전성표";
-        memoInfo.writeDate = DateTime.Now.ToString(("yyyy-MM-dd HH:mm"));
+        memoInfo.toUserId = "user1";
+        memoInfo.content = inputfield.text;
+        memoInfo.fromUserId = "user1";
+        memoInfo.registDate = DateTime.Now.ToString(("yyyy-MM-dd HH:mm"));
 
         HttpInfo HttpInfo = new HttpInfo();
-        HttpInfo.url = "";
+        HttpInfo.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book";
         HttpInfo.body = JsonUtility.ToJson(memoInfo);
-        HttpInfo.contentType = "";
+        HttpInfo.contentType = "application/json";
         HttpInfo.onComplete = (DownloadHandler downloadHandler) =>
         {
             print(downloadHandler.text);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Post(HttpInfo));
     }
-    public void memoLoad()
+    public void MemoLoad()
     {
-
+        print(RoomUIManager_GH.instance.roomUserId);
         //메모 받아오기
         HttpInfo info = new HttpInfo();
-        info.url = "";
+        info.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book/reader?readerId=" + RoomUIManager_GH.instance.roomUserId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             print(downloadHandler.text);
@@ -99,11 +101,18 @@ public class MemoManager_GH : MonoBehaviour
             memoInfoList = JsonUtility.FromJson<MemoInfoList>(jsonData);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
-
+        StartCoroutine(SetMemo());
+        
+    }
+    IEnumerator SetMemo()
+    {
+        yield return new WaitForSeconds(2);
+        print("메모 세팅");
         memoCount = memoInfoList.data.Count;
         //기록되어 있는 메모에 따른 메모 생성
         for (int i = 0; i < memoCount; i++)
         {
+            //null===================================================================================================================
             memoList.Add(Instantiate(memoFactory, GameObject.Find("ContentMemo").transform));
             TMP_InputField inputfield = memoList[i].GetComponentInChildren<TMP_InputField>();
             inputfield.gameObject.SetActive(false);
@@ -111,10 +120,25 @@ public class MemoManager_GH : MonoBehaviour
             md.memoInfo = memoInfoList.data[i];
         }
     }
-
     public void memoDelete()
     {
         // 메모 삭제시 메모 아이디 추가??======================================================
+        // 새로운 메모 데이터 보내기
+        MemoInfo_GH memoInfo = new MemoInfo_GH();
+        memoInfo.toUserId = "이규현";
+
+        HttpInfo HttpInfo = new HttpInfo();
+        HttpInfo.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/ground-furniture/user?userId=" + RoomUIManager_GH.instance.roomUserId;
+        HttpInfo.body = JsonUtility.ToJson(memoInfo);
+        HttpInfo.contentType = "application/json";
+        HttpInfo.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            print(downloadHandler.text);
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Post(HttpInfo));
+
+
+
         //현재 순서에 있는 메모를 삭제 시킨다.
         Destroy(memoList[memoSwipe.currentPage].gameObject);
         //메모의 총 숫자를 하나 낮춘다.
@@ -135,7 +159,6 @@ public class MemoManager_GH : MonoBehaviour
             memoButtons[0].SetActive(true);
             memoButtons[1].SetActive(false);
             memoButtons[2].SetActive(false);
-
         }
         else
         {
