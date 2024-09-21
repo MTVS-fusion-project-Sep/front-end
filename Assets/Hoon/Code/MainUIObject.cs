@@ -25,20 +25,20 @@ public class MainUIObject : MonoBehaviour
     public GameObject panel_MyInfo_Object;
     public GameObject panel_Exit;
     public GameObject btnExit_Menu_Object;
-
+    public GameObject text_UserNameObject;
 
     // Text elements
     public Text idText;
     public Text passText;
     public Text phID_Text;
     public Text phPass_Text;
+    public Text nameText;
 
     public Button move_Lobby_Btn;
     //아아디 필드
     public InputField id_InputField;
     //패스 필드
     public InputField pass_InputField;
-
 
     public void Initialize()
     {
@@ -68,6 +68,11 @@ public class MainUIObject : MonoBehaviour
         phPass_Text = phPass_Object.GetComponent<Text>();
         id_InputField = inputField_ID_Object.GetComponent<InputField>();
         pass_InputField = inputField_Pass_Object.GetComponent<InputField>();
+
+        text_UserNameObject = GameObject.Find("Text_UserName");
+        //if (text_UserNameObject != null) print("Text_UserName 오브젝트 있음");
+        nameText = text_UserNameObject.GetComponent<Text>();
+        //if (nameText != null) print("nameText 있음");
 
     }
 

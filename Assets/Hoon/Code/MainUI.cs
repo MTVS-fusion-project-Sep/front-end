@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,7 +7,16 @@ using UnityEngine.UI;
 using UnityEngine.XR;
 //파일불러오기
 using System.IO;
+// Dictionary 사용을 위함
+using System.Collections.Generic;
+// JSON 변환을 위해 필요 (Json.NET 라이브러리)
+using Newtonsoft.Json;
 using UnityEngine.Rendering.LookDev;
+using UnityEngine.Networking;
+using System;
+using UnityEngine.Rendering;
+using System.Linq;
+
 
 public class MainUI : MonoBehaviour
 {
@@ -92,6 +101,11 @@ public class MainUI : MonoBehaviour
     Text phID_Text;
     Text phPass_Text;*/
 
+    string idText;
+    string passText;
+    string nameText;
+
+
     string phID_STR = "아이디(이메일)";
     string phPass_STR = "비밀번호";
 
@@ -122,8 +136,6 @@ public class MainUI : MonoBehaviour
     bool isViewExitMenu = false;
     bool isViewPanelLike = false;
 
-
-
     //로비를 제외하고 버튼은 계속 유지합니다.
     // Start is called before the first frame update
 
@@ -133,24 +145,77 @@ public class MainUI : MonoBehaviour
     GameObject scrollView_Life;
     GameObject scrollView_Health;
 
+    GameObject text_Culture_Object;
+    GameObject text_Leiture_Object;
+    GameObject text_Tech_Object;
+    GameObject text_Life_Object;
+    GameObject text_Health_Object;
+
+    Text culture_Text;
+    Text leiture_Text;
+    Text tech_Text;
+    Text life_Text;
+    Text health_Text;
+
     int likeCount = 0;
 
+    [System.Serializable]
+    public class HttpInfo
+    {
+        public string url = "";
+
+        // Body 데이터
+        public string body = "";
+
+        // contentType
+        public string contentType = "";
+
+        // 통신 성공 후 호출되는 함수 담을 변수
+        public Action<DownloadHandler> onComplete;
+    }
+
+    //userId 저장하는 변수
+    string saveUserId;
+
+    //category List
+    List<string> mySmallCategory = new List<string>();
+
+    GameObject firstLikeObject;
+    GameObject secondLikeObject;
+    GameObject thirdLikeObject;
 
     void Start()
     {
-        //OFFIMG(); // 이미지 오브젝트 끄기
+        firstLikeObject = GameObject.Find("Text_First_Like");
+        secondLikeObject = GameObject.Find("Text_Second_Like");
+        thirdLikeObject = GameObject.Find("Text_Third_Like");
+
         scrollView_Culture = GameObject.Find("Scroll View_Culture");
         scrollView_Leiture = GameObject.Find("Scroll View_Leiture");
         scrollView_Tech = GameObject.Find("Scroll View_Tech");
         scrollView_Life = GameObject.Find("Scroll View_Life");
         scrollView_Health = GameObject.Find("Scroll View_Health");
 
+        //테마오브젝트
+        text_Culture_Object = GameObject.Find("Text_Culture");
+        text_Leiture_Object = GameObject.Find("Text_Leisure");
+        text_Tech_Object = GameObject.Find("Text_Tech ");
+        text_Life_Object = GameObject.Find("Text_Life");
+        text_Health_Object = GameObject.Find("Text_Health");
+
+        //테마텍스트
+        culture_Text = text_Culture_Object.GetComponent<Text>();
+        leiture_Text = text_Leiture_Object.GetComponent<Text>();
+        tech_Text = text_Tech_Object.GetComponent<Text>();
+        life_Text = text_Life_Object.GetComponent<Text>();
+        health_Text = text_Health_Object.GetComponent<Text>();
+
+        //스크롤뷰
         scrollView_Culture.SetActive(false);
         scrollView_Leiture.SetActive(false);
         scrollView_Tech.SetActive(false);
         scrollView_Life.SetActive(false);
         scrollView_Health.SetActive(false);
-
 
         //내정보버튼
         btn_MyInfo_Obejct = GameObject.Find("Btn_MyInfo");
@@ -158,144 +223,116 @@ public class MainUI : MonoBehaviour
 
         //내정보 패널을 가져오자.
         panel_MyInfo_Object = GameObject.Find("Panel_MyInfo");
-        panel_MyInfo_Object.SetActive(false);
 
-
+        //종료패널
         panel_Exit = GameObject.Find("Panel_Exit");
         panel_Exit.SetActive(false);
 
         //버튼exit
         btnExit_Menu_Object = GameObject.Find("Btn_ExitMenu");
 
+        //관심사
         panelMyLike_Object = GameObject.Find("Panel_MyLike");
         panelMyLike_Object.SetActive(false);
 
-        //OFFIMG();
 
-
-        /*if (mainUiObject.loginPass_Text_Object != null)
-        {
-            
-        }
-        else
-        {
-            print("없다");
-        }*/
-
-
-        //move_Lobby_Btn = mainUiObject.btn_Lobby_Object.GetComponent<Button>();
-
-        /*if (mainUiObject.btn_Lobby_Object != null)
-        {
-
-        }
-        else
-        {
-            print("없다");
-        }*/
-
-
-
-
-        //mainUiObject = new MainUIObject();
-        //mainUiObject.Initialize();
-
-        //로그인 오브젝트
-        //imgLogin_Object = GameObject.Find("Img_Login");
-        //회원가입 오브젝트
-        //mainUiObject.imgRegist_Object = GameObject.Find("Img_Regist");
-        /*if (mainUiObject.imgLogin_Object != null)
-        {
-            print("imgLogin_Object true");
-            mainUiObject.imgLogin_Object = GameObject.Find("Img_Login");
-           
-        }*/
-        //Lobby button
-        //btn_Lobby_Obejct = GameObject.Find("Btn_Lobby");
-
-
-        //bg
-        // mainUiObject.bg_Object = GameObject.Find("BG");
-        //mainRoom
-        //mainRoom_Object = GameObject.Find("MainRoom");
-        //myInfo
-        //myInfo_Object = GameObject.Find("Img_MyInfo");
-        //playerImg
-        //playerImg_Object = GameObject.Find("PlayerImage");
-        //
-
-        /* else
-         {
-             print("imgLogin_Object null");
-             MainUI.Instance.imgLogin_Object = GameObject.Find("Img_Login");
-         }*/
-        //
-        //imgLogout_Object = GameObject.Find("imgLogout");
-        //
-
-        //loginID_Text_Obejct = GameObject.Find("Text_ID");
-        //if(mainUiObject.loginID_Text_Obejct != null) idText = loginID_Text_Obejct.GetComponent<Text>();
-
-
-        //패스워드택스트
-        /*if(loginPass_Text_Obejct == null)
-        {
-            loginPass_Text_Obejct = GameObject.Find("Text_Pass");
-            if (loginPass_Text_Obejct != null) 
-        }*/
-
-        /* if (phID_Obejct == null)
-         {
-             //ID 미리보기
-             phID_Obejct = GameObject.Find("Ph_ID");
-             if (phID_Obejct != null)  
-         }*/
-        /* if (phPass_Object == null)
-         {
-             //Pass 미리보기
-             phPass_Object = GameObject.Find("Ph_Pass");
-             if (phPass_Object != null) 
-         }*/
-        /* if (inputField_ID_Obejct == null)
-         {
-
-             inputField_ID_Obejct = GameObject.Find("IF_ID");
-             if (inputField_ID_Obejct != null)  id_InputField = inputField_ID_Obejct.GetComponent<InputField>();
-         }*/
-        /*if (inputField_Pass_Obejct == null)
-        {
-            //
-            inputField_Pass_Obejct = GameObject.Find("IF_Pass");
-            if (inputField_Pass_Obejct != null)  
-        }*/
-
-        //
-        //img_Regist_Object = GameObject.Find("Img_Regist");
-
-
-
+        //OFFIMG(); // 이미지 오브젝트 끄기
+        
 
 
     }
-    // Update is called once per frame
-    /*    void Update()
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
+            HttpInfo info = new HttpInfo();
+            info.url = "http://192.168.0.76:8080/user/temp";
+            // StartCoroutine(MainUI.Instance().Get(info));
+            //StartCoroutine(MainUI().Get(info));
+        }//업데이트
+    }
 
 
 
-        }//업데이트*/
+    // 서버에서 JSON 데이터를 가져오기 위한 URL
+    string testJson = "https://jsonplaceholder.typicode.com/posts";
+    string testJson101 = "https://jsonplaceholder.typicode.com/posts/101";
+    private string url = "http://192.168.0.76:8080/user"; // 서버에서 JSON 파일을 제공하는 URL
+    private string testUrl = "http://192.168.0.76:8080/user/temp";
+
+    public void GetJSONUserInfo()
+    {
+        print("GetJSON, 로그인 버튼");
+        // 입력된 아이디와 패스워드 가져오기
+        idText = mainUiObject.id_InputField.text;
+        passText = mainUiObject.pass_InputField.text;
+
+        // 코루틴을 사용하여 서버로부터 데이터를 가져옴
+        StartCoroutine(CheckLoginFromServer(idText, passText));
+    }
 
 
+    private IEnumerator CheckLoginFromServer(string idText, string passText)
+    {
+
+        // HTTP GET 요청을 보냄, URl로 보내고
+        //UnityWebRequest request = UnityWebRequest.Get(url);
+        UnityWebRequest request = UnityWebRequest.Get(testJson);
+        //UnityWebRequest request = UnityWebRequest.Get(testJson101); 
+        //UnityWebRequest request = UnityWebRequest.Get(testJson + "/" + idText);
+        //콜백이 올때까지 기다린다.
+        yield return request.SendWebRequest();
+
+        //잘못보냈다는 오류가 발생함.
+
+        //요청 결과 확인
+        //연결오류, 프로토콜 오류 발생시
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            print("서버 연결 오류: " + request.error);
+        }
+        //문제가 없다면
+        else
+        {
+            print("서버 연결 성공");
+
+            // 서버로부터 받은 응답 데이터를 문자열로 변환
+            string jsonResponse = request.downloadHandler.text;
+
+            // 서버에서 받은 JSON 데이터 출력
+            //print("서버 응답 데이터: " + jsonResponse);
+
+            // 로그인 성공
+            Login();
+            print("로그인 성공");
+        }
+
+    }// 서버 코루틴 끝
 
 
+    private IEnumerator TestHttpGet()
+    {
+        // HTTP GET 요청을 보냄, URl로 보내고
+        UnityWebRequest request = UnityWebRequest.Get(testJson);
+
+        yield return request.SendWebRequest();
+
+    }
+
+    string likeObjectName;
+    string likeObjectNameText;
     public void OnLikeText(GameObject likeTextObject)
     {
-        string likeText = likeTextObject.name;
-        //print(likeText);
-        OnLikeChoice(likeText);
+        likeObjectName = likeTextObject.name;
+        likeObjectNameText = likeTextObject.GetComponent<Text>().text;
+        print("OnLikeText" + likeObjectNameText);
+        //선택한 이름과, 테마이름을 저장.
+        OnLikeChoice(likeObjectName, themeTextChoice);
     }
-    
-    void OnLikeChoice(string objectName)
+
+    void OnLikeChoice(string objectName, string themeName)
     {
         string likeText;
         GameObject textTheater_Object = GameObject.Find(objectName);
@@ -307,7 +344,7 @@ public class MainUI : MonoBehaviour
 
         if (likeCount == 0)
         {
-            
+
             GameObject btnFirst_Like_Object = GameObject.Find("Text_First_Like");
             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
             btnFirst_Like_Text.text = likeText;
@@ -315,7 +352,7 @@ public class MainUI : MonoBehaviour
         }
         else if (likeCount == 1)
         {
-            
+
             GameObject btnFirst_Like_Object = GameObject.Find("Text_Second_Like");
             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
             btnFirst_Like_Text.text = likeText;
@@ -323,14 +360,12 @@ public class MainUI : MonoBehaviour
         }
         else
         {
-            
+
             GameObject btnFirst_Like_Object = GameObject.Find("Text_Third_Like");
             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
             btnFirst_Like_Text.text = likeText;
             likeCount = 0;
         }
-
-       
 
 
     }
@@ -360,19 +395,19 @@ public class MainUI : MonoBehaviour
         else
         {
             List<string> newString = new List<string>();
-            
+
             // 기존 텍스트를 줄별로 나누어 배열로 가져오기
             string[] beforeStringLines = File.ReadAllLines(path);
 
             // 배열의 각 줄을 리스트에 추가
             newString.AddRange(beforeStringLines);
-            print("newString 개수" + newString.Count);
-            
+            //print("newString 개수" + newString.Count);
+
             //카운트가 3보다 작으면 텍스트를 추가
-            if(newString.Count < 3)
+            if (newString.Count < 3)
             {
                 newString.Add(likeText);
-                
+
             }
             //카운트가 3이되면 idx를 초기화 idx 에 추가
             else if (newString.Count == 3)
@@ -386,7 +421,7 @@ public class MainUI : MonoBehaviour
                 //idx 2보다 작으면
                 else if (likeStirngIdx == 1)
                 {
-                    
+
                     //idx에 추가
                     newString[likeStirngIdx] = likeText;
                     likeStirngIdx++;
@@ -396,7 +431,7 @@ public class MainUI : MonoBehaviour
 
                     //idx에 추가
                     newString[likeStirngIdx] = likeText;
-                    likeStirngIdx=0;
+                    likeStirngIdx = 0;
                 }
 
 
@@ -414,78 +449,212 @@ public class MainUI : MonoBehaviour
             //File.WriteAllText(path, likeText);
             //print("신규 라이크 저장" + likeText);
 
+        }
+
+    }
+
+    public void OnLikeTextJson()
+    {
+
+        //print(likeText);
+        //선택한 이름과, 테마이름을 저장.
+        OnLikeChoiceJson(likeObjectName, themeTextChoice, likeObjectNameText);
+        //print("OnLikeTextJson" + themeTextChoice);
+
+    }
+
+    void OnLikeChoiceJson(string objectName, string themeName, string objectNameText)
+    {
+        string likeText;
+        GameObject textTheater_Object = GameObject.Find(objectName);
+        Text textTheater_Text = textTheater_Object.GetComponent<Text>();
+        likeText = textTheater_Text.text;
+
+        //텍스트 저장
+        SaveLikeTextJson(objectNameText, themeName);
+        //print("OnLikeChoiceJson" + themeName);
+        //print("OnLikeChoiceJson" + objectNameText);
+
+        /* if (likeCount == 0)
+         {
+
+             GameObject btnFirst_Like_Object = GameObject.Find("Text_First_Like");
+             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
+             btnFirst_Like_Text.text = likeText;
+             likeCount++;
+         }
+         else if (likeCount == 1)
+         {
+
+             GameObject btnFirst_Like_Object = GameObject.Find("Text_Second_Like");
+             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
+             btnFirst_Like_Text.text = likeText;
+             likeCount++;
+         }
+         else
+         {
+
+             GameObject btnFirst_Like_Object = GameObject.Find("Text_Third_Like");
+             Text btnFirst_Like_Text = btnFirst_Like_Object.GetComponent<Text>();
+             btnFirst_Like_Text.text = likeText;
+             likeCount = 0;
+         }*/
+
+
+    }
+
+    //유저데이터 클래스
+    [System.Serializable]
+    public class UserData
+    {
+        public string userId;
+        public string userPassword;
+        public string userName;
+        public int likeCount;
+        public string bigCategory;
+        public string smallCategory;
+        public string bigCategory2;
+        public string smallCategory2;
+        public string bigCategory3;
+        public string smallCategory3;
+    }
+
+
+    public void SaveLikeTextJson(string likeText, string themeText)
+    {
+        //파일 경로를 불러옵니다.
+        string path = Application.dataPath + "/Resources/SaveRegist.json";
+        //파일이 있으면
+        if (File.Exists(path))
+        {
+            // 파일의 모든 텍스트를 가져온다 (JSON 파일).
+            loadUserInfo = File.ReadAllText(path);
+
+            //파일을 잘 가져왔다면
+            if (loadUserInfo != null)
+            {
+                print("JSON 파일 읽기 완료" + loadUserInfo);
+                // UserData를 List로 만들고 JSON 데이터를 리스트로 파싱
+                List<UserData> users = JsonConvert.DeserializeObject<List<UserData>>(loadUserInfo);
+
+                //유저아이디
+                string userStr = saveUserId;
+                print("유저 아이디 확인" + userStr);
+
+                // ID가 일치하는 부분 찾기
+                UserData matchingUser = users.Find(user => user.userId == saveUserId);
+
+                //ID를 확인합니다. 유저 아이디가 포함되어 있다면
+                if (matchingUser != null)
+                {
+
+
+                    //라이크 카운트가 없으면 신규추가
+                    if (matchingUser.likeCount == 0)
+                    {
+
+                        // bigCategory에 themeText, smallCategory에 likeText 설정
+                        matchingUser.bigCategory = themeText;
+                        matchingUser.smallCategory = likeText;
+                        matchingUser.likeCount++;
+
+                        // JSON으로 신규저장
+                        string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
+                        File.WriteAllText(path, updatedJson);
+                        print("JSON 파일 저장 완료: " + updatedJson);
+                    }
+                    //라이크 카운트가 0이 아니면 기존정보에 추가
+                    else if (matchingUser.likeCount == 1)
+                    {
+                        // bigCategory에 themeText, smallCategory에 likeText 설정
+                        matchingUser.bigCategory2 = themeText;
+                        matchingUser.smallCategory2 = likeText;
+                        matchingUser.likeCount++;
+
+                        // JSON으로 신규저장
+                        string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
+                        File.WriteAllText(path, updatedJson);
+                        print("JSON 파일 저장 완료: " + updatedJson);
+
+                    }
+                    //라이크 카운트가 0이 아니면 기존정보에 추가
+                    else if (matchingUser.likeCount == 2)
+                    {
+                        // bigCategory에 themeText, smallCategory에 likeText 설정
+                        matchingUser.bigCategory3 = themeText;
+                        matchingUser.smallCategory3 = likeText;
+                        matchingUser.likeCount++;
+
+                        // JSON으로 신규저장
+                        string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
+                        File.WriteAllText(path, updatedJson);
+                        print("JSON 파일 저장 완료: " + updatedJson);
+
+                    }
+                    //라이크 카운트가 0이 아니면 기존정보에 추가
+                    else if (matchingUser.likeCount == 3)
+                    {
+                        // bigCategory에 themeText, smallCategory에 likeText 설정
+                        matchingUser.bigCategory = themeText;
+                        matchingUser.smallCategory = likeText;
+                        matchingUser.likeCount = 0;
+
+                        // JSON으로 신규저장
+                        string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
+                        File.WriteAllText(path, updatedJson);
+                        print("JSON 파일 저장 완료: " + updatedJson);
+
+                    }
+
+
+                }
+                else
+                {
+                    print("userId 불일치");
+                }
+            }
+            else
+            {
+                print("파일없음");
+            }
 
         }
 
-        /* string[] arrayText = new string[3];
-          for (int i = 0; i < arrayText.Length; i++)
-           {
-               arrayText[likeCount] = likeText;
-               //텍스트저장
-               File.WriteAllText(path, arrayText[likeCount]);
 
-           }
-           */
 
     }
+    //id가 일치하는 부분만 가져오자.
+    //가져온 부분에 bigCategory 에 themeText 를 smallCategory likeText 를 넣습니다.
+    //다시 저장합니다.
 
 
-    public void OnLikeHeath()
+
+    string likeText;
+    public void OnLikeTheme(GameObject likeThemeText)
     {
-        scrollView_Culture.SetActive(false);
-        scrollView_Leiture.SetActive(false);
-        scrollView_Tech.SetActive(false);
-        scrollView_Life.SetActive(false);
-        scrollView_Health.SetActive(true);
+
+        likeText = likeThemeText.name;
+        print("선택된테마" + likeText);
     }
 
-    public void OnLikeLife()
-    {
-        scrollView_Culture.SetActive(false);
-        scrollView_Leiture.SetActive(false);
-        scrollView_Tech.SetActive(false);
-        scrollView_Life.SetActive(true);
-        scrollView_Health.SetActive(false);
-    }
+    //여기에 저장됩니다.
+    string themeTextChoice;
 
-    public void OnLikeTech()
-    {
-        scrollView_Culture.SetActive(false);
-        scrollView_Leiture.SetActive(false);
-        scrollView_Tech.SetActive(true);
-        scrollView_Life.SetActive(false);
-        scrollView_Health.SetActive(false);
-    }
-    public void OnLikeLeiture()
-    {
-        scrollView_Culture.SetActive(false);
-        scrollView_Leiture.SetActive(true);
-        scrollView_Tech.SetActive(false);
-        scrollView_Life.SetActive(false);
-        scrollView_Health.SetActive(false);
-    }
-
-    //
-    public void OnLikeCulture()
+    public void OnLikeTheme(int val)
     {
 
-        /* scrollView_Culture.SetActive(true);
-         scrollView_Leiture.SetActive(false);
-         scrollView_Tech.SetActive(false);
-         scrollView_Life.SetActive(false);
-         scrollView_Health.SetActive(false);*/
-
-        //OnLikeButton(0);
-    }
-    public void OnLikeButton(int val)
-    {
         GameObject[] go = { scrollView_Culture, scrollView_Leiture, scrollView_Tech, scrollView_Life, scrollView_Health };
+        //print("문화" + culture_Text.text);
+        Text[] themeTexts = { culture_Text, leiture_Text, tech_Text, life_Text, health_Text };
 
         for (int i = 0; i < go.Length; i++)
         {
             if (i == val)
             {
                 go[val].SetActive(true);
+                //테마를 문자로 저장하자.
+                themeTextChoice = themeTexts[val].text;
+                print("선택된테마" + themeTextChoice);
             }
             else
             {
@@ -510,10 +679,9 @@ public class MainUI : MonoBehaviour
             isViewPanelLike = false;
         }
 
-
     }
 
-
+    //로그인, 회원정보 이미지를 끕니다.
     void OFFIMG()
     {
         //로그인 오브젝트 끄기
@@ -521,7 +689,89 @@ public class MainUI : MonoBehaviour
         //회원가입 오브젝트 끄기
         mainUiObject.imgRegist_Object.SetActive(false);
     }
+    public void LoadJSONTest()
+    {
 
+        print("로그인 버튼");
+        //입력된 아이디 가져오기
+        string idText = mainUiObject.id_InputField.text;
+        //입력된 패스워드 가져오기
+        string passText = mainUiObject.pass_InputField.text;
+        // 파일명과 경로 설정 (JSON 파일)
+        string fileName = "SaveRegist";
+        string path = Application.dataPath + "/Resources/" + fileName + ".json";
+
+        // 파일이 존재하는지 확인
+        if (File.Exists(path))
+        {
+            // 파일의 모든 텍스트를 가져온다 (JSON 파일).
+            loadUserInfo = File.ReadAllText(path);
+            print("JSON 파일 읽기 완료");
+
+            // JSON 파일을 Dictionary 리스트로 변환
+            List<Dictionary<string, string>> userInfoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserInfo);
+
+            // 유저 정보가 있는지 확인
+            bool isUserFound = false;
+            foreach (var userInfo in userInfoList)
+            {
+
+                // 일치하는지 값이 잇는지 확인하기
+                if ((userInfo["ID"] == idText && userInfo["Password"] == passText))
+                {
+                    // 로그인 성공
+                    Login();
+                    print("로그인 성공");
+                    isUserFound = true;
+                    break;
+                }
+
+
+            }
+            //유저가 없으면
+            if (!isUserFound)
+            {
+                // 아이디 또는 비밀번호 불일치
+                print("불일치");
+                bool isIdFound = false;
+
+                // ID가 있는지 확인
+                foreach (var userInfo in userInfoList)
+                {
+                    if (userInfo["ID"] == idText)
+                    {
+                        isIdFound = true;
+                        break;
+                    }
+                }
+                //아이디 없으면
+                if (!isIdFound)
+                {
+                    print("아이디가 틀림");
+                    mainUiObject.id_InputField.text = "";
+                    mainUiObject.phID_Text.text = "아이디가 틀림";
+                    mainUiObject.phID_Text.color = Color.red;
+                }
+                else
+                {
+                    print("비밀번호가 틀림");
+                    mainUiObject.pass_InputField.text = "";
+                    mainUiObject.phPass_Text.text = "비밀번호 틀림";
+                    mainUiObject.phPass_Text.color = Color.red;
+                }
+            }
+        }
+        else
+        {
+            // 파일이 없으면 새로 생성 (빈 파일)
+            File.Create(path).Dispose();
+            print("JSON 파일 생성됨");
+        }
+
+    }
+
+
+    //파일로드 테스트 
     public void LoadTest()
     {
         //입력된 아이디 가져오기
@@ -560,11 +810,6 @@ public class MainUI : MonoBehaviour
         //using System.IO; 인클루드 해줘야함. //파일을 텍스트에 저장해주자.
         //File.WriteAllText(path, loadUserInfo);
         print("LoadComplite");
-
-    }
-
-    public void UIObject()
-    {
 
     }
 
@@ -608,6 +853,7 @@ public class MainUI : MonoBehaviour
         // 이벤트 해제
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+    //로그인 텍스트 리셋
     public void ResetLoginText()
     {
         //아이디 텍스트 초기화
@@ -622,15 +868,15 @@ public class MainUI : MonoBehaviour
         mainUiObject.phPass_Text.color = Color.gray;
     }
 
+    //회원가입
     public void MoveNewRegist()
     {
         //로그인이미지를 꺼주자.
         mainUiObject.imgLogin_Object.SetActive(false);
         ResetLoginText();
 
-
     }
-
+    //로그아웃하기
     public void MoveLogin()
     {
         //img_Regist_Object.SetActive(false);
@@ -638,6 +884,7 @@ public class MainUI : MonoBehaviour
         mainUiObject.imgLogin_Object.SetActive(true);
     }
 
+    //패스워드 인풋 필드의 컨텐츠 타입 변경,
     public void ViewPass()
     {
         //print(1111);
@@ -659,21 +906,180 @@ public class MainUI : MonoBehaviour
         mainUiObject.pass_InputField.text = "";
         mainUiObject.pass_InputField.text = currentText;
 
-
     }
-    public void TestCheckLogin()
+    //로컬 로그인테스트 JSON
+    public void TestLocalLoginJson()
     {
-        print("11");
+        print("로그인 버튼 클릭");
         //입력된 아이디 가져오기
-        string idText = mainUiObject.id_InputField.text;
+        idText = mainUiObject.id_InputField.text;
         //입력된 패스워드 가져오기
-        string passText = mainUiObject.pass_InputField.text;
+        passText = mainUiObject.pass_InputField.text;
+
+        // 파일명과 경로 설정 (JSON 파일)
+        string fileName = "SaveRegist";
+        string path = Application.dataPath + "/Resources/" + fileName + ".json";
+
+        // 파일이 존재하는지, 그리고 동일한 내용이 있는지 확인
+        if (File.Exists(path))
+        {
+            //pah의 모든 택스트를 가져오자.
+            loadUserInfo = File.ReadAllText(path);
+            print("JSON 파일 읽기 완료" + loadUserInfo);
+
+            // JSON 파일을 Dictionary 리스트로 변환
+            List<Dictionary<string, string>> userInfoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserInfo);
+            //print("유저정보량" + userInfoList.Count);
+
+            // 유저 정보가 있는지 확인하는 변수
+            bool isUserFound = false;
+            //리스트파일을 순차검사
+            foreach (var userInfo in userInfoList)
+            {
+                // 'ID'와 'Password' 키가 있는지 확인 하기
+                //if (userInfo.ContainsKey("userId") && userInfo.ContainsKey("userPassword"))
+                // {
+                //아이디와 패스워드가 일치하는지 확인
+                if (userInfo["userId"] == idText && userInfo["userPassword"] == passText)
+                {
+                    //userId 저장하기
+                    saveUserId = idText;
+                    //로그인해주기
+                    print("로그인 성공");
+                    //유저찾음
+                    isUserFound = true;
+                    //이름변수에 이름을 저장
+                    nameText = userInfo["userName"];
+                    //MyInfo UserName을 갱신
+                    mainUiObject.nameText.text = nameText;
+
+                    //small Category가져오기
+                    if (userInfo["smallCategory"] != null)
+                    {
+                        string smallCategory = userInfo["smallCategory"];
+                        print("smallCategory" + smallCategory);
+                        mySmallCategory.Add(smallCategory);
+                    }
+                    if (userInfo["smallCategory2"] != null)
+                    {
+                        string smallCategory = userInfo["smallCategory2"];
+                        print("smallCategory2" + smallCategory);
+                        mySmallCategory.Add(smallCategory);
+                    }
+                    if (userInfo["smallCategory3"] != null)
+                    {
+                        string smallCategory = userInfo["smallCategory3"];
+                        print("smallCategory3" + smallCategory);
+                        mySmallCategory.Add(smallCategory);
+                    }
+
+                    
+                    
+                    Text firstLikeText = firstLikeObject.GetComponent<Text>();
+                    firstLikeText.text = mySmallCategory[0];
+                    print("첫번째관심사" + firstLikeText.text);
+
+                    Text secondLikeText = secondLikeObject.GetComponent<Text>();
+                    secondLikeText.text = mySmallCategory[1];
+                    print("두번째관심사" + secondLikeText.text);
+
+                    Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
+                    thirdLikeText.text = mySmallCategory[2];
+                    print("세번째관심사" + thirdLikeText.text);
+
+                    //Text secondLikeText = GameObject.Find("Text_Second_Like").GetComponent<Text>();
+                    //firstLikeText.text = mySmallCategory[1];
+                    //Text thirdLikeText = GameObject.Find("Text_Third_Like").GetComponent<Text>();
+                    //firstLikeText.text = mySmallCategory[2];*/
+
+                    //로그인처리하기
+                    Login();
+                    print("로그인 완료");
+                    //루틴 나가기
+                    break;
+
+
+                }
+                //유저가 없으면
+                else if (!isUserFound)
+                {
+                    // 아이디 또는 비밀번호 불일치
+                    print("불일치");
+                    //유저못찾음
+                    bool isIdFound = false;
+
+                    // ID가 있는지 확인
+                    foreach (var UserInfo in userInfoList)
+                    {
+                        //iD라는게 포함되어 있는지 확인하기.
+                        if (userInfo.ContainsKey("userId"))
+                        {
+                            //id가 있으면 일치하는지 확인
+                            if (UserInfo["userId"] == idText)
+                            {
+                                isIdFound = true;
+                                break;
+                            }
+                        }
+
+                    }
+                    //아이디 없으면
+                    if (!isIdFound)
+                    {
+                        print("아이디가 틀림");
+                        mainUiObject.id_InputField.text = "";
+                        mainUiObject.phID_Text.text = "아이디가 틀림";
+                        mainUiObject.phID_Text.color = Color.red;
+                    }
+                    else
+                    {
+                        print("비밀번호가 틀림");
+                        mainUiObject.pass_InputField.text = "";
+                        mainUiObject.phPass_Text.text = "비밀번호 틀림";
+                        mainUiObject.phPass_Text.color = Color.red;
+                    }
+
+
+                }
+
+
+                //}
+
+
+
+            }
+
+
+        }
+        //파일 없으면 생성하기
+        else
+        {
+            // 파일이 없으면 새로 생성 (빈 파일)
+            File.Create(path).Dispose();
+            print("JSON 파일 생성됨");
+        }
+
+    }//TestLocalLoginJson end
+
+    //로컬 로그인테스트 스트링 타입
+    public void TestLocalLoginStirng()
+    {
+        print("로그인 버튼 클릭");
+        //입력된 아이디 가져오기
+        idText = mainUiObject.id_InputField.text;
+        //입력된 패스워드 가져오기
+        passText = mainUiObject.pass_InputField.text;
+        print("ID" + idText + "," + "pass" + passText);
 
         //문자열로 저장할경로 + 파일이름.
         //C:\Users\Admin\AppData\LocalLow\DefaultCompany\front-end
-        string path = Application.persistentDataPath + "/SaveRegist.txt";
+        string fileName = "SaveRegist";
+        //string path = Application.persistentDataPath + "/SaveRegist.txt";
+
+        //asset/Resources
+        string path = Application.dataPath + "/Resources/" + fileName + ".txt";
         //파일에 저장될 모양과 값.
-        string content = "ID" + ":" + idText + "," + "Password" + ":" + passText + "\n";
+        string content = "ID" + ":" + idText + "," + "Password" + ":" + passText;
 
         // 파일이 존재하는지, 그리고 동일한 내용이 있는지 확인
         if (File.Exists(path))
@@ -716,72 +1122,14 @@ public class MainUI : MonoBehaviour
             }
 
 
-            //갱신
-            //loadUserInfo = loadUserInfo + content;
-
-
+        }
+        else
+        {
+            File.Create(path);
         }
 
-        //using System.IO; 인클루드 해줘야함. //파일을 텍스트에 저장해주자.
-        //File.WriteAllText(path, loadUserInfo);
-
-
-        /* if (id_InputField != null)
-         {
-             //아이디 필드의 텍스트 가져오기
-             enteredID = id_InputField.text;
-         }
-         else
-         {
-             print("아이디 인풋필드 없음");
-         }
-         if (pass_InputField != null)
-         {
-             //패스 필드의 텍스트 가져오기
-             enteredPass = pass_InputField.text;
-         }
-         else
-         {
-             print("패스 인풋필드 없음");
-         }
-
-         //아이디와 비밀번호 일치하면 로그인
-         if (enteredID == test_Id && enteredPass == test_Pass)
-         {
-             //로그인해주기
-             Login();
-             return;
-
-         }
-         if (enteredID == test_Id)
-         {
-             print("아이디가 맞습니다");
-
-         }
-         else
-         {
-             print("아이디가 틀림" );
-             //빈문자열로 해줍니다. //영어로만 들어 갑니다.
-             id_InputField.text = "";
-             phID_Text.text = "아이디가 틀림";
-             phID_Text.color = Color.red;
-
-         }
-         if (enteredPass == test_Pass)
-         {
-             print("비밀번호가 맞습니다");
-
-         }
-         else
-         {
-             print("비밀번호가 틀림");
-             pass_InputField.text = "";
-             phPass_Text.text = "비밀번호 틀림";
-             phPass_Text.color = Color.red;
-         }*/
-
-
     }
+
 
 
     public void CheckLogin()
@@ -803,10 +1151,6 @@ public class MainUI : MonoBehaviour
 
     }
 
-    public void LogData()
-    {
-
-    }
     public void LogOut()
     {
         print("나가기");
@@ -823,31 +1167,6 @@ public class MainUI : MonoBehaviour
 
         }
 
-        //MainUI.Instance.img_Regist_Object.SetActive(true);
-
-        /*if (imgLogin_Object != null)
-        {
-            print("이미지 로그인 오브젝트 있음");
-            imgLogin_Object.SetActive(true);
-        }
-        else
-        {
-            print("이미지 로그인 오브젝트 없음 ");
-            imgLogin_Object = GameObject.Find("Img_Login");
-            if (imgLogin_Object == null) print("이미지 로그인을 찾을수 없음");
-            //MainUI.Instance.imgLogin_Object.SetActive(true);
-        }
-        if (img_Regist_Object != null)
-        {
-            img_Regist_Object.SetActive(true);
-        } 
-        else
-        {
-            print("이미지 등록 오브젝트 없음 ");
-            img_Regist_Object = GameObject.Find("img_Regist");
-            img_Regist_Object.SetActive(true);
-        }*/
-
     }
 
     public void Login()
@@ -857,6 +1176,9 @@ public class MainUI : MonoBehaviour
         ResetLoginText();
         //이미지 회원가입 끄기
         mainUiObject.imgRegist_Object.SetActive(false);
+        //내정보패널을 끄기
+        panel_MyInfo_Object.SetActive(false);
+
 
     }
 
@@ -891,8 +1213,6 @@ public class MainUI : MonoBehaviour
         isRoomActive = true;
 
 
-
-
     }
 
     public void MoveLobby()
@@ -912,5 +1232,4 @@ public class MainUI : MonoBehaviour
         //text_logText.text = log;
     }
 
-
-}
+}//클래스끝

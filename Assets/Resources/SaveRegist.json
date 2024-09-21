@@ -1,0 +1,38 @@
+[
+  {
+    "userId": "bb",
+    "userPassword": "bb",
+    "userName": "문재인",
+    "likeCount": 3,
+    "bigCategory": "건강",
+    "smallCategory": "헬스",
+    "bigCategory2": "생활",
+    "smallCategory2": "패션",
+    "bigCategory3": "레저",
+    "smallCategory3": "야구"
+  },
+  {
+    "userId": "ccc",
+    "userPassword": "ccc",
+    "userName": "안철수",
+    "likeCount": 0,
+    "bigCategory": "레저",
+    "smallCategory": "여행",
+    "bigCategory2": "레저",
+    "smallCategory2": "야구",
+    "bigCategory3": "건강",
+    "smallCategory3": "헬스"
+  },
+  {
+    "userId": "a",
+    "userPassword": "a",
+    "userName": "박근혜",
+    "likeCount": 3,
+    "bigCategory": "문화",
+    "smallCategory": "공연",
+    "bigCategory2": "문화",
+    "smallCategory2": "영화",
+    "bigCategory3": "문화",
+    "smallCategory3": "음악"
+  }
+]
