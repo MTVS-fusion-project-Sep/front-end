@@ -56,7 +56,7 @@ public class DragManager_GH : MonoBehaviour
     //벽가구
     GameObject wallObject;
 
-    public Transform[] wallPos = new Transform[4];
+    public Transform[] wallPos = new Transform[3];
 
     WallObjectData_GH wallObjectData;
 
@@ -187,8 +187,7 @@ public class DragManager_GH : MonoBehaviour
                 {
                     wallObject = hit.transform.gameObject;
                     wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
-                    beforeWallObPos = (int)wallObjectData.wallObjectInfo.furniPos ;
-                   // beforeWallObPos = (int)wallObjectData.wallObjectInfo.furniPos - 1;
+                    beforeWallObPos = (int)wallObjectData.wallObjectInfo.furniPos - 1;
                 }
             }
             else
@@ -317,7 +316,7 @@ public class DragManager_GH : MonoBehaviour
                 {
                     if (hit.transform.gameObject == wallPos[i].gameObject)
                     {
-                        wallObjectData.wallObjectInfo.furniPos = (WallType)(i);
+                        wallObjectData.wallObjectInfo.furniPos = (WallType)(i+1);
                         wallObjectData.SetWallPos(i, beforeWallObPos);
                     }
                 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -21,6 +22,8 @@ public class RoomUIManager_GH : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    // 방 벽지 바꾸기
+    public MeshRenderer[] rooms;
 
 
     //http
@@ -221,10 +224,6 @@ public class RoomUIManager_GH : MonoBehaviour
     {
 
         yield return new WaitForSeconds(3);
-        Set();
-    }
-    public void Set()
-    {
         //벽, 땅가구 데이터 세팅
         for (int i = 0; i < list_Furniture.Count; i++)
         {
@@ -249,11 +248,18 @@ public class RoomUIManager_GH : MonoBehaviour
                     if (list_Furniture[i].name == wallObjectInfoList.data[j].furniName)
                     {
                         wd.wallObjectInfo = wallObjectInfoList.data[j];
+                        wd.SetWallPos((int)wd.wallObjectInfo.furniPos - 1, (int)wd.wallObjectInfo.furniPos - 1);
                     }
                 }
             }
         }
+
+        rooms[0].material = ui_Wall[cur_W_Index].GetComponent<Image>().material;
+        rooms[1].material = ui_Wall[cur_W_Index].GetComponent<Image>().material;
+        rooms[2].material = ui_Ground[cur_T_Index].GetComponent<Image>().material;
+
     }
+
 
     void RoomLoad()
     {

@@ -15,7 +15,7 @@ public class WallObjectInfo
 {
     public string furniCategory;
     public string furniName;
-    public WallType furniPos;
+    public WallType furniPos = WallType.LEFT_TWO;
     public bool furniOnPlace;
     public string userId;
 }

@@ -28,25 +28,31 @@ public class MemoManager_GH : MonoBehaviour
 
 
     //메모 저장 버튼 활성화
-    bool onSaveButton = true;
+    bool onSaveButton = false;
 
 
     //메모 데이터를 받은 값을 저장
     public MemoInfoList memoInfoList;
+
+    //메모지 저장 콘텐츠
+    public GameObject memoContents;
     void Awake()
     {
 
         memoButtons[0].SetActive(false);
     }
 
-    public void memoWrite()
+    private void Start()
+    {
+        
+    }
+    public void MemoWrite()
     {
         if (onSaveButton)
         {
-
             memoCount++;
             memoSwipe.memoPageUpdate(memoCount);
-            memoList.Add(Instantiate(memoFactory, GameObject.Find("ContentMemo").transform));
+            memoList.Add(Instantiate(memoFactory, memoContents.transform));
             memoSwipe.currentPage = memoCount - 1;
 
             TMP_Text text = memoList[memoCount - 1].GetComponentInChildren<TMP_Text>();
@@ -60,7 +66,7 @@ public class MemoManager_GH : MonoBehaviour
 
     }
 
-    public void memoSave()
+    public void MemoSave()
     {
         TMP_Text text = memoList[memoCount - 1].GetComponentInChildren<TMP_Text>();
         TMP_InputField inputfield = memoList[memoCount - 1].GetComponentInChildren<TMP_InputField>();
@@ -107,35 +113,39 @@ public class MemoManager_GH : MonoBehaviour
     IEnumerator SetMemo()
     {
         yield return new WaitForSeconds(2);
+        for (int i = 0; i < memoList.Count; i++)
+        {
+            Destroy(memoList[i]);
+        }
+            memoList.Clear();
         print("메모 세팅");
         memoCount = memoInfoList.data.Count;
         //기록되어 있는 메모에 따른 메모 생성
         for (int i = 0; i < memoCount; i++)
         {
             //null===================================================================================================================
-            memoList.Add(Instantiate(memoFactory, GameObject.Find("ContentMemo").transform));
+            memoList.Add(Instantiate(memoFactory, memoContents.transform));
             TMP_InputField inputfield = memoList[i].GetComponentInChildren<TMP_InputField>();
             inputfield.gameObject.SetActive(false);
             MemoData_GH md = memoList[i].GetComponent<MemoData_GH>();
             md.memoInfo = memoInfoList.data[i];
         }
     }
-    public void memoDelete()
+    public void MemoDelete()
     {
-        // 메모 삭제시 메모 아이디 추가??======================================================
         // 새로운 메모 데이터 보내기
         MemoInfo_GH memoInfo = new MemoInfo_GH();
-        memoInfo.toUserId = "이규현";
+        //memoInfo.toUserId = "이규현";
 
         HttpInfo HttpInfo = new HttpInfo();
-        HttpInfo.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/ground-furniture/user?userId=" + RoomUIManager_GH.instance.roomUserId;
+        HttpInfo.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book?guestBookId=" + memoList[memoSwipe.currentPage].GetComponent<MemoData_GH>().memoInfo.id;
         HttpInfo.body = JsonUtility.ToJson(memoInfo);
         HttpInfo.contentType = "application/json";
         HttpInfo.onComplete = (DownloadHandler downloadHandler) =>
         {
             print(downloadHandler.text);
         };
-        StartCoroutine(NetworkManager_GH.GetInstance().Post(HttpInfo));
+        StartCoroutine(NetworkManager_GH.GetInstance().Delete(HttpInfo));
 
 
 

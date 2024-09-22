@@ -9,7 +9,7 @@ public class MemoInfo_GH
     public string toUserId;
     public string fromUserId;
     public string registDate;
-    public long guestBookid;
+    public long id;
 }
 [System.Serializable]
 public struct MemoInfoList

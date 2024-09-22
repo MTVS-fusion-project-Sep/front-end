@@ -5751,8 +5751,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6686e845300f50342b61aaa10955688d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  httpIP: 192.168.0.76
-  httpPort: 8080
+  httpIP: 125.132.216.190
+  httpPort: 5544
   ui_Furniture:
   - {fileID: 2440102588266665003, guid: bf1448ddb74cd0344a47241a2e62cc03, type: 3}
   - {fileID: 7038733971712567016, guid: 1c78755fdc1cdc848ba3cb37eed2aad3, type: 3}
@@ -9947,6 +9947,7 @@ MonoBehaviour:
   - {fileID: 1670585386}
   memoInfoList:
     data: []
+  memoContents: {fileID: 487148962}
 --- !u!1 &1560131206
 GameObject:
   m_ObjectHideFlags: 0
