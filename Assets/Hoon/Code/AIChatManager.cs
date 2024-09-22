@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
-using UnityEditor.PackageManager.Requests;
+//using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -13,13 +13,13 @@ using UnityEngine.UI;
 public class AIChatManager : MonoBehaviour
 {
     public InputField inputAIChat;
-    public Text inputTextAIChat;
     public Text textAIChat;
-
+    public Button btnOpenAI;
+    public GameObject imgAIChat;
     // Start is called before the first frame update
     void Start()
     {
-        
+        imgAIChat.SetActive(false);
     }
 
     // Update is called once per frame
@@ -27,6 +27,26 @@ public class AIChatManager : MonoBehaviour
     {
         
     }*/
+
+    bool isOpen = false;
+    public void OpenAIChat()
+    {
+        if (isOpen)
+        {
+           imgAIChat.SetActive(false);
+            isOpen = false;
+            
+        }
+        else
+        {
+            imgAIChat.SetActive(true);
+            isOpen = true;
+            textAIChat.text = "입력을 기다리는중...";
+        }
+    }
+
+
+
 
     //Request body
     void chatInfo()
@@ -101,7 +121,7 @@ public class AIChatManager : MonoBehaviour
 
     public void PostJsonAITest()
     {
-    
+        textAIChat.text = "AI의 답변을 기다리중...";
         string name = "윤석열";
         //string question = "최고의 축구선수는 누구야?";
         string question = inputAIChat.text;
@@ -129,9 +149,9 @@ public class AIChatManager : MonoBehaviour
         };
 
         string jsonData = JsonConvert.SerializeObject(postData);
-        print("제이슨데이터" + jsonData);
+        //print("제이슨데이터" + jsonData);
         byte[] jsonToSend = Encoding.UTF8.GetBytes(jsonData);
-        print("제이슨보내기" + jsonToSend);
+        //print("제이슨보내기" + jsonToSend);
 
         // 요청 생성
         using (UnityWebRequest request = new UnityWebRequest(urlTest1, "POST"))
