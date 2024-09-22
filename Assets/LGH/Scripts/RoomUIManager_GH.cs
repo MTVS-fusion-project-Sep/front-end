@@ -21,6 +21,8 @@ public class RoomUIManager_GH : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        OnLoad();
     }
     // 방 벽지 바꾸기
     public MeshRenderer[] rooms;
@@ -78,7 +80,7 @@ public class RoomUIManager_GH : MonoBehaviour
 
     //유저 아이디 더미 데이터
     public string roomUserId = "user1";
-
+    
     void Start()
     {
 
@@ -179,6 +181,7 @@ public class RoomUIManager_GH : MonoBehaviour
     {
         FurniLoad();
         RoomLoad();
+        StartCoroutine(Setting());
     }
 
     void FurniLoad()
@@ -216,14 +219,14 @@ public class RoomUIManager_GH : MonoBehaviour
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info2));
 
-        StartCoroutine(Setting());
+        
 
     }
 
     IEnumerator Setting()
     {
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(0.2f);
         //벽, 땅가구 데이터 세팅
         for (int i = 0; i < list_Furniture.Count; i++)
         {
@@ -254,9 +257,9 @@ public class RoomUIManager_GH : MonoBehaviour
             }
         }
 
-        rooms[0].material = ui_Wall[cur_W_Index].GetComponent<Image>().material;
-        rooms[1].material = ui_Wall[cur_W_Index].GetComponent<Image>().material;
-        rooms[2].material = ui_Ground[cur_T_Index].GetComponent<Image>().material;
+        rooms[0].material = ui_Wall[userRoomInfo.wallIndex].GetComponent<Image>().material;
+        rooms[1].material = ui_Wall[userRoomInfo.wallIndex].GetComponent<Image>().material;
+        rooms[2].material = ui_Ground[userRoomInfo.tileIndex].GetComponent<Image>().material;
 
     }
 
@@ -278,7 +281,7 @@ public class RoomUIManager_GH : MonoBehaviour
     }
     public void OnExit()
     {
-        //OnLoad();
+        OnLoad();
 
         roomSettingPanel.SetActive(false);
         roomSettingBut.gameObject.SetActive(true);

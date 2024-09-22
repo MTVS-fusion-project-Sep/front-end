@@ -820,12 +820,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureInfo:
-    furni_Size_X: 2
-    furni_Size_Z: 1
+    furniSizeX: 2
+    furniSizeZ: 1
     onPlace: 1
-    furni_Current_X: 6
-    furni_Current_Z: 0
-    furni_Rotate: 0
+    furniCurrentX: 6
+    furniCurrentZ: 0
+    furniRotate: 0
+    furniCategory: ground
+    furniName: StorageBox
+    userId: user1
 --- !u!65 &4156924004945069286
 BoxCollider:
   m_ObjectHideFlags: 0

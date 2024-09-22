@@ -18,6 +18,8 @@ public class ChatManager : MonoBehaviour
 {
     public GameObject roomListPanel;
     public GameObject chatPanel;
+    public GameObject roomCreatePanel;
+
 
     public static ChatManager instance;
 
@@ -27,11 +29,11 @@ public class ChatManager : MonoBehaviour
     public TMP_InputField input_chat;
     public Button sendmessage_but;
     public Button exitRoom_but;
-    public RectTransform rectTransform;  
+    public RectTransform rectTransform;
 
     //룸 아이디
     string roomId = "";
-    string userId = "";
+    string userId = "user1";
 
 
     // 방 리스트
@@ -43,12 +45,14 @@ public class ChatManager : MonoBehaviour
 
     public GameObject roomContent;
 
-    public GameObject roomLisrPrefab;
+    public GameObject roomListPrefab;
 
     //방 새로고침 버튼
     public Button roomReloadBut;
     //방 생성 버튼
     public Button roomCreateBut;
+
+    public Button roomCreateOnBut;
 
 
     //방 생성
@@ -74,14 +78,13 @@ public class ChatManager : MonoBehaviour
     {
         //초기 값을 비워준다.
         input_chat.text = "";
-        text_chatContent.text = "";
-
+        text_chatContent.text = "옵치왕 : " + "규현님 환영합니다!" + "\n";
         //인풋 필드의 제출 이벤트에 SendMyMessage 함수를 바인딩한다.
         sendmessage_but.onClick.AddListener(SendMyMessage);
         //enterRoom_but.onClick.AddListener(EnterRoom);
 
         // 좌측 하단으로 콘텐트 오브젝트의 피봇을 변경한다.
-        scrollChatWindow.content.pivot = Vector2.zero;
+        //scrollChatWindow.content.pivot = Vector2.zero;
 
 
         // 룸 새로고침 버튼에 함수 할당
@@ -90,8 +93,16 @@ public class ChatManager : MonoBehaviour
         // 방만들기 버튼에 함수 할당
         roomCreateBut.onClick.AddListener(RoomCreate);
 
+        // 룸생성 버튼에 함수 할당
+        roomCreateOnBut.onClick.AddListener(RoomCreateOn);
+
         //룸을 받아온다.
         RoomLoad();
+
+        //방생성 패널 키고
+        roomCreatePanel.SetActive(true);
+        //채팅 패널 끄기
+        chatPanel.SetActive(false);
 
     }
     void Update()
@@ -128,12 +139,19 @@ public class ChatManager : MonoBehaviour
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
 
         // 룸 숫자만큼 룸을 만든다.
-        for(int i = 0; i < allRoomInfo.data.Count; i++)
+        for (int i = 0; i < allRoomInfo.data.Count; i++)
         {
-            roomList.Add(Instantiate(roomLisrPrefab, roomContent.transform));
+            roomList.Add(Instantiate(roomListPrefab, roomContent.transform));
             RoomData_GH roomData = roomList[i].GetComponent<RoomData_GH>();
             roomData.roomInfo = allRoomInfo.data[i];
         }
+    }
+    void RoomCreateOn()
+    {
+        //방생성 패널 키고
+        roomCreatePanel.SetActive(true);
+        //채팅 패널 끄기
+        chatPanel.SetActive(false);
     }
 
     void RoomCreate()
@@ -142,7 +160,7 @@ public class ChatManager : MonoBehaviour
         ti.name = createRoomName.text;
         ti.category = createRoomCate.options[createRoomCate.value].text;
         ti.maxCnt = (int)createRoomMaxCnt.value;
-       
+
         HttpInfo info = new HttpInfo();
         info.url = RoomListURL;
         info.body = JsonUtility.ToJson(ti);
@@ -152,10 +170,24 @@ public class ChatManager : MonoBehaviour
             print(downloadHandler.text);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
+
+        //없애자===========================================================================================
+        GameObject tt = Instantiate(roomListPrefab, roomContent.transform);
+        RoomData_GH aa = tt.GetComponent<RoomData_GH>();
+        aa.roomInfo.name = ti.name;
+        aa.roomInfo.category = ti.category;
+        aa.roomInfo.maxCnt = ti.maxCnt;
+        aa.roomInfo.headCnt = 1;
+
     }
 
     public void EnterRoom(string roomID)
     {
+        //방생성 패널 끄기
+        roomCreatePanel.SetActive(false);
+        //채팅 패널 켜기
+        chatPanel.SetActive(true);
+
         string messageType = "ENTER";
         roomId = roomID;
         // 유저 아이디 코드화하기 todo
@@ -167,6 +199,9 @@ public class ChatManager : MonoBehaviour
     }
     void SendMyMessage()
     {
+
+        //통신 후 없애기
+        text_chatContent.text += "규현 : " + input_chat.text + "\n";
         string messageType = "TALK";
         string message = input_chat.text;
         // 유저 아이디 코드화하기 todo
@@ -176,6 +211,8 @@ public class ChatManager : MonoBehaviour
             chatConnector.SendMessageToServer(messageType, roomId, sender, message);
             input_chat.text = "";
         }
+
+
     }
 
     public void ReceivedMessage(string rm)
@@ -185,17 +222,7 @@ public class ChatManager : MonoBehaviour
         Canvas.ForceUpdateCanvases();
     }
 
-    // 같은 룸에 다른 사용자로부터 이벤트가 왔을 때 실행되는 함수
-    public void OnEvent(EventData photonEvent)
-    {
 
-        // 받은 내용을 "닉네임 : 채팅 내용" 형식으로 스크롤뷰의 텍스트에 전달한다.
-        object[] receiveObjects = (object[])photonEvent.CustomData;
-        string recieveMessage = $"\n[{receiveObjects[2].ToString()}]{receiveObjects[0].ToString()} : {receiveObjects[1].ToString()}";
-
-        text_chatContent.text += recieveMessage;
-        input_chat.text = "";
-    }
 
 }
 

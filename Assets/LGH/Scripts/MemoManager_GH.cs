@@ -40,6 +40,7 @@ public class MemoManager_GH : MonoBehaviour
     {
 
         memoButtons[0].SetActive(false);
+        MemoLoad();
     }
 
     private void Start()
@@ -114,7 +115,7 @@ public class MemoManager_GH : MonoBehaviour
     }
     IEnumerator SetMemo()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.2f);
         for (int i = 0; i < memoList.Count; i++)
         {
             Destroy(memoList[i]);
