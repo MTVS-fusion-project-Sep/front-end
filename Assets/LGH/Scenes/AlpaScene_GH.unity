@@ -4354,7 +4354,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1559749442}
         m_TargetAssemblyTypeName: MemoManager_GH, Assembly-CSharp
-        m_MethodName: MemoLoad
+        m_MethodName: TestScend
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5820,6 +5820,9 @@ MonoBehaviour:
     wallIndex: 5
     tileIndex: 0
     userId: 
+  dm: {fileID: 140431428}
+  cur_W_Index: 0
+  cur_T_Index: 0
   roomUserId: user1
 --- !u!4 &909881763
 Transform:

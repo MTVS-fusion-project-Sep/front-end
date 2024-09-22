@@ -199,11 +199,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &29122132 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7060580083210373405, guid: 2766fcc9d8ea4e549bf65e50a5fd102e, type: 3}
-  m_PrefabInstance: {fileID: 1076613469}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &53047852
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,7 +553,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 909881762}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RoomUIManager_GH, Assembly-CSharp
         m_MethodName: OnWall
         m_Mode: 1
@@ -608,71 +603,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129770963}
   m_CullTransparentMesh: 1
---- !u!1 &140431426
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 140431427}
-  - component: {fileID: 140431428}
-  m_Layer: 0
-  m_Name: DragManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &140431427
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140431426}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &140431428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140431426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5a8b0e57b11c12459d5d14f3131b019, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  greenTilefPrefab: {fileID: 5941319276362132627, guid: 6aa8f1548ef186242a7b4adb82fc48b9, type: 3}
-  cubeMat:
-  - {fileID: 2100000, guid: bc4282e47211e474ba54dcb9375cddfb, type: 2}
-  - {fileID: 2100000, guid: 9d7d392c138a14640801fbda6b6ed9f4, type: 2}
-  groundTileLine: {fileID: 97626192}
-  noticeBoard: {fileID: 1834025152}
-  groundPoint:
-  - {fileID: 2141180227}
-  - {fileID: 112401177}
-  - {fileID: 403060293}
-  groundTileNum: 8
-  ground_Xs: []
-  ground_Zs: []
-  radius: 99999
-  wallPos:
-  - {fileID: 465683120}
-  - {fileID: 460777442}
-  - {fileID: 1568989593}
-  onWallObjects: 000000
-  beforeWallObPos: 0
-  roomSetBut: {fileID: 0}
 --- !u!1 &153686229
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,7 +686,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1559749442}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MemoManager_GH, Assembly-CSharp
         m_MethodName: memoWrite
         m_Mode: 1
@@ -1007,7 +937,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 909881762}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RoomUIManager_GH, Assembly-CSharp
         m_MethodName: SettingRoom
         m_Mode: 1
@@ -1670,11 +1600,7 @@ MonoBehaviour:
   currentPage: 0
   maxPage: 0
   scrollPagecNum: {fileID: 53047854}
---- !u!1 &502271258 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6181388949116686943, guid: 9cfed5c0021ea404d8c1f15e0b311497, type: 3}
-  m_PrefabInstance: {fileID: 1320153645}
-  m_PrefabAsset: {fileID: 0}
+  memoManag: {fileID: 0}
 --- !u!1 &512995947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,7 +1818,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 909881762}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RoomUIManager_GH, Assembly-CSharp
         m_MethodName: OnSave
         m_Mode: 1
@@ -2425,7 +2351,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 140431428}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: DragManager_GH, Assembly-CSharp
         m_MethodName: ButtonExit
         m_Mode: 1
@@ -2692,7 +2618,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 909881762}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RoomUIManager_GH, Assembly-CSharp
         m_MethodName: OnGround
         m_Mode: 1
@@ -3279,91 +3205,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 895127215}
   m_CullTransparentMesh: 1
---- !u!1 &909881761
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 909881763}
-  - component: {fileID: 909881762}
-  m_Layer: 0
-  m_Name: RoomUIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &909881762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909881761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6686e845300f50342b61aaa10955688d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  furnitureURL: http://192.168.0.76:8080/ground-furniture
-  ui_Furniture:
-  - {fileID: 2440102588266665003, guid: bf1448ddb74cd0344a47241a2e62cc03, type: 3}
-  - {fileID: 7038733971712567016, guid: 1c78755fdc1cdc848ba3cb37eed2aad3, type: 3}
-  - {fileID: 7016791936170176342, guid: c6fc9fa6de387a3488ada5d82e30e3b3, type: 3}
-  - {fileID: 1344581206663710918, guid: 9a546c171fb43f24db14d49f52b81c36, type: 3}
-  list_Furniture:
-  - {fileID: 1579508101}
-  - {fileID: 29122132}
-  - {fileID: 2023003093}
-  - {fileID: 502271258}
-  ui_Wall:
-  - {fileID: 3295465975428900804, guid: 3226dc987f8aa77439614133175f9bcc, type: 3}
-  - {fileID: 3295465975428900804, guid: 66e0650b1b2abef4cae81bfef091e677, type: 3}
-  - {fileID: 3295465975428900804, guid: 72fe68098b431b74980f81aabf3575c1, type: 3}
-  - {fileID: 4784453509811430469, guid: c7b1c5a3daf41c947b161df850253f46, type: 3}
-  - {fileID: 3295465975428900804, guid: 7745f8d798e7a1542be6bd2f39a4e4e1, type: 3}
-  - {fileID: 3295465975428900804, guid: 6a925822052486e438f2924eeca34d6d, type: 3}
-  - {fileID: 3295465975428900804, guid: ce9989a415df9674e8e21400fa1dc9ec, type: 3}
-  - {fileID: 3295465975428900804, guid: ffe068e52a22a5c4b9f73eba04edef47, type: 3}
-  - {fileID: 3295465975428900804, guid: 6db8720cd08ec994794fe0a10cea3ef2, type: 3}
-  ui_Ground:
-  - {fileID: 3295465975428900804, guid: 3226dc987f8aa77439614133175f9bcc, type: 3}
-  - {fileID: 3295465975428900804, guid: 66e0650b1b2abef4cae81bfef091e677, type: 3}
-  - {fileID: 3295465975428900804, guid: 72fe68098b431b74980f81aabf3575c1, type: 3}
-  - {fileID: 4784453509811430469, guid: c7b1c5a3daf41c947b161df850253f46, type: 3}
-  - {fileID: 3295465975428900804, guid: 7745f8d798e7a1542be6bd2f39a4e4e1, type: 3}
-  - {fileID: 3295465975428900804, guid: 6a925822052486e438f2924eeca34d6d, type: 3}
-  - {fileID: 3295465975428900804, guid: ce9989a415df9674e8e21400fa1dc9ec, type: 3}
-  - {fileID: 3295465975428900804, guid: ffe068e52a22a5c4b9f73eba04edef47, type: 3}
-  - {fileID: 3295465975428900804, guid: 6db8720cd08ec994794fe0a10cea3ef2, type: 3}
-  slot_furnis: []
-  slot_Prefab: {fileID: 6731775195367845407, guid: fb140377aab3ebb49a410ee0277c5cd4, type: 3}
-  roomSettingBut: {fileID: 234571680}
-  roomSettingPanel: {fileID: 0}
-  onRoomPanel: 0
-  contentFurniture: {fileID: 16370997}
-  furnitureInfoList:
-    data: []
-  wallObjectInfoList:
-    data: []
---- !u!4 &909881763
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909881761}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -31.041142, y: 1032.2211, z: -212.85474}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &956479660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5962891446646541371, guid: 95feff5c4a5c61f4bba315b36af6f620, type: 3}
@@ -4703,7 +4544,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1559749442}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MemoManager_GH, Assembly-CSharp
         m_MethodName: memoSave
         m_Mode: 1
@@ -5112,60 +4953,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1556975652}
   m_CullTransparentMesh: 1
---- !u!1 &1559749440
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1559749441}
-  - component: {fileID: 1559749442}
-  m_Layer: 0
-  m_Name: MemoManag
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1559749441
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559749440}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1559749442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559749440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dcfe231e7d42e344802301b39c31e39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  memoList: []
-  memoCount: 0
-  memoFactory: {fileID: 1275229908935715807, guid: 8a7d5fee8bdb5254fb95515ad49e6beb, type: 3}
-  memoSwipe: {fileID: 487148966}
-  memoButtons:
-  - {fileID: 1444872207}
-  - {fileID: 153686229}
-  - {fileID: 1670585386}
-  memoInfoList:
-    data: []
 --- !u!1 &1568989592
 GameObject:
   m_ObjectHideFlags: 0
@@ -5219,11 +5006,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1579508101 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 738248748157925381, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
-  m_PrefabInstance: {fileID: 1707617093}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1620550993
 GameObject:
   m_ObjectHideFlags: 0
@@ -5307,7 +5089,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 909881762}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RoomUIManager_GH, Assembly-CSharp
         m_MethodName: OnFurniture
         m_Mode: 1
@@ -5440,7 +5222,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 909881762}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RoomUIManager_GH, Assembly-CSharp
         m_MethodName: OnExit
         m_Mode: 1
@@ -5573,7 +5355,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1559749442}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MemoManager_GH, Assembly-CSharp
         m_MethodName: memoDelete
         m_Mode: 1
@@ -6293,7 +6075,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 909881762}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RoomUIManager_GH, Assembly-CSharp
         m_MethodName: OnLoad
         m_Mode: 1
@@ -7073,11 +6855,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2021828693}
   m_CullTransparentMesh: 1
---- !u!1 &2023003093 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6144841977251075080, guid: 21286ad38b505aa468ad32d0abfec6dd, type: 3}
-  m_PrefabInstance: {fileID: 1480015071}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2067840593
 GameObject:
   m_ObjectHideFlags: 0
@@ -7456,6 +7233,3 @@ SceneRoots:
   - {fileID: 1983904919}
   - {fileID: 1402927541}
   - {fileID: 2142669265}
-  - {fileID: 1559749441}
-  - {fileID: 140431427}
-  - {fileID: 909881763}

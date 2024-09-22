@@ -73,7 +73,10 @@ public class ChatManager : MonoBehaviour
         }
         RoomLoad();
     }
-
+    public void roomUserIdSet(string userID)
+    {
+        userId = userID;
+    }
     void Start()
     {
         //초기 값을 비워준다.
@@ -191,7 +194,7 @@ public class ChatManager : MonoBehaviour
         string messageType = "ENTER";
         roomId = roomID;
         // 유저 아이디 코드화하기 todo
-        string sender = "규현";
+        string sender = userId;
         string message = "";
 
         chatConnector.SendMessageToServer(messageType, roomId, sender, message);
@@ -205,7 +208,7 @@ public class ChatManager : MonoBehaviour
         string messageType = "TALK";
         string message = input_chat.text;
         // 유저 아이디 코드화하기 todo
-        string sender = "규현";
+        string sender = userId;
         if (input_chat.text.Length > 0)
         {
             chatConnector.SendMessageToServer(messageType, roomId, sender, message);

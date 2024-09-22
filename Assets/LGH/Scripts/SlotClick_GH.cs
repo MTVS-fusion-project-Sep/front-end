@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class SlotClick_GH : MonoBehaviour
 {
-    RoomUIManager_GH roomUIMa;
     int myIndex = 0;
     int myCate = 0;
 
@@ -26,14 +25,14 @@ public class SlotClick_GH : MonoBehaviour
         rooms[1] = GameObject.Find("Wall_R").GetComponent<MeshRenderer>();
         rooms[2] = GameObject.Find("Ground").GetComponent<MeshRenderer>();
 
-        roomUIMa = GameObject.Find("RoomUIManager").GetComponent<RoomUIManager_GH>();
+       
         dragManager = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
         AddOnClick(GetComponent<Button>());
     }
 
     void Update()
     {
-
+        
     }
     void AddOnClick(Button button)
     {
@@ -56,56 +55,56 @@ public class SlotClick_GH : MonoBehaviour
 
     void FunitureSet()
     {
-        FurnitureData_GH furnitureData = roomUIMa.list_Furniture[myIndex].GetComponent<FurnitureData_GH>();
-        WallObjectData_GH wallObjectData = roomUIMa.list_Furniture[myIndex].GetComponent<WallObjectData_GH>();
+        FurnitureData_GH furnitureData = RoomUIManager_GH.instance.list_Furniture[myIndex].GetComponent<FurnitureData_GH>();
+        WallObjectData_GH wallObjectData = RoomUIManager_GH.instance.list_Furniture[myIndex].GetComponent<WallObjectData_GH>();
         int wallObjectNum = 0;
         if (wallObjectData != null)
         {
             wallObjectNum = (int)wallObjectData.wallObjectInfo.furniPos - 1;
         }
 
-        if (roomUIMa.list_Furniture[myIndex].activeSelf)
+        if (RoomUIManager_GH.instance.list_Furniture[myIndex].activeSelf)
         {
-            if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("Furniture"))
+            if (RoomUIManager_GH.instance.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("Furniture"))
             {
                 furnitureData.furnitureInfo.onPlace = false;
 
             }
-            else if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
+            else if (RoomUIManager_GH.instance.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
             {
                 wallObjectData.wallObjectInfo.furniOnPlace = false;
                 dragManager.onWallObjects[wallObjectNum] = false;
             }
-            roomUIMa.list_Furniture[myIndex].SetActive(false);
+            RoomUIManager_GH.instance.list_Furniture[myIndex].SetActive(false);
         }
         else
         {
-            if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("Furniture"))
+            if (RoomUIManager_GH.instance.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("Furniture"))
             {
                 furnitureData.furnitureInfo.onPlace = true;
             }
-            else if (roomUIMa.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
+            else if (RoomUIManager_GH.instance.list_Furniture[myIndex].gameObject.layer == LayerMask.NameToLayer("WallObject"))
             {
                 wallObjectData.wallObjectInfo.furniOnPlace = true;
                 dragManager.onWallObjects[wallObjectNum] = true;
 
             }
-            roomUIMa.list_Furniture[myIndex].SetActive(true);
+            RoomUIManager_GH.instance.list_Furniture[myIndex].SetActive(true);
 
         }
     }
     void WallSet()
     {
-        Image slotImage = roomUIMa.ui_Wall[myIndex].GetComponent<Image>();
+        Image slotImage = RoomUIManager_GH.instance.ui_Wall[myIndex].GetComponent<Image>();
         rooms[0].material = slotImage.material;
         rooms[1].material = slotImage.material;
-        roomUIMa.WallIndexSetting(myIndex);
+        RoomUIManager_GH.instance.WallIndexSetting(myIndex);
     }
     void TileSet()
     {
-        Image slotImage = roomUIMa.ui_Ground[myIndex].GetComponent<Image>();
+        Image slotImage = RoomUIManager_GH.instance.ui_Ground[myIndex].GetComponent<Image>();
         rooms[2].material = slotImage.material;
-        roomUIMa.TileIndexSetting(myIndex);
+        RoomUIManager_GH.instance.TileIndexSetting(myIndex);
 
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static System.Net.WebRequestMethods;
 
@@ -178,6 +179,12 @@ public class MemoManager_GH : MonoBehaviour
             memoButtons[1].SetActive(true);
             memoButtons[2].SetActive(true);
         }
+    }
+
+    public void TestScend()
+    {
+        RoomUIManager_GH.instance.roomUserId = "user2";
+        SceneManager.LoadScene(4);
     }
 }
 

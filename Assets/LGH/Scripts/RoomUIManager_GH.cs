@@ -74,9 +74,11 @@ public class RoomUIManager_GH : MonoBehaviour
     //타일 및 벽
     public UserRoomInfo userRoomInfo;
 
+    public DragManager_GH dm;
+
     //현재의 벽과 땅 타일
-    int cur_W_Index = 0;
-    int cur_T_Index = 0;
+    public int cur_W_Index = 0;
+    public int cur_T_Index = 0;
 
     //유저 아이디 더미 데이터
     public string roomUserId = "user1";
@@ -97,6 +99,10 @@ public class RoomUIManager_GH : MonoBehaviour
         roomSettingBut.gameObject.SetActive(true);
     }
 
+    public void roomUserIdSet(string userID)
+    {
+        roomUserId = userID;
+    }
     void Update()
     {
 
@@ -134,6 +140,7 @@ public class RoomUIManager_GH : MonoBehaviour
             if (list_Furniture[i].layer == LayerMask.NameToLayer("Furniture"))
             {
                 FurnitureData_GH fd = list_Furniture[i].GetComponent<FurnitureData_GH>();
+                fd.furnitureInfo.userId = roomUserId;
                 HttpInfo info = new HttpInfo();
                 info.url = "http://" + httpIP + ":" + httpPort + "/ground-furniture";
                 info.body = JsonUtility.ToJson(fd.furnitureInfo);
@@ -148,6 +155,7 @@ public class RoomUIManager_GH : MonoBehaviour
             else if (list_Furniture[i].layer == LayerMask.NameToLayer("WallObject"))
             {
                 WallObjectData_GH wd = list_Furniture[i].GetComponent<WallObjectData_GH>();
+                wd.wallObjectInfo.userId = roomUserId;
                 HttpInfo info = new HttpInfo();
                 info.url = "http://" + httpIP + ":" + httpPort + "/wall-furniture";
                 info.body = JsonUtility.ToJson(wd.wallObjectInfo);
@@ -159,7 +167,8 @@ public class RoomUIManager_GH : MonoBehaviour
                 StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
             }
         }
-
+        print(cur_W_Index);
+        print(cur_T_Index);
         // 방 데이터 보내기
         UserRoomInfo roomInfo = new UserRoomInfo();
         roomInfo.wallIndex = cur_W_Index;
@@ -181,6 +190,7 @@ public class RoomUIManager_GH : MonoBehaviour
     {
         FurniLoad();
         RoomLoad();
+        dm.onWallObjects = new bool[3];
         StartCoroutine(Setting());
     }
 
@@ -256,7 +266,7 @@ public class RoomUIManager_GH : MonoBehaviour
                 }
             }
         }
-
+        dm.onWallObjects = new bool[3];
         rooms[0].material = ui_Wall[userRoomInfo.wallIndex].GetComponent<Image>().material;
         rooms[1].material = ui_Wall[userRoomInfo.wallIndex].GetComponent<Image>().material;
         rooms[2].material = ui_Ground[userRoomInfo.tileIndex].GetComponent<Image>().material;
@@ -331,7 +341,7 @@ public class RoomUIManager_GH : MonoBehaviour
 
 }
 [System.Serializable]
-public struct UserRoomInfo
+public class UserRoomInfo
 {
     public int wallIndex;
     public int tileIndex;
