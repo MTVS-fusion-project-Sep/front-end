@@ -2,8 +2,8 @@
   {
     "userId": "bb",
     "userPassword": "bb",
-    "userName": "이재명",
-    "likeCount": "0",
+    "userNickName": "이재명",
+    "likeCount": 0,
     "bigCategory": "문화",
     "smallCategory": "공연",
     "bigCategory2": "레저",
@@ -14,8 +14,8 @@
   {
     "userId": "ccc",
     "userPassword": "ccc",
-    "userName": "안철수",
-    "likeCount": "0",
+    "userNickName": "안철수",
+    "likeCount": 0,
     "bigCategory": "건강",
     "smallCategory": "정신건강",
     "bigCategory2": "생활",
@@ -26,21 +26,25 @@
   {
     "userId": "a",
     "userPassword": "a",
-    "userName": "윤석열",
-    "likeCount": "0",
-    "bigCategory": "기술",
-    "smallCategory": "모바일",
-    "bigCategory2": "레저",
-    "smallCategory2": "축구",
-    "bigCategory3": "건강",
-    "smallCategory3": "영양제"
+    "userNickName": "윤석열",
+    "likeCount": 0,
+    "bigCategory": "생활",
+    "smallCategory": "음식",
+    "bigCategory2": "생활",
+    "smallCategory2": "패션",
+    "bigCategory3": "생활",
+    "smallCategory3": "부동산"
   },
   {
     "userId": "gm",
     "userPassword": "gm",
-    "userName": "최강형표",
-    "smallCategory": "미지정",
-    "smallCategory2": "미지정",
-    "smallCategory3": "미지정"
+    "userNickName": "최강형표",
+    "likeCount": 0,
+    "bigCategory": "문화",
+    "smallCategory": "공연",
+    "bigCategory2": "문화",
+    "smallCategory2": "영화",
+    "bigCategory3": "문화",
+    "smallCategory3": "음악"
   }
 ]

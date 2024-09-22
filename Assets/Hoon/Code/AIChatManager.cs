@@ -7,10 +7,15 @@ using UnityEditor;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 
 public class AIChatManager : MonoBehaviour
 {
+    public InputField inputAIChat;
+    public Text inputTextAIChat;
+    public Text textAIChat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,8 +44,8 @@ public class AIChatManager : MonoBehaviour
         Dictionary<string, string> aiChat = new Dictionary<string, string>
         {
 
-            { "user", "이재명" },
-            { "prompt",  "배고파 메뉴 추천해줘" }
+            { "user", "player" },
+            { "prompt",  inputAIChat.text }
 
         };
 
@@ -98,8 +103,10 @@ public class AIChatManager : MonoBehaviour
     {
     
         string name = "윤석열";
-        string question = "최고의 축구선수는 누구야?";
-        
+        //string question = "최고의 축구선수는 누구야?";
+        string question = inputAIChat.text;
+
+
         StartCoroutine(PostJsonAI(name , question));
         print("서버에 요청시작");
 
@@ -142,6 +149,8 @@ public class AIChatManager : MonoBehaviour
             {
                 string responseText = request.downloadHandler.text;
                 Debug.Log("서버 응답: " + responseText);
+
+                textAIChat.text = responseText;
 
                 // JSON 응답을 처리 (예: 서버가 JSON 형식으로 응답을 보냈다면)
                 //var responseData = JsonConvert.DeserializeObject<ResponseFormat>(responseText);
