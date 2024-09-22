@@ -25,16 +25,14 @@ public class LobbyUI : MonoBehaviour
     {
         // 씬을 로드하고 씬 로드 완료 후 호출될 메서드를 이벤트에 등록
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.LoadScene("ProtoScene_GH");
+        SceneManager.LoadScene("ProtoScene_Hoon");
     }
     // 씬이 로드된 후 호출되는 콜백 메서드
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 
         StartCoroutine(WaitAndDisableObjects());
-       
-
-      
+            
     }
 
     // Coroutine을 사용하여 씬 로드 후 약간의 지연을 주고 오브젝트를 비활성화
@@ -43,6 +41,7 @@ public class LobbyUI : MonoBehaviour
 
         yield return new WaitForEndOfFrame(); // 또는 적절한 지연을 줄 수 있음
 
+        print("프레임 이후에 ");
         if (MainUI.Instance != null)
         {
             print("메인있음");

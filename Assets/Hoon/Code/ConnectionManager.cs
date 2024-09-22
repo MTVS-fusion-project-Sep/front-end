@@ -14,6 +14,7 @@ using System.Linq;
 //부모를 MonoBehaviourPunCallbacks 바꿉니다. 
 public class ConnectionManager : MonoBehaviourPunCallbacks
 {
+    
     //MainUIObject mainUIObject;
     //RoomInfo 리스트 초기화 
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
@@ -24,7 +25,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     void Start()
     {
         //빌드에서 윈도우 크기를 제한하자.
-        Screen.SetResolution(640, 480, FullScreenMode.Windowed);
+        Screen.SetResolution(960, 540, FullScreenMode.Windowed);
         //MainUI.Instance.mainUiObject = new MainUIObject();
         //mainUIObject.Initialize();
     }
@@ -42,7 +43,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //gameVersion 
         PhotonNetwork.GameVersion = "1.0.0";
         //닉네임
-        PhotonNetwork.NickName = "CyworldAvata";
+        //PhotonNetwork.NickName = "CyworldAvata";
+        PhotonNetwork.NickName = MainUI.Instance.nameText;
         //화면동기화
         PhotonNetwork.AutomaticallySyncScene = true;
         // 접속을 서버에 요청하기
@@ -155,7 +157,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         //LobbyUIController.lobbyUI.PrintLog("방에 입장 성공!");
 
         // 방에 입장한 친구들은 모두 2번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
-        PhotonNetwork.LoadLevel(2);
+        PhotonNetwork.LoadLevel(1);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)

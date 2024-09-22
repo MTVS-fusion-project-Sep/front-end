@@ -94,8 +94,6 @@ public class RegistInfo : MonoBehaviour
         //mainUI.imgLogin_Object.SetActive(true);
 
 
-
-
     }
 
     // Update is called once per frame
@@ -104,7 +102,7 @@ public class RegistInfo : MonoBehaviour
 
     }*/
 
-    public void SaveJSONTest()
+    public void SaveLocalRegistJSON()
     {
          idText = id_Regist_InputField.text;
          passText = pass_Regist_InputField.text;
@@ -112,14 +110,22 @@ public class RegistInfo : MonoBehaviour
 
         // 파일 저장 경로
         string path = Application.dataPath + "/Resources/SaveRegist.json";
-
+        string like = "미지정";
         // 사용자 정보를 Dictionary로 저장
         Dictionary<string, string> userInfo = new Dictionary<string, string>
         {
             { "userId", idText },
             { "userPassword", passText },
-            { "userName", nameText }
+            { "userName", nameText },
+            { "smallCategory", like },
+            { "smallCategory2", like },
+            { "smallCategory3", like }
+
         };
+
+        //신규유저 정보를 Json 으로 변경
+        string newUser = JsonConvert.SerializeObject(userInfo, Formatting.Indented);
+        print("신규유저정보" + newUser);
 
         // 기존 파일이 존재하는지 확인
         if (File.Exists(path))
@@ -145,8 +151,11 @@ public class RegistInfo : MonoBehaviour
             // 새로운 유저 정보를 리스트에 추가
             userInfoList.Add(userInfo);
 
+            print("회원가입정보" + userInfo);
+
             // 리스트를 다시 JSON 문자열로 변환, 로드저장
             loadUserInfo = JsonConvert.SerializeObject(userInfoList, Formatting.Indented);
+
         }
         else
         {
@@ -160,68 +169,130 @@ public class RegistInfo : MonoBehaviour
 
         // JSON 데이터를 파일에 저장
         File.WriteAllText(path, loadUserInfo);
-        print("SaveComplete");
+        print("SaveComplete" + newUser); 
+
 
         //서버에 post 요청하기
-        StartCoroutine(SendUserInfoToServer(loadUserInfo));
+        //StartCoroutine(SaveServerRegistJSON(loadUserInfo));
+        //print("서버에요청");
 
     }
 
 
-    public void JSONSaveTest()
+    public void SaveServerRegistJSON()
     {
 
-        // 파일 저장 경로
-        string path = Application.dataPath + "/Resources/" + "/SaveRegist.txt";
+        idText = id_Regist_InputField.text;
+        passText = pass_Regist_InputField.text;
+        nameText = name_Regist_InputField.text;
+        string like = "미지정";
 
-        // 파일에 저장될 내용 생성
-        UserInfo userInfo = new UserInfo
+        // 파일 저장 경로
+        string path = Application.dataPath + "/Resources/SaveRegist.json";
+        
+        // 사용자 정보를 Dictionary로 저장
+        Dictionary<string, string> userInfo = new Dictionary<string, string>
         {
-            userId = idText,
-            userPassword = passText,
-            userName = nameText
+            { "userId", idText },
+            { "userPassword", passText },
+            { "userName", nameText },
+            { "smallCategory", like },
+            { "smallCategory2", like },
+            { "smallCategory3", like }
+
         };
 
-        // JSON으로 변환
-        string saveUserInfo = JsonUtility.ToJson(userInfo);
+        //신규유저 정보를 Json 으로 변경
+        string newUser = JsonConvert.SerializeObject(userInfo, Formatting.Indented);
+        print("신규유저정보" + newUser);
 
-        // 파일이 존재하는지 확인
+        // 기존 파일이 존재하는지 확인
         if (File.Exists(path))
         {
-            // 파일의 모든 텍스트를 읽음
-            string loadUserInfo = File.ReadAllText(path);
+            // 파일의 내용을 읽어온다.
+            loadUserInfo = File.ReadAllText(path);
 
-            // 동일한 내용이 있는지 확인
-            if (loadUserInfo.Contains(saveUserInfo))
+            // JSON을 Dictionary 리스트로 변환
+            List<Dictionary<string, string>> userInfoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserInfo);
+
+            // 동일한 ID가 있는지 확인
+            foreach (var user in userInfoList)
             {
-                Debug.Log("아이디가 중복됩니다");
-                return;
+                if (user["userId"] == idText)
+                {
+                    id_Regist_InputField.text = "";
+                    ph_Regist_ID_Text.text = "아이디가 중복됩니다";
+                    ph_Regist_ID_Text.color = Color.red;
+                    return;
+                }
             }
 
-            // 기존 내용에 추가
-            loadUserInfo += saveUserInfo + "\n";
-            File.WriteAllText(path, loadUserInfo);
+            // 새로운 유저 정보를 리스트에 추가
+            userInfoList.Add(userInfo);
 
+            print("회원가입정보" + userInfo);
+
+            // 리스트를 다시 JSON 문자열로 변환, 로드저장
+            loadUserInfo = JsonConvert.SerializeObject(userInfoList, Formatting.Indented);
 
         }
         else
         {
-            // 파일이 존재하지 않으면 새로 생성
-            File.WriteAllText(path, saveUserInfo + "\n");
+            // 파일이 없으면 새 리스트를 만들고 추가
+            List<Dictionary<string, string>> userInfoList = new List<Dictionary<string, string>>();
+            userInfoList.Add(userInfo);
+
+            // 리스트를 JSON 문자열로 변환
+            loadUserInfo = JsonConvert.SerializeObject(userInfoList, Formatting.Indented);
         }
 
-        StartCoroutine(SendUserInfoToServer(loadUserInfo));
+        // JSON 데이터를 파일에 저장
+        File.WriteAllText(path, loadUserInfo);
+        print("SaveComplete" + newUser);
+
+       
+        // 사용자 정보를 Dictionary로 저장
+        Dictionary<string, string> userInfoTest = new Dictionary<string, string>
+        {
+             
+            { "userId", idText },
+            { "userPassword", passText },
+            { "userNickname", nameText },
+            //{ "birthday", "19" },
+            //{ "gender", "m" }
+            { "smallCategory", like },
+            { "smallCategory2", like },
+            { "smallCategory3", like }
+        };
+
+
+
+        // 리스트를 JSON 으로 직렬화 (배열로 감싸기)
+        string newUserInfo = JsonConvert.SerializeObject(userInfoTest, Formatting.Indented);
+        newUserInfo = "[" + newUserInfo + "]";
+        print("서버에보낼신규유저정보" + newUserInfo);
+
+        //서버에 post 요청하기
+        StartCoroutine(RegistPostJSON(newUserInfo));
+        print("서버에요청");
 
     }
 
     // HTTP POST 요청을 보내는 메소드
-    IEnumerator SendUserInfoToServer(string jsonData)
+    IEnumerator RegistPostJSON(string jsonData)
     {
         string url = "http://192.168.0.76:8080/user"; // 서버 URL 변경 필요
+        string urlPot = "https://jsonplaceholder.typicode.com/posts/1";
+        string urlPostTest = "http://192.168.0.76:8080/user"; //같은아이피일때
+        string urlPostUser = "http://125.132.216.190:5544/user";
 
         // HTTP POST 요청 준비
-        UnityWebRequest request = new UnityWebRequest(url, "POST");
-        //info.body = JsonUtility.ToJson(jsonData);
+        //UnityWebRequest request = new UnityWebRequest(url, "POST");
+        //UnityWebRequest request = new UnityWebRequest(urlPot, "POST");
+        //UnityWebRequest request = new UnityWebRequest(urlPostTest, "POST");
+        UnityWebRequest request = new UnityWebRequest(urlPostUser, "POST");
+
+        // JSON 데이터를 담아 요청 생성
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -230,15 +301,39 @@ public class RegistInfo : MonoBehaviour
         // 요청 보내기
         yield return request.SendWebRequest();
 
+        // 요청 결과 확인
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+        else
+        {
+            // 서버 응답 확인
+            string responseText = request.downloadHandler.text;
+            print("서버 응답: " + responseText);
+
+            // 서버 응답과 newUser가 같은지 확인
+            if (responseText == jsonData)
+            {
+                Debug.Log("서버 응답과 신규 유저 정보가 일치합니다.");
+            }
+            else
+            {
+                Debug.LogWarning("서버 응답과 신규 유저 정보가 일치하지 않습니다.");
+            }
+        }
+
+
+
         // 응답 확인
-        if (request.result == UnityWebRequest.Result.Success)
+        /*if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("POST 성공: " + request.downloadHandler.text);
         }
         else
         {
             Debug.Log("POST 실패: " + request.error);
-        }
+        }*/
 
     }
 
@@ -256,9 +351,7 @@ public class RegistInfo : MonoBehaviour
        // StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
     }
 
-
-
-public void SaveTest()
+    public void SaveTest()
     {
         string idText = id_Regist_InputField.text;
         string passText = pass_Regist_InputField.text;
@@ -321,7 +414,6 @@ public void SaveTest()
 
 
     }
-
 
     public void SaveReistInfo()
     {

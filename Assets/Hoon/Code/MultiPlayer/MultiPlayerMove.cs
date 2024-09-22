@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 //포톤서버
 using Photon.Pun;
+using UnityEngine.UI;
 using System;
+using System.Xml.Linq;
 
 public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
 {
@@ -34,6 +36,8 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
 
     bool isHelloKey = false;
 
+    Transform myName_Object;
+    Text myName;
     void Start()
     {
         playerCharacterController = GetComponent<CharacterController>();
@@ -48,7 +52,19 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
         plyerPoint = GameObject.Find("PlayerPoint");
         if (plyerPoint != null) transform.position = plyerPoint.transform.position;
 
-        
+        //내 자식에서 이름 찾기
+        myName = GetComponentInChildren<Text>();
+        print("내이름" + myName.text);
+        myName.text = photonView.Owner.NickName;
+        print("오너의이름" + myName.text);
+
+        /*myName_Object = transform.Find("Text_MyName");
+        print("이름오브젝트" + myName_Object.name);
+        if (myName == null) print("myName이 없음");
+        */
+
+
+
 
 
     }

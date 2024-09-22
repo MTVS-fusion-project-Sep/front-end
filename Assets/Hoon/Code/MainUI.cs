@@ -16,6 +16,7 @@ using UnityEngine.Networking;
 using System;
 using UnityEngine.Rendering;
 using System.Linq;
+using UnityEditor.PackageManager.Requests;
 
 
 public class MainUI : MonoBehaviour
@@ -101,9 +102,9 @@ public class MainUI : MonoBehaviour
     Text phID_Text;
     Text phPass_Text;*/
 
-    string idText;
-    string passText;
-    string nameText;
+    public string idText;
+    public string passText;
+    public string nameText;
 
 
     string phID_STR = "아이디(이메일)";
@@ -247,8 +248,11 @@ public class MainUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
+            print("0번키");
             HttpInfo info = new HttpInfo();
-            info.url = "http://192.168.0.76:8080/user/temp";
+            //info.url = "http://192.168.0.76:8080/user/temp";
+            info.url = "https://jsonplaceholder.typicode.com/posts/1";
+
             // StartCoroutine(MainUI.Instance().Get(info));
             //StartCoroutine(MainUI().Get(info));
         }//업데이트
@@ -256,12 +260,9 @@ public class MainUI : MonoBehaviour
 
 
 
-    // 서버에서 JSON 데이터를 가져오기 위한 URL
-    string testJson = "https://jsonplaceholder.typicode.com/posts";
-    string testJson101 = "https://jsonplaceholder.typicode.com/posts/101";
-    private string url = "http://192.168.0.76:8080/user"; // 서버에서 JSON 파일을 제공하는 URL
-    private string testUrl = "http://192.168.0.76:8080/user/temp";
+   
 
+    //Http 통신 서버에 Get 요청
     public void GetJSONUserInfo()
     {
         print("GetJSON, 로그인 버튼");
@@ -273,15 +274,30 @@ public class MainUI : MonoBehaviour
         StartCoroutine(CheckLoginFromServer(idText, passText));
     }
 
+    // 서버에서 JSON 데이터를 가져오기 위한 URL
+    string testJson = "https://jsonplaceholder.typicode.com/posts/1";
+    string testJson101 = "https://jsonplaceholder.typicode.com/posts/101";
+    string url = "http://192.168.0.76:8080/user"; // 서버에서 JSON 파일을 제공하는 URL
+    string urlUserTemp = "http://192.168.0.76:8080/user/temp";
+    string urlGetTest = "http://192.168.0.76:8080/user?userId=user1"; //같은아이피일때
+    string urlGetTest1 = "http://125.132.216.190:5544/user?userId=user1"; //다른곳에서접속
+    string urlGetUser = "http://125.132.216.190:5544/user?userId=user1";
+
 
     private IEnumerator CheckLoginFromServer(string idText, string passText)
     {
-
+        
+        print("서버 연결 중");
         // HTTP GET 요청을 보냄, URl로 보내고
         //UnityWebRequest request = UnityWebRequest.Get(url);
-        UnityWebRequest request = UnityWebRequest.Get(testJson);
+        //UnityWebRequest request = UnityWebRequest.Get(urlUserTemp);
+        //UnityWebRequest request = UnityWebRequest.Get(testJson);
+        //UnityWebRequest request = UnityWebRequest.Get(urlGetTest);
+        //UnityWebRequest request = UnityWebRequest.Get(urlGetTest1);
         //UnityWebRequest request = UnityWebRequest.Get(testJson101); 
         //UnityWebRequest request = UnityWebRequest.Get(testJson + "/" + idText);
+        UnityWebRequest request = UnityWebRequest.Get(urlGetUser);
+
         //콜백이 올때까지 기다린다.
         yield return request.SendWebRequest();
 
@@ -302,11 +318,18 @@ public class MainUI : MonoBehaviour
             string jsonResponse = request.downloadHandler.text;
 
             // 서버에서 받은 JSON 데이터 출력
-            //print("서버 응답 데이터: " + jsonResponse);
+            print("서버 응답 데이터: " + jsonResponse);
 
-            // 로그인 성공
-            Login();
-            print("로그인 성공");
+            if (jsonResponse.Contains(idText))
+            {
+                // 로그인 성공
+                Login();
+                print("로그인 성공");
+            }
+           else
+            {
+                print("로그인 실패");
+            }
         }
 
     }// 서버 코루틴 끝
@@ -534,21 +557,29 @@ public class MainUI : MonoBehaviour
         SaveLocalLikeTextJson(themeNameArray, objectNameTextArray);
 
 
-
-
             //선택한 이름과, 테마이름을 저장.
             //OnLikeChoiceJson(likeObjectName, themeName, objectNameText);
             //print("OnLikeTextJson" + themeTextChoice);
 
     }
 
+    /*Request body()
+    {
+      "userId": "string",
+      "likeCount": "string",
+      "bigCategory": "string",
+      "smallCategory": "string",
+      "bigCategory2": "string",
+      "smallCategory2": "string",
+      "bigCategory3": "string",
+      "smallCategory3": "string"
+    }*/
+
     //유저데이터 클래스
     [System.Serializable]
     public class UserData
     {
         public string userId;
-        public string userPassword;
-        public string userName;
         public int likeCount;
         public string bigCategory;
         public string smallCategory;
@@ -1181,47 +1212,53 @@ public class MainUI : MonoBehaviour
                     isUserFound = true;
                     //이름변수에 이름을 저장
                     nameText = userInfo["userName"];
+                    print("내이름" + nameText);
                     //MyInfo UserName을 갱신
                     mainUiObject.nameText.text = nameText;
 
-                    //small Category가져오기
-                    if (userInfo["smallCategory"] != null)
+                    //smallCategory 를 포함하는 경우에만
+                    if (userInfo.ContainsKey("smallCategory"))
                     {
-                        string smallCategory = userInfo["smallCategory"];
-                        //print("smallCategory" + smallCategory);
-                        mySmallCategory.Add(smallCategory);
+                        //small Category가져오기
+                        if (userInfo["smallCategory"] != null)
+                        {
+                            string smallCategory = userInfo["smallCategory"];
+                            //print("smallCategory" + smallCategory);
+                            mySmallCategory.Add(smallCategory);
+                        }
+                        if (userInfo["smallCategory2"] != null)
+                        {
+                            string smallCategory = userInfo["smallCategory2"];
+                            //print("smallCategory2" + smallCategory);
+                            mySmallCategory.Add(smallCategory);
+                        }
+                        if (userInfo["smallCategory3"] != null)
+                        {
+                            string smallCategory = userInfo["smallCategory3"];
+                            //print("smallCategory3" + smallCategory);
+                            mySmallCategory.Add(smallCategory);
+                        }
+
+
+
+                        Text firstLikeText = firstLikeObject.GetComponent<Text>();
+                        firstLikeText.text = mySmallCategory[0];
+                        //print("첫번째관심사" + firstLikeText.text);
+
+                        Text secondLikeText = secondLikeObject.GetComponent<Text>();
+                        secondLikeText.text = mySmallCategory[1];
+                        //print("두번째관심사" + secondLikeText.text);
+
+                        Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
+                        thirdLikeText.text = mySmallCategory[2];
+                        //print("세번째관심사" + thirdLikeText.text);
+
+                        //Text secondLikeText = GameObject.Find("Text_Second_Like").GetComponent<Text>();
+                        //firstLikeText.text = mySmallCategory[1];
+                        //Text thirdLikeText = GameObject.Find("Text_Third_Like").GetComponent<Text>();
+                        //firstLikeText.text = mySmallCategory[2];*/
                     }
-                    if (userInfo["smallCategory2"] != null)
-                    {
-                        string smallCategory = userInfo["smallCategory2"];
-                        //print("smallCategory2" + smallCategory);
-                        mySmallCategory.Add(smallCategory);
-                    }
-                    if (userInfo["smallCategory3"] != null)
-                    {
-                        string smallCategory = userInfo["smallCategory3"];
-                        //print("smallCategory3" + smallCategory);
-                        mySmallCategory.Add(smallCategory);
-                    }
 
-                    
-                    
-                    Text firstLikeText = firstLikeObject.GetComponent<Text>();
-                    firstLikeText.text = mySmallCategory[0];
-                    //print("첫번째관심사" + firstLikeText.text);
-
-                    Text secondLikeText = secondLikeObject.GetComponent<Text>();
-                    secondLikeText.text = mySmallCategory[1];
-                    //print("두번째관심사" + secondLikeText.text);
-
-                    Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
-                    thirdLikeText.text = mySmallCategory[2];
-                    //print("세번째관심사" + thirdLikeText.text);
-
-                    //Text secondLikeText = GameObject.Find("Text_Second_Like").GetComponent<Text>();
-                    //firstLikeText.text = mySmallCategory[1];
-                    //Text thirdLikeText = GameObject.Find("Text_Third_Like").GetComponent<Text>();
-                    //firstLikeText.text = mySmallCategory[2];*/
 
                     //로그인처리하기
                     Login();

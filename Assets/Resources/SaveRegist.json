@@ -3,36 +3,44 @@
     "userId": "bb",
     "userPassword": "bb",
     "userName": "이재명",
-    "likeCount": 3,
-    "bigCategory": "건강",
-    "smallCategory": "헬스",
-    "bigCategory2": "생활",
-    "smallCategory2": "패션",
-    "bigCategory3": "레저",
-    "smallCategory3": "야구"
+    "likeCount": "0",
+    "bigCategory": "문화",
+    "smallCategory": "공연",
+    "bigCategory2": "레저",
+    "smallCategory2": "축구",
+    "bigCategory3": "기술",
+    "smallCategory3": "게임"
   },
   {
     "userId": "ccc",
     "userPassword": "ccc",
     "userName": "안철수",
-    "likeCount": 0,
-    "bigCategory": "레저",
-    "smallCategory": "여행",
-    "bigCategory2": "레저",
-    "smallCategory2": "야구",
-    "bigCategory3": "건강",
-    "smallCategory3": "헬스"
+    "likeCount": "0",
+    "bigCategory": "건강",
+    "smallCategory": "정신건강",
+    "bigCategory2": "생활",
+    "smallCategory2": "부동산",
+    "bigCategory3": "기술",
+    "smallCategory3": "로봇"
   },
   {
     "userId": "a",
     "userPassword": "a",
     "userName": "윤석열",
-    "likeCount": 0,
+    "likeCount": "0",
     "bigCategory": "기술",
     "smallCategory": "모바일",
     "bigCategory2": "레저",
     "smallCategory2": "축구",
     "bigCategory3": "건강",
     "smallCategory3": "영양제"
+  },
+  {
+    "userId": "gm",
+    "userPassword": "gm",
+    "userName": "최강형표",
+    "smallCategory": "미지정",
+    "smallCategory2": "미지정",
+    "smallCategory3": "미지정"
   }
 ]

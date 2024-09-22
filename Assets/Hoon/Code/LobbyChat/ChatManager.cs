@@ -23,9 +23,13 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
     public Text text_ChatContent;
     //실제 입력될 챗
     public InputField input_Chat;
+    //
+    public GameObject text_Chat_Object;
 
     //Image img_chatBackground;
     
+
+
     //상수처리 바이트 자료형으로 보낼 채팅이벤트 구분자. 번호는 자기자신이 커스텀
     const byte chattingEvent = 1;
 
@@ -59,16 +63,17 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
     void Update()
     {
+        
         // 탭 키를 누르면 인풋 필드를 선택하게 한다.
-       /* if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            //게임오브젝트를 선택했다고 해주기.
-            EventSystem.current.SetSelectedGameObject(input_Chat.gameObject);
-            //
-            input_Chat.OnPointerClick(new PointerEventData(EventSystem.current));
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-        }*/
+        /* if (Input.GetKeyDown(KeyCode.Tab))
+         {
+             //게임오브젝트를 선택했다고 해주기.
+             EventSystem.current.SetSelectedGameObject(input_Chat.gameObject);
+             //
+             input_Chat.OnPointerClick(new PointerEventData(EventSystem.current));
+             Cursor.lockState = CursorLockMode.Confined;
+             Cursor.visible = true;
+         }*/
     }
 
     //여기서 이벤트 매시지를 보냅니다.
@@ -114,7 +119,7 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
         //누군가 채팅을 입력하면 여기에 콜백이 호출이 될거임.
         //메시지 받았다면
-        print("Recieve!");
+        //print("Recieve!");
 
         //만일, 받은 이벤트가 채팅 이벤트라면
         if (photonEvent.Code == chattingEvent)
@@ -123,10 +128,10 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
             //CustomData 를 object[] 형태로 컨버트.
             object[] receiveObejcts = (object[])photonEvent.CustomData;
             //받은메시지는 리시브2([현재시간]), 리시브0(닉네임), 리시브1(채팅메시지)
-            string receiveMessage = $"[{receiveObejcts[2].ToString()}]:{receiveObejcts[0].ToString()}:{receiveObejcts[1].ToString()}\n";
+            string receiveMessage = $"[{receiveObejcts[2].ToString()}]:{receiveObejcts[0].ToString()}:{receiveObejcts[1].ToString()}";
 
             //현재텍스트에 메시지 넣기
-            text_ChatContent.text += receiveMessage;
+            text_ChatContent.text += receiveMessage+"\n";
             //채팅 메시지 초기화
             input_Chat.text = "";
 
