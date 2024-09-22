@@ -151,46 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323fbb4b774d389429170898ea323739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CaptureTarget: {fileID: 601803320}
-  TextureName: Bed
-  FileType: 0
-  TextureType: 0
-  TextureCompression: 1
-  BakingSize: 512
-  CompressionSize: 512
-  MinPreviewSize: 32
-  MaxPreviewSize: 512
-  BackgroundAlpha: 0
-  SetAlphaIsTransparent: 1
-  DisplayAlphaInTexturePreview: 1
-  Filter_Mode: 1
-  AntiAliasing: 4
-  AnisotropicFiltering: 1
-  Texture_Format: 5
-  PreviewRenderTextureFormat: 0
-  TextureDepthBuffer: 24
-  AutoCenterInBounds: 0
-  CenterIncludesChildrenBounds: 1
-  CenteringType: 0
-  CenteringDepthBufferMultiplier: 1.1
-  AutoOrientate: 0
-  AutoOrientationSetting:
-    Direction: 0
-    DesiredOrientationOffset: {x: -15, y: 145, z: 0}
-  CaptureDepth: 3
-  FovManipulationValue: 15
-  PingAssetOnSave: 1
-  AutoSelectAssetOnSave: 0
-  Gizmos: 7
-  GizmoLineLengthMultiplier: 1
-  GizmoFrontToEndDepth: 2
-  DefaultFOV: 60
-  SelectedSavePath: 
-  PreviewRenderTexture: {fileID: 784933010}
-  Camera: {fileID: 1587057368}
-  PreviewCamera: {fileID: 553433994}
-  CurrentChild: {fileID: 1466904467}
-  LastChild: {fileID: 1466904467}
 --- !u!4 &55859790
 Transform:
   m_ObjectHideFlags: 0
@@ -451,7 +411,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1466904467}
+  - {fileID: 863466936}
   m_Father: {fileID: 55859790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!84 &784933010
@@ -484,7 +444,7 @@ RenderTexture:
   m_TextureSettings:
     serializedVersion: 2
     m_FilterMode: 1
-    m_Aniso: 1
+    m_Aniso: 0
     m_MipBias: 0
     m_WrapU: 1
     m_WrapV: 1
@@ -492,7 +452,7 @@ RenderTexture:
   m_Dimension: 2
   m_VolumeDepth: 1
   m_ShadowSamplingMode: 2
---- !u!1001 &1240757259
+--- !u!1001 &863466935
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -500,59 +460,59 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 601803321}
     m_Modifications:
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.73
+      value: 0.03
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.98
+      value: -0.54
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.97
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: -0.22914751
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.01606374
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.38268343
+      value: -0.9708765
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.06806057
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -8.02
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -206.56
       objectReference: {fileID: 0}
-    - target: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 738248748157925381, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
+    - target: {fileID: 2787868288338443043, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
       propertyPath: m_Name
-      value: Bed
+      value: TV
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
---- !u!4 &1466904467 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
+--- !u!4 &863466936 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 130957204477602646, guid: e674c2812cc8c0548890bcd4ff399ec0, type: 3}
-  m_PrefabInstance: {fileID: 1240757259}
+  m_CorrespondingSourceObject: {fileID: 2648328560704694978, guid: 105ac8cef6324ff4a88ab3d3f6100925, type: 3}
+  m_PrefabInstance: {fileID: 863466935}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1587057365
 GameObject:
@@ -611,7 +571,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.054957304, g: 0.8962264, b: 0.39755365, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

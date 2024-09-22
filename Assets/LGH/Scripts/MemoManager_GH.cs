@@ -107,8 +107,10 @@ public class MemoManager_GH : MonoBehaviour
             memoInfoList = JsonUtility.FromJson<MemoInfoList>(jsonData);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
+
         StartCoroutine(SetMemo());
-        
+        memoSwipe.SetScrollBarValue(0);
+
     }
     IEnumerator SetMemo()
     {
@@ -123,7 +125,6 @@ public class MemoManager_GH : MonoBehaviour
         //기록되어 있는 메모에 따른 메모 생성
         for (int i = 0; i < memoCount; i++)
         {
-            //null===================================================================================================================
             memoList.Add(Instantiate(memoFactory, memoContents.transform));
             TMP_InputField inputfield = memoList[i].GetComponentInChildren<TMP_InputField>();
             inputfield.gameObject.SetActive(false);

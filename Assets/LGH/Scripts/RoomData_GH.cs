@@ -11,6 +11,9 @@ public class RoomData_GH : MonoBehaviour
     Button enterRoom_but;
 
     public TMP_Text roomName;
+    public TMP_Text roomCate;
+    public TMP_Text roomCount;
+    public TMP_Text roomState;
 
     //룸 아이디와 룸이름을 정보에 있는거로 바꾼다.
     
@@ -21,11 +24,22 @@ public class RoomData_GH : MonoBehaviour
         enterRoom_but.onClick.AddListener(() => ChatManager.instance.EnterRoom(roomInfo.roomId));
 
         roomName.text = roomInfo.name;
+        roomCate.text = roomInfo.category;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        roomCount.text = roomInfo.headCnt + "/" + roomInfo.maxCnt;
+
+        if (roomInfo.headCnt >= roomInfo.maxCnt)
+        {
+            roomState.text = "입장불가능";
+            enterRoom_but.interactable = false;
+        }
+        else
+        {
+            roomState.text = "입장가능";
+            enterRoom_but.interactable = true;
+        }
     }
 }

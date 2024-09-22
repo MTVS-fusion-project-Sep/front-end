@@ -3383,6 +3383,7 @@ MonoBehaviour:
   currentPage: 0
   maxPage: 0
   scrollPagecNum: {fileID: 53047854}
+  memoManag: {fileID: 1559749442}
 --- !u!1 &502271258 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6181388949116686943, guid: 9cfed5c0021ea404d8c1f15e0b311497, type: 3}
@@ -5751,6 +5752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6686e845300f50342b61aaa10955688d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rooms: []
   httpIP: 125.132.216.190
   httpPort: 5544
   ui_Furniture:
@@ -9472,7 +9474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1996759247295060500, guid: 21286ad38b505aa468ad32d0abfec6dd, type: 3}
       propertyPath: wallObjectInfo.furniPos
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1996759247295060500, guid: 21286ad38b505aa468ad32d0abfec6dd, type: 3}
       propertyPath: wallObjectInfo.furniName

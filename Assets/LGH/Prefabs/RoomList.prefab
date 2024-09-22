@@ -1027,7 +1027,13 @@ MonoBehaviour:
   roomInfo:
     roomId: 
     name: 
+    category: 
+    headCnt: 1
+    maxCnt: 0
   roomName: {fileID: 973272810935189901}
+  roomCate: {fileID: 221022001737524410}
+  roomCount: {fileID: 683583818935987213}
+  roomState: {fileID: 3963651400391454811}
 --- !u!1 &9030444625833679735
 GameObject:
   m_ObjectHideFlags: 0

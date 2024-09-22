@@ -10,6 +10,7 @@ using Photon.Realtime;
 using UnityEditor.VersionControl;
 using UnityEditor;
 using UnityEngine.Networking;
+using static System.Net.WebRequestMethods;
 
 
 // 이벤트를 추가해주는 인터페이스 추가
@@ -46,6 +47,15 @@ public class ChatManager : MonoBehaviour
 
     //방 새로고침 버튼
     public Button roomReloadBut;
+    //방 생성 버튼
+    public Button roomCreateBut;
+
+
+    //방 생성
+    public TMP_InputField createRoomName;
+    public TMP_Dropdown createRoomCate;
+    public Slider createRoomMaxCnt;
+
 
     private void Awake()
     {
@@ -57,6 +67,7 @@ public class ChatManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        RoomLoad();
     }
 
     void Start()
@@ -75,6 +86,9 @@ public class ChatManager : MonoBehaviour
 
         // 룸 새로고침 버튼에 함수 할당
         roomReloadBut.onClick.AddListener(RoomLoad);
+
+        // 방만들기 버튼에 함수 할당
+        roomCreateBut.onClick.AddListener(RoomCreate);
 
         //룸을 받아온다.
         RoomLoad();
@@ -118,9 +132,26 @@ public class ChatManager : MonoBehaviour
         {
             roomList.Add(Instantiate(roomLisrPrefab, roomContent.transform));
             RoomData_GH roomData = roomList[i].GetComponent<RoomData_GH>();
-            roomData.roomInfo.roomId = allRoomInfo.data[i].roomId;
-            roomData.roomInfo.name = allRoomInfo.data[i].name;
+            roomData.roomInfo = allRoomInfo.data[i];
         }
+    }
+
+    void RoomCreate()
+    {
+        TestInfo ti = new TestInfo();
+        ti.name = createRoomName.text;
+        ti.category = createRoomCate.options[createRoomCate.value].text;
+        ti.maxCnt = (int)createRoomMaxCnt.value;
+       
+        HttpInfo info = new HttpInfo();
+        info.url = RoomListURL;
+        info.body = JsonUtility.ToJson(ti);
+        info.contentType = "application/json";
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            print(downloadHandler.text);
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
     }
 
     public void EnterRoom(string roomID)
@@ -172,4 +203,12 @@ public class ChatManager : MonoBehaviour
 public class RoomInfoList
 {
     public List<RoomInfo_GH> data;
+}
+
+[System.Serializable]
+public class TestInfo
+{
+    public string name = "방이름";
+    public string category = "요리";
+    public int maxCnt = 35;
 }

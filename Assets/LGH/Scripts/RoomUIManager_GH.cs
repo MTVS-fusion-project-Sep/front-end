@@ -27,8 +27,8 @@ public class RoomUIManager_GH : MonoBehaviour
 
 
     //http
-    public string httpIP = "192.168.0.76";
-    public string httpPort = "8080";
+    public string httpIP = "125.132.216.190";
+    public string httpPort = "5544";
 
 
     // 가구 리스트를 만든다.

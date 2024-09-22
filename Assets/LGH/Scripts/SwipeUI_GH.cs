@@ -42,14 +42,13 @@ public class SwipeUI_GH : MonoBehaviour
             scrollPageValues[i] = valueDistance * i;
         }
 
-
-
+        //maxPage = memoManag.memoCount;
     }
 
     void Start()
     {
         // 최초 시작할 때 0번 페이지를 볼 수 있도록 설정
-        SetScrollBarValue(0);
+        //SetScrollBarValue(0);
     }
 
     public void SetScrollBarValue(int index)
@@ -66,8 +65,6 @@ public class SwipeUI_GH : MonoBehaviour
 
         UpdateInput();
         UpdatePageNum();
-
-
     }
 
     void UpdateInput()
