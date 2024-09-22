@@ -230,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8140b3bef7db424a9f785db52136ccc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userName: {fileID: 1095993769}
 --- !u!4 &52260859
 Transform:
   m_ObjectHideFlags: 0
@@ -1866,7 +1867,7 @@ GameObject:
   - component: {fileID: 1095993770}
   - component: {fileID: 1095993769}
   m_Layer: 5
-  m_Name: Text_Player
+  m_Name: Text_User
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1924,7 +1925,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: textLog
+  m_Text: UserName
 --- !u!222 &1095993770
 CanvasRenderer:
   m_ObjectHideFlags: 0

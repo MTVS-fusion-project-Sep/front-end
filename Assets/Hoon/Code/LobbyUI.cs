@@ -1,26 +1,35 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LobbyUI : MonoBehaviour
 {
     GameObject btn_LobbyExit;
     MainUIObject mainUiObject;
+    public Text userName;
 
     // Start is called before the first frame update
     void Start()
     {
         btn_LobbyExit = GameObject.Find("Btn_LobbyExit");
-    
+        
+        if(userName.text.Contains("User"))
+        {
+            userName.text = "";
+             
+        }
+
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         
-    }
+    }*/
     public void LobbyExit()
     {
         // 씬을 로드하고 씬 로드 완료 후 호출될 메서드를 이벤트에 등록

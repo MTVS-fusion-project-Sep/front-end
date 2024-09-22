@@ -46,5 +46,29 @@
     "smallCategory2": "영화",
     "bigCategory3": "문화",
     "smallCategory3": "음악"
+  },
+  {
+    "userId": "aa",
+    "userPassword": "aa",
+    "userNickName": null,
+    "likeCount": 0,
+    "bigCategory": "건강",
+    "smallCategory": "헬스",
+    "bigCategory2": "건강",
+    "smallCategory2": "영양제",
+    "bigCategory3": "건강",
+    "smallCategory3": "정신건강"
+  },
+  {
+    "userId": "aaa",
+    "userPassword": "aaa",
+    "userNickName": null,
+    "likeCount": 0,
+    "bigCategory": null,
+    "smallCategory": "미지정",
+    "bigCategory2": null,
+    "smallCategory2": "미지정",
+    "bigCategory3": null,
+    "smallCategory3": "미지정"
   }
 ]

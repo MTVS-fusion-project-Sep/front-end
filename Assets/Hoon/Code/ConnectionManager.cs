@@ -156,7 +156,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         print("방에 입장 성공");
         //LobbyUIController.lobbyUI.PrintLog("방에 입장 성공!");
 
-        // 방에 입장한 친구들은 모두 2번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
+        // 방에 입장한 친구들은 모두 N번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
         PhotonNetwork.LoadLevel(1);
     }
 
@@ -198,12 +198,9 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnRoomListUpdate(roomList);
         print("룸리스트 업데이트");
 
-
-
         //print("방이 있으니 참가해야지");
         // 로비에 들어갔으면 방을 생성
         //JoinRoom();
-
 
         if (roomList.Count == 0)
         {

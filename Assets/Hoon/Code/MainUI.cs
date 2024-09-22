@@ -18,6 +18,7 @@ using UnityEngine.Rendering;
 using System.Linq;
 //using UnityEditor.PackageManager.Requests;
 using System.Text;
+using static RegistInfo;
 
 
 public class MainUI : MonoBehaviour
@@ -266,7 +267,20 @@ public class MainUI : MonoBehaviour
     string urlUserTemp = "http://192.168.0.76:8080/user/temp";
     string urlGetTest = "http://192.168.0.76:8080/user?userId=user1"; //같은아이피일때
     string urlGetTest1 = "http://125.132.216.190:5544/user?userId=user1"; //다른곳에서접속
-    string urlGetUser = "http://125.132.216.190:5544/user?userId=user1";
+    string urlGetUser = "http://125.132.216.190:5544/user?userId=";
+    //string urlGetUser = "http://125.132.216.190:5544/user?userid=";
+
+    // JSON 데이터를 담을 클래스
+    public class User
+    {
+        public int id;
+        public string userId;
+        public string userPassword;
+        public string userNickname;
+        public string birthday;
+        public string gender;
+        public string[] interestList;
+    }
 
 
     private IEnumerator CheckLoginFromServer(string idText, string passText)
@@ -281,12 +295,10 @@ public class MainUI : MonoBehaviour
         //UnityWebRequest request = UnityWebRequest.Get(urlGetTest1);
         //UnityWebRequest request = UnityWebRequest.Get(testJson101); 
         //UnityWebRequest request = UnityWebRequest.Get(testJson + "/" + idText);
-        UnityWebRequest request = UnityWebRequest.Get(urlGetUser);
+        UnityWebRequest request = UnityWebRequest.Get(urlGetUser+ idText);
 
         //콜백이 올때까지 기다린다.
         yield return request.SendWebRequest();
-
-        //잘못보냈다는 오류가 발생함.
 
         //요청 결과 확인
         //연결오류, 프로토콜 오류 발생시
@@ -300,13 +312,26 @@ public class MainUI : MonoBehaviour
             print("서버 연결 성공");
 
             // 서버로부터 받은 응답 데이터를 문자열로 변환
-            string jsonResponse = request.downloadHandler.text;
-
+            string strResponse = request.downloadHandler.text;
+           
             // 서버에서 받은 JSON 데이터 출력
-            print("서버 응답 데이터: " + jsonResponse);
+            print("서버 응답 데이터: " + strResponse);
 
-            if (jsonResponse.Contains(idText))
+            if (strResponse.Contains(idText))
             {
+                // JSON 데이터를 C# 객체로 변환
+                User user = JsonConvert.DeserializeObject<User>(strResponse);
+                print("제이슨 -> 구조체" + user);
+
+                //이름변수에 이름을 저장
+                nameText = user.userNickname;
+                print("내이름" + nameText);
+                //MyInfo UserName을 갱신
+                mainUiObject.nameText.text = nameText;
+
+                saveUserId = idText;
+                print("userId" +  saveUserId);
+
                 // 로그인 성공
                 Login();
                 print("로그인 성공");
@@ -600,7 +625,7 @@ public class MainUI : MonoBehaviour
 
                 //유저아이디확인
                 string userStr = saveUserId;
-                //print("유저 아이디 확인" + userStr);
+                print("유저 아이디 확인" + saveUserId);
 
                 // ID와 일치하는 부분 찾기
                 UserData matchingUser = users.Find(user => user.userId == saveUserId);
