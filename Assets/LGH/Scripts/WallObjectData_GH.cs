@@ -11,22 +11,34 @@ public class WallObjectData_GH : MonoBehaviour
     void Start()
     {
         dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
-        SetWallPos((int)wallObjectInfo.wallPos - 1, (int)wallObjectInfo.wallPos - 1);
-        if (wallObjectInfo.onPlace)
+        if (wallObjectInfo.furniOnPlace)
         {
             gameObject.SetActive(true);
         }
         else
         {
+            dragM.onWallObjects[(int)wallObjectInfo.furniPos - 1] = false;
             gameObject.SetActive(false);
-            dragM.onWallObjects[(int)wallObjectInfo.wallPos - 1] = false;
         }
+        
+        SetWallPos((int)wallObjectInfo.furniPos - 1 , (int)wallObjectInfo.furniPos - 1);
 
 
     }
     private void Update()
     {
+        dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
+        if (wallObjectInfo.furniOnPlace)
+        {
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            dragM.onWallObjects[(int)wallObjectInfo.furniPos - 1] = false;
+            gameObject.SetActive(false);
+        }
 
+        SetWallPos((int)wallObjectInfo.furniPos - 1, (int)wallObjectInfo.furniPos - 1);
 
     }
 
@@ -47,7 +59,7 @@ public class WallObjectData_GH : MonoBehaviour
         }
         else
         {
-            print("이미 오브젝트가 있습니다!");
+            //print("이미 오브젝트가 있습니다!");
         }
     }
 

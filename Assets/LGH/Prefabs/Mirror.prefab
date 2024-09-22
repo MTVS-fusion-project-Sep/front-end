@@ -184,5 +184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallObjectInfo:
-    wallPos: 3
-    onPlace: 1
+    furniCategory: Wall
+    furniName: Mirror
+    furniPos: 3
+    furniOnPlace: 0
+    userId: user1
