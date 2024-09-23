@@ -158,6 +158,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 방에 입장한 친구들은 모두 N번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
         PhotonNetwork.LoadLevel(1);
+ 
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -180,6 +181,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         string playerMsg = $"{newPlayer.NickName}님이 입장하셨습니다.";
         print(playerMsg);
         //LobbyUIController.lobbyUI.PrintLog(playerMsg);
+
     }
     // 룸에 있던 다른 플레이어가 퇴장했을 때의 콜백 함수
     public override void OnPlayerLeftRoom(Player otherPlayer)
