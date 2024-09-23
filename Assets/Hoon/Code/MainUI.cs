@@ -19,6 +19,7 @@ using System.Linq;
 //using UnityEditor.PackageManager.Requests;
 using System.Text;
 using static RegistInfo;
+using static System.Net.WebRequestMethods;
 
 
 public class MainUI : MonoBehaviour
@@ -241,12 +242,13 @@ public class MainUI : MonoBehaviour
 
         //OFFIMG(); // 이미지 오브젝트 끄기
 
+
     }
 
-    /*void Update()
+    void Update()
     {
         
-    }*/
+    }
 
     //Http 통신 서버에 Get 요청
     public void GetJSONUserInfo()
@@ -281,12 +283,11 @@ public class MainUI : MonoBehaviour
         public string gender;
         public string[] interestList;
     }
-
-
+   
     private IEnumerator CheckLoginFromServer(string idText, string passText)
     {
 
-        print("서버 연결 중");
+        print("Get userid 중");
         // HTTP GET 요청을 보냄, URl로 보내고
         //UnityWebRequest request = UnityWebRequest.Get(url);
         //UnityWebRequest request = UnityWebRequest.Get(urlUserTemp);
@@ -332,6 +333,9 @@ public class MainUI : MonoBehaviour
                 saveUserId = idText;
                 print("userId" +  saveUserId);
 
+
+                StartCoroutine(ServerGetLike());
+
                 // 로그인 성공
                 Login();
                 print("로그인 성공");
@@ -344,10 +348,39 @@ public class MainUI : MonoBehaviour
 
     }// 서버 코루틴 끝
 
+    public IEnumerator ServerGetLike()
+    {
+        string url = "http://125.132.216.190:5544/interest-v2?userId=" + idText;
+
+        UnityWebRequest request = UnityWebRequest.Get(url);
+
+        //콜백이 올때까지 기다린다.
+        yield return request.SendWebRequest();
+
+        // 요청 결과 확인
+        //연결오류, 프로토콜 오류 발생시
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            print("서버 연결 오류: " + request.error);
+        }
+        //문제가 없다면
+        else
+        {
+            print("서버 연결 성공");
+
+            // 서버로부터 받은 응답 데이터를 문자열로 변환
+            string strResponse = request.downloadHandler.text;
+
+            // 서버에서 받은 JSON 데이터 출력
+            print("Get Like 서버 응답 데이터: " + strResponse);
+
+
+        }
+    }
 
 
 
-    string likeObjectName;
+        string likeObjectName;
     string likeObjectNameText;
     public void OnLikeText(GameObject likeTextObject)
     {
@@ -434,6 +467,7 @@ public class MainUI : MonoBehaviour
 
     }
 
+
     public void SaveLikeText(string likeText)
     {
         //이전텍스트
@@ -451,7 +485,7 @@ public class MainUI : MonoBehaviour
         if (textAsset == null)
         {
             //생성하기
-            File.CreateText(path);
+            System.IO.File.CreateText(path);
             print("텍스트가 생성하기");
 
         }
@@ -461,7 +495,7 @@ public class MainUI : MonoBehaviour
             List<string> newString = new List<string>();
 
             // 기존 텍스트를 줄별로 나누어 배열로 가져오기
-            string[] beforeStringLines = File.ReadAllLines(path);
+            string[] beforeStringLines = System.IO.File.ReadAllLines(path);
 
             // 배열의 각 줄을 리스트에 추가
             newString.AddRange(beforeStringLines);
@@ -502,7 +536,7 @@ public class MainUI : MonoBehaviour
             }
 
             // 리스트를 파일에 다시 쓰기 (줄별로 합쳐서 작성)
-            File.WriteAllLines(path, newString);
+            System.IO.File.WriteAllLines(path, newString);
 
             // 새로 추가할 텍스트도 리스트에 추가
             //newString.Add(likeText);
@@ -521,6 +555,7 @@ public class MainUI : MonoBehaviour
     string[] objectNameTextArray;
     public void OnLikeTextJson()
     {
+        print("관심사저장버튼");
         Text firstLikeText = firstLikeObject.GetComponent<Text>();
         Text secondLikeText = secondLikeObject.GetComponent<Text>();
         Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
@@ -533,6 +568,7 @@ public class MainUI : MonoBehaviour
             //print("두번째관심사" + secondLikeText.text);
             mySmallCategory[2] = thirdLikeText.text;
             //print("세번째관심사" + thirdLikeText.text);
+            print("관심사 저장");
         }
         else
         {
@@ -540,6 +576,9 @@ public class MainUI : MonoBehaviour
             mySmallCategory.Add(secondLikeText.text);
             mySmallCategory.Add(thirdLikeText.text);
 
+            print("관심사배열크기" + mySmallCategory.Count);
+            
+           
         }
 
         //배열초기화
@@ -610,10 +649,10 @@ public class MainUI : MonoBehaviour
         //파일 경로를 불러옵니다.
         string path = Application.dataPath + "/Resources/SaveRegist.json";
         //파일이 있으면
-        if (File.Exists(path))
+        if (System.IO.File.Exists(path))
         {
             // 파일의 모든 텍스트를 가져온다 (JSON 파일).
-            loadUserInfo = File.ReadAllText(path);
+            loadUserInfo = System.IO.File.ReadAllText(path);
 
             //파일을 잘 가져왔다면
             if (loadUserInfo != null)
@@ -645,7 +684,7 @@ public class MainUI : MonoBehaviour
 
                         // JSON으로 신규저장
                         string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
-                        File.WriteAllText(path, updatedJson);
+                        System.IO.File.WriteAllText(path, updatedJson);
                         print("JSON 파일 저장 완료 0: " + updatedJson);
 
                     }
@@ -659,7 +698,7 @@ public class MainUI : MonoBehaviour
 
                         // JSON으로 신규저장
                         string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
-                        File.WriteAllText(path, updatedJson);
+                        System.IO.File.WriteAllText(path, updatedJson);
                         print("JSON 파일 저장 완료 1: " + updatedJson);
 
                     }
@@ -673,14 +712,14 @@ public class MainUI : MonoBehaviour
 
                         // JSON으로 신규저장
                         string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
-                        File.WriteAllText(path, updatedJson);
+                        System.IO.File.WriteAllText(path, updatedJson);
                         print("JSON 파일 저장 완료 2: " + updatedJson);
 
                     }
 
                     //서버에 Post하기
                     SaveSeverLikeJsonTest();
-                    print("요청하는중");
+                    print("서버에 Post");
 
                 }
                 else
@@ -717,10 +756,10 @@ public class MainUI : MonoBehaviour
         string path = Application.dataPath + "/Resources/SaveRegist.json";
 
         // 파일이 있으면
-        if (File.Exists(path))
+        if (System.IO.File.Exists(path))
         {
             // 파일의 모든 텍스트를 가져온다 (JSON 파일).
-            loadUserInfo = File.ReadAllText(path);
+            loadUserInfo = System.IO.File.ReadAllText(path);
 
             // 파일을 잘 가져왔다면
             if (loadUserInfo != null)
@@ -886,10 +925,10 @@ public class MainUI : MonoBehaviour
         //파일 경로를 불러옵니다.
         string path = Application.dataPath + "/Resources/SaveRegist.json";
         //파일이 있으면
-        if (File.Exists(path))
+        if (System.IO.File.Exists(path))
         {
             // 파일의 모든 텍스트를 가져온다 (JSON 파일).
-            loadUserInfo = File.ReadAllText(path);
+            loadUserInfo = System.IO.File.ReadAllText(path);
 
             //파일을 잘 가져왔다면
             if (loadUserInfo != null)
@@ -920,7 +959,7 @@ public class MainUI : MonoBehaviour
 
                         // JSON으로 신규저장
                         string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
-                        File.WriteAllText(path, updatedJson);
+                        System.IO.File.WriteAllText(path, updatedJson);
                         print("JSON 파일 저장 완료: " + updatedJson);
                     }
                     //라이크 카운트가 0이 아니면 기존정보에 추가
@@ -933,7 +972,7 @@ public class MainUI : MonoBehaviour
 
                         // JSON으로 신규저장
                         string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
-                        File.WriteAllText(path, updatedJson);
+                        System.IO.File.WriteAllText(path, updatedJson);
                         print("JSON 파일 저장 완료: " + updatedJson);
 
                     }
@@ -947,7 +986,7 @@ public class MainUI : MonoBehaviour
 
                         // JSON으로 신규저장
                         string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
-                        File.WriteAllText(path, updatedJson);
+                        System.IO.File.WriteAllText(path, updatedJson);
                         print("JSON 파일 저장 완료: " + updatedJson);
 
                     }
@@ -961,7 +1000,7 @@ public class MainUI : MonoBehaviour
 
                         // JSON으로 신규저장
                         string updatedJson = JsonConvert.SerializeObject(users, Formatting.Indented);
-                        File.WriteAllText(path, updatedJson);
+                        System.IO.File.WriteAllText(path, updatedJson);
                         print("JSON 파일 저장 완료: " + updatedJson);
 
                     }
@@ -1145,10 +1184,10 @@ public class MainUI : MonoBehaviour
         string path = Application.dataPath + "/Resources/" + fileName + ".json";
 
         // 파일이 존재하는지 확인
-        if (File.Exists(path))
+        if (System.IO.File.Exists(path))
         {
             // 파일의 모든 텍스트를 가져온다 (JSON 파일).
-            loadUserInfo = File.ReadAllText(path);
+            loadUserInfo = System.IO.File.ReadAllText(path);
             print("JSON 파일 읽기 완료");
 
             // JSON 파일을 Dictionary 리스트로 변환
@@ -1207,7 +1246,7 @@ public class MainUI : MonoBehaviour
         else
         {
             // 파일이 없으면 새로 생성 (빈 파일)
-            File.Create(path).Dispose();
+            System.IO.File.Create(path).Dispose();
             print("JSON 파일 생성됨");
         }
 
@@ -1227,10 +1266,10 @@ public class MainUI : MonoBehaviour
         string content = "ID" + ":" + idText + "," + "Password" + ":" + passText + "\n";
 
         // 파일이 존재하는지, 그리고 동일한 내용이 있는지 확인
-        if (File.Exists(path))
+        if (System.IO.File.Exists(path))
         {
             //pah의 모든 택스트를 가져오자.
-            loadUserInfo = File.ReadAllText(path);
+            loadUserInfo = System.IO.File.ReadAllText(path);
 
             //content가 포함되어 있다면
             if (loadUserInfo.Contains(content))
@@ -1361,10 +1400,10 @@ public class MainUI : MonoBehaviour
         string path = Application.dataPath + "/Resources/" + fileName + ".json";
 
         // 파일이 존재하는지, 그리고 동일한 내용이 있는지 확인
-        if (File.Exists(path))
+        if (System.IO.File.Exists(path))
         {
             //pah의 모든 택스트를 가져오자.
-            loadUserInfo = File.ReadAllText(path);
+            loadUserInfo = System.IO.File.ReadAllText(path);
             print("JSON 파일 읽기 완료" + loadUserInfo);
 
             // JSON 파일을 Dictionary 리스트로 변환
@@ -1505,7 +1544,7 @@ public class MainUI : MonoBehaviour
         else
         {
             // 파일이 없으면 새로 생성 (빈 파일)
-            File.Create(path).Dispose();
+            System.IO.File.Create(path).Dispose();
             print("JSON 파일 생성됨");
         }
 
@@ -1532,10 +1571,10 @@ public class MainUI : MonoBehaviour
         string content = "ID" + ":" + idText + "," + "Password" + ":" + passText;
 
         // 파일이 존재하는지, 그리고 동일한 내용이 있는지 확인
-        if (File.Exists(path))
+        if (System.IO.File.Exists(path))
         {
             //pah의 모든 택스트를 가져오자.
-            loadUserInfo = File.ReadAllText(path);
+            loadUserInfo = System.IO.File.ReadAllText(path);
             print("텍스트 가져오기");
 
             //content가 포함되어 있다면
@@ -1575,7 +1614,7 @@ public class MainUI : MonoBehaviour
         }
         else
         {
-            File.Create(path);
+            System.IO.File.Create(path);
         }
 
     }
@@ -1627,6 +1666,8 @@ public class MainUI : MonoBehaviour
         //내정보패널을 끄기
         panel_MyInfo_Object.SetActive(false);
 
+        RoomUIManager_GH.instance.roomUserIdSet(saveUserId);
+        RoomUIManager_GH.instance.OnLoad();
 
     }
 
@@ -1679,5 +1720,13 @@ public class MainUI : MonoBehaviour
         log += message + '\n';
         //text_logText.text = log;
     }
-
+    public void ChatSceneLoad()
+    {
+        SceneManager.LoadScene(2);
+        ChatManager_GH.instance.roomUserIdSet(saveUserId);
+    }
+    public void MainSceneLoad()
+    {
+        SceneManager.LoadScene(0);
+    }
 }//클래스끝

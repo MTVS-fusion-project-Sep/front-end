@@ -25,11 +25,11 @@ public class SwipeUI_GH : MonoBehaviour
     public TextMeshProUGUI scrollPagecNum;
 
     //메모매니저 갖고오기
-    MemoManager_GH memoManag;
+    public MemoManager_GH memoManag;
 
     private void Awake()
     {
-        memoManag = GameObject.Find("MemoManag").GetComponent<MemoManager_GH>();
+        
         // 스크롤 되는 페이지의 각 value값을 지정하는 배열 메모리 할당
         scrollPageValues = new float[memoManag.memoCount];
 
@@ -42,15 +42,13 @@ public class SwipeUI_GH : MonoBehaviour
             scrollPageValues[i] = valueDistance * i;
         }
 
-        //최대 페이지의  수
-        maxPage = memoManag.memoCount;
-
+        //maxPage = memoManag.memoCount;
     }
 
     void Start()
     {
         // 최초 시작할 때 0번 페이지를 볼 수 있도록 설정
-        SetScrollBarValue(0);
+        //SetScrollBarValue(0);
     }
 
     public void SetScrollBarValue(int index)
@@ -62,6 +60,9 @@ public class SwipeUI_GH : MonoBehaviour
 
     void Update()
     {
+        //최대 페이지의  수
+        maxPage = memoManag.memoCount;
+
         UpdateInput();
         UpdatePageNum();
     }
@@ -136,7 +137,7 @@ public class SwipeUI_GH : MonoBehaviour
 
         isSwipeMode = true;
 
-        while(percent < 1)
+        while (percent < 1)
         {
             current += Time.deltaTime;
             percent = current / swipeTime;

@@ -171,9 +171,9 @@ public class DragManager_GH : MonoBehaviour
                         if (colliders[i].gameObject != moveFurniture)
                         {
                             collFD = colliders[i].GetComponent<FurnitureData_GH>();
-                            for (int j = collFD.furnitureInfo.furni_Current_X; j < collFD.furnitureInfo.furni_Current_X + collFD.furnitureInfo.furni_Size_X; j++)
+                            for (int j = collFD.furnitureInfo.furniCurrentX; j < collFD.furnitureInfo.furniCurrentX + collFD.furnitureInfo.furniSizeX; j++)
                             {
-                                for (int k = collFD.furnitureInfo.furni_Current_Z; k < collFD.furnitureInfo.furni_Current_Z + collFD.furnitureInfo.furni_Size_Z; k++)
+                                for (int k = collFD.furnitureInfo.furniCurrentZ; k < collFD.furnitureInfo.furniCurrentZ + collFD.furnitureInfo.furniSizeZ; k++)
                                 {
 
                                     donXZ[j][k] = true;
@@ -187,7 +187,7 @@ public class DragManager_GH : MonoBehaviour
                 {
                     wallObject = hit.transform.gameObject;
                     wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
-                    beforeWallObPos = (int)wallObjectData.wallObjectInfo.wallPos - 1;
+                    beforeWallObPos = (int)wallObjectData.wallObjectInfo.furniPos - 1;
                 }
             }
             else
@@ -224,7 +224,7 @@ public class DragManager_GH : MonoBehaviour
                 float xDistance = 99f;
                 float zDistance = 99f;
                 // x값의 최댓 값 구하기
-                for (int i = 0; i <= groundTileNum - moveFurniData.furnitureInfo.furni_Size_X; i++)
+                for (int i = 0; i <= groundTileNum - moveFurniData.furnitureInfo.furniSizeX; i++)
                 {
                     xDistance = Vector3.Distance(hit.point, ground_Xs[i].transform.position);
                     //x값을 가지고 ground_Xs[i] 이랑 비교해서 가장 가까운 ground_Xs를 구하고
@@ -235,7 +235,7 @@ public class DragManager_GH : MonoBehaviour
                     }
                 }
                 // z값의 최댓 값 구하기
-                for (int i = 0; i <= groundTileNum - moveFurniData.furnitureInfo.furni_Size_Z; i++)
+                for (int i = 0; i <= groundTileNum - moveFurniData.furnitureInfo.furniSizeZ; i++)
                 {
                     zDistance = Vector3.Distance(hit.point, ground_Zs[i].transform.position);
                     //z값을 가지고 ground_Zs[i] 이랑 비교해서 가장 가까운 ground_Zs 구해서
@@ -246,14 +246,14 @@ public class DragManager_GH : MonoBehaviour
                     }
                 }
                 bool donMove = false;
-                for (int j = myX; j < myX + moveFurniData.furnitureInfo.furni_Size_X; j++)
+                for (int j = myX; j < myX + moveFurniData.furnitureInfo.furniSizeX; j++)
                 {
                     if (j > groundTileNum)
                     {
                         break;
                     }
 
-                    for (int k = myZ; k < myZ + moveFurniData.furnitureInfo.furni_Size_Z; k++)
+                    for (int k = myZ; k < myZ + moveFurniData.furnitureInfo.furniSizeZ; k++)
                     {
                         if (k > groundTileNum)
                         {
@@ -272,8 +272,8 @@ public class DragManager_GH : MonoBehaviour
                 {
                     //moveFurniture의 위치를 옮긴다
                     moveFurniture.transform.position = new Vector3(ground_Xs[myX].transform.position.x, defaultY, ground_Zs[myZ].transform.position.z);
-                    moveFurniData.furnitureInfo.furni_Current_X = myX;
-                    moveFurniData.furnitureInfo.furni_Current_Z = myZ;
+                    moveFurniData.furnitureInfo.furniCurrentX = myX;
+                    moveFurniData.furnitureInfo.furniCurrentZ = myZ;
                     defaultY = 1.5f;
 
                     //타일 색 바꾸기
@@ -290,9 +290,9 @@ public class DragManager_GH : MonoBehaviour
                             }
                         }
 
-                        for (int i = myX; i < fd.furnitureInfo.furni_Size_X + myX; i++)
+                        for (int i = myX; i < fd.furnitureInfo.furniSizeX + myX; i++)
                         {
-                            for (int j = myZ; j < fd.furnitureInfo.furni_Size_Z + myZ; j++)
+                            for (int j = myZ; j < fd.furnitureInfo.furniSizeZ + myZ; j++)
                             {
                                 greenTiles[i, j].SetActive(true);
                             }
@@ -316,7 +316,7 @@ public class DragManager_GH : MonoBehaviour
                 {
                     if (hit.transform.gameObject == wallPos[i].gameObject)
                     {
-                        wallObjectData.wallObjectInfo.wallPos = (WallType)(i + 1);
+                        wallObjectData.wallObjectInfo.furniPos = (WallType)(i+1);
                         wallObjectData.SetWallPos(i, beforeWallObPos);
                     }
                 }
@@ -397,9 +397,9 @@ public class DragManager_GH : MonoBehaviour
         BoxCollider rotFurnicoll = moveFurniture.GetComponent<BoxCollider>();
 
         // 사이즈 값 바꾸기
-        intEmpty = moveFurniData.furnitureInfo.furni_Size_X;
-        moveFurniData.furnitureInfo.furni_Size_X = moveFurniData.furnitureInfo.furni_Size_Z;
-        moveFurniData.furnitureInfo.furni_Size_Z = intEmpty;
+        intEmpty = moveFurniData.furnitureInfo.furniSizeX;
+        moveFurniData.furnitureInfo.furniSizeX = moveFurniData.furnitureInfo.furniSizeZ;
+        moveFurniData.furnitureInfo.furniSizeZ = intEmpty;
 
         // 콜라이더 센터값 바꾸기
         VectorEmpty = rotFurnicoll.center;
@@ -409,13 +409,13 @@ public class DragManager_GH : MonoBehaviour
         VectorEmpty = rotFurnicoll.size;
         rotFurnicoll.size = new Vector3(VectorEmpty.z, VectorEmpty.y, VectorEmpty.x);
 
-        if (!moveFurniData.furnitureInfo.furni_Rotate)
+        if (!moveFurniData.furnitureInfo.furniRotate)
         {
             //바뀐 오브젝트 키기
             moveFurniData.transform.GetChild(0).gameObject.SetActive(false);
             moveFurniData.transform.GetChild(1).gameObject.SetActive(true);
 
-            moveFurniData.furnitureInfo.furni_Rotate = true;
+            moveFurniData.furnitureInfo.furniRotate = true;
         }
         else
         {
@@ -423,10 +423,7 @@ public class DragManager_GH : MonoBehaviour
             moveFurniData.transform.GetChild(0).gameObject.SetActive(true);
             moveFurniData.transform.GetChild(1).gameObject.SetActive(false);
 
-            moveFurniData.furnitureInfo.furni_Rotate = false;
+            moveFurniData.furnitureInfo.furniRotate = false;
         }
-
-
-
     }
 }

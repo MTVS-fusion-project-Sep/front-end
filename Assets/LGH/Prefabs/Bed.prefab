@@ -48,12 +48,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furnitureInfo:
-    furni_Size_X: 3
-    furni_Size_Z: 4
+    furniSizeX: 3
+    furniSizeZ: 4
     onPlace: 1
-    furni_Current_X: 0
-    furni_Current_Z: 0
-    furni_Rotate: 0
+    furniCurrentX: 0
+    furniCurrentZ: 0
+    furniRotate: 0
+    furniCategory: ground
+    furniName: Bed
+    userId: user1
 --- !u!65 &6088190317019511252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -886,7 +889,7 @@ Transform:
   m_GameObject: {fileID: 5528750316814729375}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.41, y: 0, z: -1.36}
+  m_LocalPosition: {x: -0.11, y: 0, z: -1.6}
   m_LocalScale: {x: 1, y: 1, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:

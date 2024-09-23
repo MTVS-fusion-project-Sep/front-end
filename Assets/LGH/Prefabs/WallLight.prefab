@@ -220,8 +220,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallObjectInfo:
-    wallPos: 1
-    onPlace: 1
+    furniCategory: Wall
+    furniName: WallLight
+    furniPos: 2
+    furniOnPlace: 0
+    userId: user1
 --- !u!1 &7992007102163333420
 GameObject:
   m_ObjectHideFlags: 0
