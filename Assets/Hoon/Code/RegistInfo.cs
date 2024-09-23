@@ -38,7 +38,6 @@ public class RegistInfo : MonoBehaviour
 
     string loadUserInfo;
 
-
     public string idText;
     public string passText;
     public string nameText;
@@ -52,7 +51,6 @@ public class RegistInfo : MonoBehaviour
         public string userName;
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -64,7 +62,7 @@ public class RegistInfo : MonoBehaviour
         //인풋필드 컴포넌트
         if (if_ID_Obejct != null)
         {
-            print("아이디 등록 인풋필드");
+            //print("아이디 등록 인풋필드");
             id_Regist_InputField = if_ID_Obejct.GetComponent<InputField>();
         }
 
@@ -101,7 +99,7 @@ public class RegistInfo : MonoBehaviour
     {
 
     }*/
-
+    //세이브로컬레지스트제이슨
     public void SaveLocalRegistJSON()
     {
          idText = id_Regist_InputField.text;

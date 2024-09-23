@@ -96,15 +96,15 @@ public class MemoManager_GH : MonoBehaviour
     }
     public void MemoLoad()
     {
-        print(RoomUIManager_GH.instance.roomUserId);
+        //print(RoomUIManager_GH.instance.roomUserId);
         //메모 받아오기
         HttpInfo info = new HttpInfo();
         info.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book/reader?readerId=" + RoomUIManager_GH.instance.roomUserId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
-            print(downloadHandler.text);
+            //print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-            print(jsonData);
+            //print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자. 
             memoInfoList = JsonUtility.FromJson<MemoInfoList>(jsonData);
         };
@@ -122,7 +122,7 @@ public class MemoManager_GH : MonoBehaviour
             Destroy(memoList[i]);
         }
             memoList.Clear();
-        print("메모 세팅");
+        //print("메모 세팅");
         memoCount = memoInfoList.data.Count;
         //기록되어 있는 메모에 따른 메모 생성
         for (int i = 0; i < memoCount; i++)
