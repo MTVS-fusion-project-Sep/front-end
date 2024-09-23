@@ -522,6 +522,7 @@ public class MainUI : MonoBehaviour
     string[] objectNameTextArray;
     public void OnLikeTextJson()
     {
+        print("관심사저장버튼");
         Text firstLikeText = firstLikeObject.GetComponent<Text>();
         Text secondLikeText = secondLikeObject.GetComponent<Text>();
         Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
@@ -534,6 +535,7 @@ public class MainUI : MonoBehaviour
             //print("두번째관심사" + secondLikeText.text);
             mySmallCategory[2] = thirdLikeText.text;
             //print("세번째관심사" + thirdLikeText.text);
+            print("관심사 저장");
         }
         else
         {
@@ -541,6 +543,9 @@ public class MainUI : MonoBehaviour
             mySmallCategory.Add(secondLikeText.text);
             mySmallCategory.Add(thirdLikeText.text);
 
+            print("관심사배열크기" + mySmallCategory.Count);
+            
+           
         }
 
         //배열초기화
