@@ -241,12 +241,13 @@ public class MainUI : MonoBehaviour
 
         //OFFIMG(); // 이미지 오브젝트 끄기
 
+
     }
 
-    /*void Update()
+    void Update()
     {
         
-    }*/
+    }
 
     //Http 통신 서버에 Get 요청
     public void GetJSONUserInfo()
