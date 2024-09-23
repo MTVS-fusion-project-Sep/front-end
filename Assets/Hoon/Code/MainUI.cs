@@ -1627,6 +1627,8 @@ public class MainUI : MonoBehaviour
         //내정보패널을 끄기
         panel_MyInfo_Object.SetActive(false);
 
+        RoomUIManager_GH.instance.roomUserIdSet(saveUserId);
+        RoomUIManager_GH.instance.OnLoad();
 
     }
 
@@ -1679,5 +1681,13 @@ public class MainUI : MonoBehaviour
         log += message + '\n';
         //text_logText.text = log;
     }
-
+    public void ChatSceneLoad()
+    {
+        SceneManager.LoadScene(2);
+        ChatManager_GH.instance.roomUserIdSet(saveUserId);
+    }
+    public void MainSceneLoad()
+    {
+        SceneManager.LoadScene(0);
+    }
 }//클래스끝

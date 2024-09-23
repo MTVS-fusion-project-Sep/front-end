@@ -11,17 +11,18 @@ using UnityEditor.VersionControl;
 using UnityEditor;
 using UnityEngine.Networking;
 using static System.Net.WebRequestMethods;
+using UnityEngine.SceneManagement;
 
 
 // 이벤트를 추가해주는 인터페이스 추가
-public class ChatManager : MonoBehaviour
+public class ChatManager_GH : MonoBehaviour
 {
     public GameObject roomListPanel;
     public GameObject chatPanel;
     public GameObject roomCreatePanel;
 
 
-    public static ChatManager instance;
+    public static ChatManager_GH instance;
 
     public ChatConnector chatConnector;
     public ScrollRect scrollChatWindow;
@@ -174,13 +175,13 @@ public class ChatManager : MonoBehaviour
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
 
-        //없애자===========================================================================================
-        GameObject tt = Instantiate(roomListPrefab, roomContent.transform);
-        RoomData_GH aa = tt.GetComponent<RoomData_GH>();
-        aa.roomInfo.name = ti.name;
-        aa.roomInfo.category = ti.category;
-        aa.roomInfo.maxCnt = ti.maxCnt;
-        aa.roomInfo.headCnt = 1;
+        ////없애자===========================================================================================
+        //GameObject tt = Instantiate(roomListPrefab, roomContent.transform);
+        //RoomData_GH aa = tt.GetComponent<RoomData_GH>();
+        //aa.roomInfo.name = ti.name;
+        //aa.roomInfo.category = ti.category;
+        //aa.roomInfo.maxCnt = ti.maxCnt;
+        //aa.roomInfo.headCnt = 1;
 
     }
 
@@ -218,14 +219,22 @@ public class ChatManager : MonoBehaviour
 
     }
 
+    public TMP_Text aaa;
+    public string bbb;
     public void ReceivedMessage(string rm)
     {
+        //print(bbb);
+        //bbb += rm + "\n";
+        //aaa.text += rm + "\n";
         text_chatContent.text += rm + "\n";
-        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
-        Canvas.ForceUpdateCanvases();
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+        //Canvas.ForceUpdateCanvases();
     }
 
-
+    public void MainSceneLode()
+    {
+        SceneManager.LoadScene(0);
+    }
 
 }
 

@@ -21,7 +21,7 @@ public class RoomData_GH : MonoBehaviour
     {
         enterRoom_but = GetComponentInChildren<Button>();
         //람다식으로 썼는데 되는지 확인하기
-        enterRoom_but.onClick.AddListener(() => ChatManager.instance.EnterRoom(roomInfo.roomId));
+        enterRoom_but.onClick.AddListener(() => ChatManager_GH.instance.EnterRoom(roomInfo.roomId));
 
         roomName.text = roomInfo.name;
         roomCate.text = roomInfo.category;

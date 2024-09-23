@@ -21,7 +21,6 @@ public class RoomUIManager_GH : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         OnLoad();
     }
     // 방 벽지 바꾸기
@@ -188,6 +187,8 @@ public class RoomUIManager_GH : MonoBehaviour
 
     public void OnLoad()
     {
+        print("온로드");
+        print(roomUserId);
         FurniLoad();
         RoomLoad();
         dm.onWallObjects = new bool[3];
@@ -285,7 +286,7 @@ public class RoomUIManager_GH : MonoBehaviour
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
             print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자. todo리스트 어떻게 받을지 물어보기
-            userRoomInfo = JsonUtility.FromJson<UserRoomInfo>(jsonData);
+            //userRoomInfo = JsonUtility.FromJson<UserRoomInfo>(jsonData);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
     }

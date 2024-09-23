@@ -425,8 +425,5 @@ public class DragManager_GH : MonoBehaviour
 
             moveFurniData.furnitureInfo.furniRotate = false;
         }
-
-
-
     }
 }

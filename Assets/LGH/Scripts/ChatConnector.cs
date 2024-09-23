@@ -18,7 +18,7 @@ public class ChatConnector : MonoBehaviour
 
     public WebSocket webSocket = null;
 
-    private void Start()
+    private void Awake()
     {
 
         try
@@ -121,10 +121,12 @@ public class ChatConnector : MonoBehaviour
             // 서버에서 받은 메시지를 ChatMessage 객체로 변환
             ChatMessage receivedMessage = JsonUtility.FromJson<ChatMessage>(jsonData);
 
+
             // 받은 메시지 출력
-            Debug.Log(receivedMessage.sender +" : " + receivedMessage.message);
+            Debug.Log(receivedMessage.sender + " : " + receivedMessage.message);
+
             // 채팅창에 메시지 누적
-            ChatManager.instance.ReceivedMessage(receivedMessage.sender + " : " + receivedMessage.message);
+            ChatManager_GH.instance.ReceivedMessage(receivedMessage.sender + " : " + receivedMessage.message);
         }
         catch (Exception ex)
         {

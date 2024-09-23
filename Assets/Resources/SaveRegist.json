@@ -1,9 +1,9 @@
-[
+﻿[
   {
     "userId": "bb",
     "userPassword": "bb",
     "userNickName": "이재명",
-    "likeCount": 0,
+    "likeCount": "0",
     "bigCategory": "문화",
     "smallCategory": "공연",
     "bigCategory2": "레저",
@@ -15,7 +15,7 @@
     "userId": "ccc",
     "userPassword": "ccc",
     "userNickName": "안철수",
-    "likeCount": 0,
+    "likeCount": "0",
     "bigCategory": "건강",
     "smallCategory": "정신건강",
     "bigCategory2": "생활",
@@ -27,7 +27,7 @@
     "userId": "a",
     "userPassword": "a",
     "userNickName": "윤석열",
-    "likeCount": 0,
+    "likeCount": "0",
     "bigCategory": "생활",
     "smallCategory": "음식",
     "bigCategory2": "생활",
@@ -36,22 +36,10 @@
     "smallCategory3": "부동산"
   },
   {
-    "userId": "gm",
-    "userPassword": "gm",
-    "userNickName": "최강형표",
-    "likeCount": 0,
-    "bigCategory": "문화",
-    "smallCategory": "공연",
-    "bigCategory2": "문화",
-    "smallCategory2": "영화",
-    "bigCategory3": "문화",
-    "smallCategory3": "음악"
-  },
-  {
     "userId": "aa",
     "userPassword": "aa",
     "userNickName": null,
-    "likeCount": 0,
+    "likeCount": "0",
     "bigCategory": "건강",
     "smallCategory": "헬스",
     "bigCategory2": "건강",
@@ -63,12 +51,44 @@
     "userId": "aaa",
     "userPassword": "aaa",
     "userNickName": null,
-    "likeCount": 0,
+    "likeCount": "0",
     "bigCategory": null,
     "smallCategory": "미지정",
     "bigCategory2": null,
     "smallCategory2": "미지정",
     "bigCategory3": null,
+    "smallCategory3": "미지정"
+  },
+  {
+    "userId": "이규현",
+    "userPassword": "00",
+    "userName": "이규현",
+    "smallCategory": "미지정",
+    "smallCategory2": "미지정",
+    "smallCategory3": "미지정"
+  },
+  {
+    "userId": "gh",
+    "userPassword": "00",
+    "userName": "이규현",
+    "smallCategory": "미지정",
+    "smallCategory2": "미지정",
+    "smallCategory3": "미지정"
+  },
+  {
+    "userId": "gg",
+    "userPassword": "gg",
+    "userName": "gg",
+    "smallCategory": "미지정",
+    "smallCategory2": "미지정",
+    "smallCategory3": "미지정"
+  },
+  {
+    "userId": "aaaa",
+    "userPassword": "22",
+    "userName": "aaaa",
+    "smallCategory": "미지정",
+    "smallCategory2": "미지정",
     "smallCategory3": "미지정"
   }
 ]
