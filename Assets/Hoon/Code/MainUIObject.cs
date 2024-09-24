@@ -1,6 +1,7 @@
 ﻿using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +33,8 @@ public class MainUIObject : MonoBehaviour
     public Text passText;
     public Text phID_Text;
     public Text phPass_Text;
-    public Text nameText;
+    public Text nameTextComp;
+   
 
     public Button move_Lobby_Btn;
     //아아디 필드
@@ -40,8 +42,27 @@ public class MainUIObject : MonoBehaviour
     //패스 필드
     public InputField pass_InputField;
 
-    public void Initialize()
+    Button btn_LoginGet;
+    Button btn_Login;
+
+
+    void Start()
     {
+        print("MainObjectStart");
+        Initialize();
+        
+    }
+    public void Initialize()
+    {   //버튼캐싱
+        //로그인 Get
+        btn_LoginGet = GameObject.Find("Btn_LoginGet").GetComponent<Button>();
+        btn_LoginGet.onClick.AddListener(MainUI.Instance.GetJSONUserInfo);
+        //
+        btn_Login = GameObject.Find("Btn_Login").GetComponent<Button>();
+        btn_Login.onClick.AddListener(MainUI.Instance.TestLocalLoginJson);
+
+
+        //캐싱검사완료
         bg_Object = GameObject.Find("BG");
         mainRoom_Object = GameObject.Find("MainRoom");
         myInfo_Object = GameObject.Find("Img_MyInfo");
@@ -53,6 +74,7 @@ public class MainUIObject : MonoBehaviour
         loginPass_Text_Object = GameObject.Find("Text_Pass");
         phID_Object = GameObject.Find("Ph_ID");
         phPass_Object = GameObject.Find("Ph_Pass");
+        //
         inputField_ID_Object = GameObject.Find("IF_ID");
         inputField_Pass_Object = GameObject.Find("IF_Pass");
         btn_Lobby_Object = GameObject.Find("Btn_Lobby");
@@ -66,14 +88,21 @@ public class MainUIObject : MonoBehaviour
 
         phID_Text = phID_Object.GetComponent<Text>();
         phPass_Text = phPass_Object.GetComponent<Text>();
+        //
         id_InputField = inputField_ID_Object.GetComponent<InputField>();
+        string inputText = id_InputField.text;
+        //print("inputText" + inputText);
+        //if (id_InputField == null) print("아이디 인풋필드 없음");
         pass_InputField = inputField_Pass_Object.GetComponent<InputField>();
 
         text_UserNameObject = GameObject.Find("Text_UserName");
-        //if (text_UserNameObject != null) print("Text_UserName 오브젝트 있음");
-        nameText = text_UserNameObject.GetComponent<Text>();
-        //if (nameText != null) print("nameText 있음");
+         
+        //if (text_UserNameObject == null) print("Text_UserName 오브젝트 없음");
+        nameTextComp = text_UserNameObject.GetComponent<Text>();
+        //if (nameTextComp == null) print("nameText 없음");
+        //print("nameText" + nameTextComp.text);
 
+       
     }
 
 
@@ -83,10 +112,7 @@ public class MainUIObject : MonoBehaviour
 
 
 /*
-void Start()
-{
 
-}
 
 
 void Update()

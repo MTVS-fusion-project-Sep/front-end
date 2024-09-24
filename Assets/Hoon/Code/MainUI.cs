@@ -20,6 +20,7 @@ using static System.Net.WebRequestMethods;
 using Unity.VisualScripting;
 using UnityEngine.Rendering;
 using System.Linq;
+using WebSocketSharp;
 
 
 public class MainUI : MonoBehaviour
@@ -28,6 +29,8 @@ public class MainUI : MonoBehaviour
     public MainUIObject mainUiObject;
     int likeStirngIdx = 0;
 
+    
+
     private void Awake()
     {
         //인스턴스가 없으면
@@ -35,22 +38,21 @@ public class MainUI : MonoBehaviour
         {
             //나를 생성
             Instance = this;
+            // 오브젝트를 파괴하지 않고 유지. // 필요에 따라 추가
+            DontDestroyOnLoad(gameObject);
 
-            
         }
         else
         {
             //인스턴스가 잇으면 삭제
             Destroy(gameObject);
         }
-        // 오브젝트를 파괴하지 않고 유지. // 필요에 따라 추가
-        DontDestroyOnLoad(gameObject);
+
         // mainUiObject 초기화
-        mainUiObject = new MainUIObject();
-        mainUiObject.Initialize(); // 내부 오브젝트 초기화
-
+        //mainUiObject = new MainUIObject();
+        //mainUiObject.Initialize(); // 내부 오브젝트 초기화
+        
     }
-
 
     //MyInfo btn
     GameObject btn_MyInfo_Obejct;
@@ -66,7 +68,7 @@ public class MainUI : MonoBehaviour
 
     public string idText;
     public string passText;
-    public string nameText;
+    public string userNameText;
 
     string phID_STR = "아이디(이메일)";
     string phPass_STR = "비밀번호";
@@ -137,6 +139,10 @@ public class MainUI : MonoBehaviour
 
     void Start()
     {
+        mainUiObject = GameObject.Find("MainUIObject").GetComponent<MainUIObject>();
+        if (mainUiObject == null) print("메인오브젝트없음");
+        //mainUiObject.Initialize();
+
         firstLikeObject = GameObject.Find("Text_First_Like");
         secondLikeObject = GameObject.Find("Text_Second_Like");
         thirdLikeObject = GameObject.Find("Text_Third_Like");
@@ -199,7 +205,12 @@ public class MainUI : MonoBehaviour
     //Http 통신 서버에 Get 요청
     public void GetJSONUserInfo()
     {
+        if (mainUiObject != null) print("mainUiObject");
+        if (mainUiObject == null) print("mainUiObject null");
+        if (mainUiObject.id_InputField.text == null) print("mainUiObject.id_InputField.text null");
+        if (mainUiObject.id_InputField.text != null) print("mainUiObject.id_InputField.text have");
         print("Get 로그인 버튼");
+
         // 입력된 아이디와 패스워드 가져오기
         idText = mainUiObject.id_InputField.text;
         passText = mainUiObject.pass_InputField.text;
@@ -229,7 +240,7 @@ public class MainUI : MonoBehaviour
     private IEnumerator CheckLoginFromServer(string idText, string passText)
     {
 
-        print("Get userid 중");
+        print("Get userInfo");
         UnityWebRequest request = UnityWebRequest.Get(urlGetUser+ idText);
 
         //콜백이 올때까지 기다린다.
@@ -254,29 +265,59 @@ public class MainUI : MonoBehaviour
 
             if (strResponse.Contains(idText))
             {
-                // JSON 데이터를 C# 객체로 변환
-                User user = JsonConvert.DeserializeObject<User>(strResponse);
-                //print("제이슨 -> 구조체" + user);
+                if(idText.IsNullOrEmpty())
+                {
+                    print("idText 비었음" + idText);
+                    print("로그인 실패");
+                    print("아이디가 틀림");
+                    mainUiObject.id_InputField.text = "";
+                    mainUiObject.phID_Text.text = "아이디(필수)";
+                    mainUiObject.phID_Text.color = Color.red;
 
-                //이름변수에 이름을 저장
-                nameText = user.userNickname;
-                print("내이름" + nameText);
-                //MyInfo UserName을 갱신
-                mainUiObject.nameText.text = nameText;
+                    print("비밀번호가 틀림");
+                    mainUiObject.pass_InputField.text = "";
+                    mainUiObject.phPass_Text.text = "비밀번호(필수)";
+                    mainUiObject.phPass_Text.color = Color.red;
 
-                saveUserId = idText;
-                print("내아이디" +  saveUserId);
+                }
+                else
+                {
+                    // JSON 데이터를 C# 객체로 변환
+                    User user = JsonConvert.DeserializeObject<User>(strResponse);
+                    //print("제이슨 -> 구조체" + user);
 
+                    //이름변수에 이름을 저장
+                    userNameText = user.userNickname;
+                    print("내이름" + userNameText);
+                    print(" mainUiObject.nameText.text" + mainUiObject.nameTextComp.text);
 
-                StartCoroutine(ServerGetLike());
+                    //MyInfo UserName을 갱신
+                    mainUiObject.nameTextComp.text = userNameText;
 
-                // 로그인 성공
-                Login();
-                print("로그인 성공");
+                    saveUserId = idText;
+                    print("내아이디" + saveUserId);
+
+                    StartCoroutine(ServerGetLike());
+
+                    // 로그인 성공
+                    Login();
+                    print("로그인 성공");
+                }
+                
             }
             else
             {
                 print("로그인 실패");
+                print("아이디가 틀림");
+                mainUiObject.id_InputField.text = "";
+                mainUiObject.phID_Text.text = "아이디가 틀림";
+                mainUiObject.phID_Text.color = Color.red;
+
+                print("비밀번호가 틀림");
+                mainUiObject.pass_InputField.text = "";
+                mainUiObject.phPass_Text.text = "비밀번호 틀림";
+                mainUiObject.phPass_Text.color = Color.red;
+
             }
         }
 
@@ -1135,6 +1176,9 @@ public class MainUI : MonoBehaviour
     public void TestLocalLoginJson()
     {
         print("로컬 로그인 버튼 클릭");
+        print(" mainUiObject.id_InputField.text" + mainUiObject.id_InputField.text);
+
+        
         //입력된 아이디 가져오기
         idText = mainUiObject.id_InputField.text;
         //입력된 패스워드 가져오기
@@ -1172,10 +1216,10 @@ public class MainUI : MonoBehaviour
                     //유저찾음
                     isUserFound = true;
                     //이름변수에 이름을 저장
-                    nameText = userInfo["userNickName"];
-                    print("내이름" + nameText);
+                    userNameText = userInfo["userNickName"];
+                    print("내이름" + userNameText);
                     //MyInfo UserName을 갱신
-                    mainUiObject.nameText.text = nameText;
+                    mainUiObject.nameTextComp.text = userNameText;
 
                     //smallCategory 를 포함하는 경우에만
                     if (userInfo.ContainsKey("smallCategory"))
