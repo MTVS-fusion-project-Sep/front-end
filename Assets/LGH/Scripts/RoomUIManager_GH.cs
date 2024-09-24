@@ -187,8 +187,8 @@ public class RoomUIManager_GH : MonoBehaviour
 
     public void OnLoad()
     {
-        print("온로드");
-        print(roomUserId);
+        //print("온로드");
+        //print(roomUserId);
         FurniLoad();
         RoomLoad();
         dm.onWallObjects = new bool[3];
@@ -210,9 +210,9 @@ public class RoomUIManager_GH : MonoBehaviour
         info.url = "http://" + httpIP + ":" + httpPort + "/ground-furniture/user?userId=" + roomUserId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
-            print(downloadHandler.text);
+            //print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-            print(jsonData);
+            //print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자. 
             furnitureInfoList = JsonUtility.FromJson<FurnitureInfoList>(jsonData);
         };
@@ -222,9 +222,9 @@ public class RoomUIManager_GH : MonoBehaviour
         info2.url = "http://" + httpIP + ":" + httpPort + "/wall-furniture/user?userId=" + roomUserId;
         info2.onComplete = (DownloadHandler downloadHandler) =>
         {
-            print(downloadHandler.text);
+            //print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-            print(jsonData);
+            //print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자. 
             wallObjectInfoList = JsonUtility.FromJson<WallObjectInfoList>(jsonData);
         };
@@ -243,7 +243,7 @@ public class RoomUIManager_GH : MonoBehaviour
         {
             if (list_Furniture[i].layer == LayerMask.NameToLayer("Furniture"))
             {
-                print("가구 돼라");
+                //print("가구 돼라");
                 for (int j = 0; j < furnitureInfoList.data.Count; j++)
                 {
                     FurnitureData_GH fd = list_Furniture[i].GetComponent<FurnitureData_GH>();
@@ -255,7 +255,7 @@ public class RoomUIManager_GH : MonoBehaviour
             }
             else if (list_Furniture[i].layer == LayerMask.NameToLayer("WallObject"))
             {
-                print("벽 돼라");
+                //print("벽 돼라");
                 for (int j = 0; j < wallObjectInfoList.data.Count; j++)
                 {
                     WallObjectData_GH wd = list_Furniture[i].GetComponent<WallObjectData_GH>();
@@ -282,9 +282,9 @@ public class RoomUIManager_GH : MonoBehaviour
         info.url = "http://" + httpIP + ":" + httpPort + "/room-info?userId=" + roomUserId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
-            print(downloadHandler.text);
+            //print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-            print(jsonData);
+            //print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자. todo리스트 어떻게 받을지 물어보기
             //userRoomInfo = JsonUtility.FromJson<UserRoomInfo>(jsonData);
         };

@@ -37,6 +37,7 @@ public class LobbyUI : MonoBehaviour
         SceneManager.LoadScene(0);
     }
     // 씬이 로드된 후 호출되는 콜백 메서드
+    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 

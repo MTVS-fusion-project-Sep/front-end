@@ -28,12 +28,12 @@
     "userPassword": "a",
     "userNickName": "윤석열",
     "likeCount": 0,
-    "bigCategory": "생활",
-    "smallCategory": "음식",
-    "bigCategory2": "생활",
-    "smallCategory2": "패션",
-    "bigCategory3": "생활",
-    "smallCategory3": "부동산"
+    "bigCategory": "문화",
+    "smallCategory": "공연",
+    "bigCategory2": "문화",
+    "smallCategory2": "영화",
+    "bigCategory3": "문화",
+    "smallCategory3": "음악"
   },
   {
     "userId": "aa",

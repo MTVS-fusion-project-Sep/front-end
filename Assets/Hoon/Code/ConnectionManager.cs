@@ -32,10 +32,10 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     }
 
     // Update is called once per frame
-    void Update()
+   /* void Update()
     {
         
-    }
+    }*/
 
     public void StartLobby()
     {
@@ -45,7 +45,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         PhotonNetwork.GameVersion = "1.0.0";
         //닉네임
         //PhotonNetwork.NickName = "CyworldAvata";
-        PhotonNetwork.NickName = MainUI.Instance.nameText;
+        PhotonNetwork.NickName = MainUI.Instance.userNameText;
         //화면동기화
         PhotonNetwork.AutomaticallySyncScene = true;
         // 접속을 서버에 요청하기
@@ -71,7 +71,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 실패 원인을 출력한다.
 
         print(MethodInfo.GetCurrentMethod().Name + " is call");
-        MainUI.Instance.mainUiObject.move_Lobby_Btn.interactable = true;
+        //MainUI.Instance.mainUiObject.move_Lobby_Btn.interactable = true;
 
     }
     //마스터연결 콜백
@@ -159,6 +159,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
         // 방에 입장한 친구들은 모두 N번 씬으로 이동하자! //빌드세팅에 추가해야만 이동가능 idx 확인 필수
         PhotonNetwork.LoadLevel(1);
+ 
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -181,6 +182,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         string playerMsg = $"{newPlayer.NickName}님이 입장하셨습니다.";
         print(playerMsg);
         //LobbyUIController.lobbyUI.PrintLog(playerMsg);
+
     }
     // 룸에 있던 다른 플레이어가 퇴장했을 때의 콜백 함수
     public override void OnPlayerLeftRoom(Player otherPlayer)
