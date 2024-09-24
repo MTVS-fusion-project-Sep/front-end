@@ -41,7 +41,8 @@ public class MemoManager_GH : MonoBehaviour
     {
 
         memoButtons[0].SetActive(false);
-        MemoLoad();
+        //서버가 응답하지 않을때 error 임시주석처리
+        //MemoLoad();
     }
 
     private void Start()

@@ -21,7 +21,8 @@ public class RoomUIManager_GH : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        OnLoad();
+        //시작할때 서버호출 잠시 주석처리
+        //OnLoad();
     }
     // 방 벽지 바꾸기
     public MeshRenderer[] rooms;

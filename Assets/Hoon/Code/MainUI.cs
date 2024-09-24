@@ -13,6 +13,7 @@ using System.Text;
 //파일불러오기
 using System.IO;
 using File = System.IO.File;
+using WebSocketSharp;
 using UnityEngine.XR;
 using UnityEngine.Rendering.LookDev;
 using static RegistInfo;
@@ -20,7 +21,6 @@ using static System.Net.WebRequestMethods;
 using Unity.VisualScripting;
 using UnityEngine.Rendering;
 using System.Linq;
-using WebSocketSharp;
 
 
 public class MainUI : MonoBehaviour
@@ -31,39 +31,13 @@ public class MainUI : MonoBehaviour
 
     
 
-    private void Awake()
-    {
-        //인스턴스가 없으면
-        if (Instance == null)
-        {
-            //나를 생성
-            Instance = this;
-            // 오브젝트를 파괴하지 않고 유지. // 필요에 따라 추가
-            DontDestroyOnLoad(gameObject);
+   
 
-        }
-        else
-        {
-            //인스턴스가 잇으면 삭제
-            Destroy(gameObject);
-        }
-
-        // mainUiObject 초기화
-        //mainUiObject = new MainUIObject();
-        //mainUiObject.Initialize(); // 내부 오브젝트 초기화
-        
-    }
-
-    //MyInfo btn
-    GameObject btn_MyInfo_Obejct;
-    //MyInfo Panel
-    GameObject panel_MyInfo_Object;
     //로비이동 버튼
     //public Button move_Lobby_Btn;
     //종료패널
     GameObject panel_Exit;
-    //종료오브젝트
-    GameObject btnExit_Menu_Object;
+    
     GameObject panelMyLike_Object;
 
     public string idText;
@@ -82,10 +56,9 @@ public class MainUI : MonoBehaviour
     string loadUserInfo;
 
     bool isRoomActive = false;
-    //
     bool isViewPass = false;
-    bool isViewMyInfo = false;
     bool isViewExitMenu = false;
+    bool isViewMyInfo = false;
     bool isViewPanelLike = false;
 
     //로비를 제외하고 버튼은 계속 유지합니다.
@@ -110,6 +83,7 @@ public class MainUI : MonoBehaviour
     Text health_Text;
 
     int likeCount = 0;
+    public int loginCount = 0;
 
     [System.Serializable]
     public class HttpInfo
@@ -133,19 +107,29 @@ public class MainUI : MonoBehaviour
     List<string> myBigCategory = new List<string>();
     List<string> mySmallCategory = new List<string>();
 
-    GameObject firstLikeObject;
-    GameObject secondLikeObject;
-    GameObject thirdLikeObject;
+
+    private void Awake()
+    {
+        //인스턴스가 없으면
+        if (Instance == null)
+        {
+            //나를 생성
+            Instance = this;
+            // 오브젝트를 파괴하지 않고 유지. // 필요에 따라 추가
+            DontDestroyOnLoad(gameObject);
+
+        }
+        else
+        {
+            //인스턴스가 잇으면 삭제
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
         mainUiObject = GameObject.Find("MainUIObject").GetComponent<MainUIObject>();
-        if (mainUiObject == null) print("메인오브젝트없음");
-        //mainUiObject.Initialize();
-
-        firstLikeObject = GameObject.Find("Text_First_Like");
-        secondLikeObject = GameObject.Find("Text_Second_Like");
-        thirdLikeObject = GameObject.Find("Text_Third_Like");
+        //if (mainUiObject == null) print("메인오브젝트없음");
 
         scrollView_Culture = GameObject.Find("Scroll View_Culture");
         scrollView_Leiture = GameObject.Find("Scroll View_Leiture");
@@ -174,19 +158,11 @@ public class MainUI : MonoBehaviour
         scrollView_Life.SetActive(false);
         scrollView_Health.SetActive(false);
 
-        //내정보버튼
-        btn_MyInfo_Obejct = GameObject.Find("Btn_MyInfo");
-        Button myinfo_Button = btn_MyInfo_Obejct.GetComponent<Button>();
-
-        //내정보 패널을 가져오자.
-        panel_MyInfo_Object = GameObject.Find("Panel_MyInfo");
-
         //종료패널
         panel_Exit = GameObject.Find("Panel_Exit");
         panel_Exit.SetActive(false);
 
-        //버튼exit
-        btnExit_Menu_Object = GameObject.Find("Btn_ExitMenu");
+       
 
         //관심사
         panelMyLike_Object = GameObject.Find("Panel_MyLike");
@@ -199,18 +175,20 @@ public class MainUI : MonoBehaviour
 
     void Update()
     {
-        
+       
     }
+    
 
     //Http 통신 서버에 Get 요청
     public void GetJSONUserInfo()
     {
-        if (mainUiObject != null) print("mainUiObject");
-        if (mainUiObject == null) print("mainUiObject null");
-        if (mainUiObject.id_InputField.text == null) print("mainUiObject.id_InputField.text null");
-        if (mainUiObject.id_InputField.text != null) print("mainUiObject.id_InputField.text have");
+        
         print("Get 로그인 버튼");
-
+        
+        if(mainUiObject == null)
+        {
+            mainUiObject = GameObject.Find("MainUIObject").GetComponent<MainUIObject>();
+        }
         // 입력된 아이디와 패스워드 가져오기
         idText = mainUiObject.id_InputField.text;
         passText = mainUiObject.pass_InputField.text;
@@ -221,10 +199,8 @@ public class MainUI : MonoBehaviour
 
     // 서버에서 JSON 데이터를 가져오기 위한 URL
     string urlGetTest = "http://192.168.0.76:8080/user?userId=user1"; //같은아이피일때
-    string urlGetTest1 = "http://125.132.216.190:5544/user?userId=user1"; //다른곳에서접속
     string urlGetUser = "http://125.132.216.190:5544/user?userId=";
   
-
     // JSON 데이터를 담을 클래스
     public class User
     {
@@ -530,9 +506,9 @@ public class MainUI : MonoBehaviour
     public void OnLikeTextJson()
     {
         print("관심사저장버튼");
-        Text firstLikeText = firstLikeObject.GetComponent<Text>();
-        Text secondLikeText = secondLikeObject.GetComponent<Text>();
-        Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
+        Text firstLikeText = mainUiObject.firstLikeObject.GetComponent<Text>();
+        Text secondLikeText = mainUiObject.secondLikeObject.GetComponent<Text>();
+        Text thirdLikeText = mainUiObject.thirdLikeObject.GetComponent<Text>();
         if (mySmallCategory.Count != 0)
         {
 
@@ -562,7 +538,7 @@ public class MainUI : MonoBehaviour
         for (int i = 0; i < mySmallCategory.Count; i++)
         {
             // 문자열을 '>' 기준으로 분리
-            string[] splitResult = mySmallCategory[i].Split('>');
+            string[] splitResult = mySmallCategory[i].Split(':');
 
             // 분리된 문자열을 각각 themeName과 objectNameText에 할당
             if (splitResult.Length == 2)
@@ -1033,7 +1009,7 @@ public class MainUI : MonoBehaviour
         //카운트가 0이면 새로추가
         if (myBigCategory.Count == 0)
         {
-            myBigCategory.Add(themeTextChoice + ">");
+            myBigCategory.Add(themeTextChoice + ":");
             //0번 내용을 출력
             //print("나의빅카테고리0" + myBigCategory[0]);
             bigChategoryCount++;
@@ -1042,7 +1018,7 @@ public class MainUI : MonoBehaviour
         //이미 값이 있으면 덮어쓰기
         else
         {
-            myBigCategory[0] = themeTextChoice + ">";
+            myBigCategory[0] = themeTextChoice + ":";
             //print("나의빅카테고리0" + myBigCategory[0]);
         }
      
@@ -1175,10 +1151,14 @@ public class MainUI : MonoBehaviour
     //로컬 로그인테스트 JSON
     public void TestLocalLoginJson()
     {
+        //null이라 다시 캐싱
+        if (mainUiObject == null)
+        {
+            mainUiObject = GameObject.Find("MainUIObject").GetComponent<MainUIObject>();
+        }
+        
         print("로컬 로그인 버튼 클릭");
         print(" mainUiObject.id_InputField.text" + mainUiObject.id_InputField.text);
-
-        
         //입력된 아이디 가져오기
         idText = mainUiObject.id_InputField.text;
         //입력된 패스워드 가져오기
@@ -1203,9 +1183,7 @@ public class MainUI : MonoBehaviour
             //리스트파일을 순차검사
             foreach (var userInfo in userInfoList)
             {
-                // 'ID'와 'Password' 키가 있는지 확인 하기
-                //if (userInfo.ContainsKey("userId") && userInfo.ContainsKey("userPassword"))
-                // {
+                
                 //아이디와 패스워드가 일치하는지 확인
                 if (userInfo["userId"] == idText && userInfo["userPassword"] == passText)
                 {
@@ -1244,17 +1222,17 @@ public class MainUI : MonoBehaviour
                             mySmallCategory.Add(smallCategory);
                         }
 
-                        Text firstLikeText = firstLikeObject.GetComponent<Text>();
+                        Text firstLikeText = mainUiObject.firstLikeObject.GetComponent<Text>();
                         if (mySmallCategory.Count != 0)
                         {
                             firstLikeText.text = mySmallCategory[0];
                             //print("첫번째관심사" + firstLikeText.text);
 
-                            Text secondLikeText = secondLikeObject.GetComponent<Text>();
+                            Text secondLikeText = mainUiObject.secondLikeObject.GetComponent<Text>();
                             secondLikeText.text = mySmallCategory[1];
                             //print("두번째관심사" + secondLikeText.text);
 
-                            Text thirdLikeText = thirdLikeObject.GetComponent<Text>();
+                            Text thirdLikeText = mainUiObject.thirdLikeObject.GetComponent<Text>();
                             thirdLikeText.text = mySmallCategory[2];
                             //print("세번째관심사" + thirdLikeText.text);
 
@@ -1272,41 +1250,15 @@ public class MainUI : MonoBehaviour
                 //유저가 없으면
                 else if (!isUserFound)
                 {
-                    // 아이디 또는 비밀번호 불일치
-                    print("불일치");
-                    //유저못찾음
-                    bool isIdFound = false;
+                    //print("아이디가 틀림");
+                    mainUiObject.id_InputField.text = "";
+                    mainUiObject.phID_Text.text = "아이디가 틀림";
+                    mainUiObject.phID_Text.color = Color.red;
 
-                    // ID가 있는지 확인
-                    foreach (var UserInfo in userInfoList)
-                    {
-                        //iD라는게 포함되어 있는지 확인하기.
-                        if (userInfo.ContainsKey("userId"))
-                        {
-                            //id가 있으면 일치하는지 확인
-                            if (UserInfo["userId"] == idText)
-                            {
-                                isIdFound = true;
-                                break;
-                            }
-                        }
-
-                    }
-                    //아이디 없으면
-                    if (!isIdFound)
-                    {
-                        print("아이디가 틀림");
-                        mainUiObject.id_InputField.text = "";
-                        mainUiObject.phID_Text.text = "아이디가 틀림";
-                        mainUiObject.phID_Text.color = Color.red;
-                    }
-                    else
-                    {
-                        print("비밀번호가 틀림");
-                        mainUiObject.pass_InputField.text = "";
-                        mainUiObject.phPass_Text.text = "비밀번호 틀림";
-                        mainUiObject.phPass_Text.color = Color.red;
-                    }
+                    //print("비밀번호가 틀림");
+                    mainUiObject.pass_InputField.text = "";
+                    mainUiObject.phPass_Text.text = "비밀번호 틀림";
+                    mainUiObject.phPass_Text.color = Color.red;
 
                 }
 
@@ -1433,12 +1385,12 @@ public class MainUI : MonoBehaviour
     {
         if (isViewMyInfo == false)
         {
-            panel_MyInfo_Object.SetActive(true);
+            mainUiObject.panel_MyInfo_Object.SetActive(true);
             isViewMyInfo = true;
         }
         else
         {
-            panel_MyInfo_Object.SetActive(false);
+            mainUiObject.panel_MyInfo_Object.SetActive(false);
             isViewMyInfo = false;
         }
 
@@ -1453,7 +1405,7 @@ public class MainUI : MonoBehaviour
         // 이벤트 해제
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
+    
     //로그인 텍스트 리셋
     public void ResetLoginText()
     {
@@ -1468,9 +1420,19 @@ public class MainUI : MonoBehaviour
         mainUiObject.phPass_Text.text = phPass_STR;
         mainUiObject.phPass_Text.color = Color.gray;
     }
+
+    public void NewRegistComplite()
+    {
+        mainUiObject.img_RegistComplite_Object.SetActive(true);
+    }
+
     //회원가입
     public void MoveNewRegist()
     {
+        if(mainUiObject == null)
+        {
+            mainUiObject = GameObject.Find("MainUIObject").GetComponent<MainUIObject>();
+        }
         //로그인이미지를 꺼주자.
         mainUiObject.imgLogin_Object.SetActive(false);
         ResetLoginText();
@@ -1505,7 +1467,11 @@ public class MainUI : MonoBehaviour
     //패스워드 인풋 필드의 컨텐츠 타입 변경,
     public void ViewPass()
     {
-        //print(1111);
+        if (mainUiObject == null)
+        {
+            mainUiObject = GameObject.Find("MainUIObject").GetComponent<MainUIObject>();
+        }
+        //print("비밀번호 보기");
         if (isViewPass == false)
         {
             mainUiObject.pass_InputField.contentType = InputField.ContentType.Standard;
@@ -1546,19 +1512,23 @@ public class MainUI : MonoBehaviour
     //로그인 img 회원가입 img 를 비활성
     public void Login()
     {
+        loginCount++;
         if (mainUiObject.imgLogin_Object != null) mainUiObject.imgLogin_Object.SetActive(false);
         //로그인에 입력한 텍스트 초기화
         ResetLoginText();
         //이미지 회원가입 끄기
         mainUiObject.imgRegist_Object.SetActive(false);
         //내정보패널을 끄기
-        panel_MyInfo_Object.SetActive(false);
+        mainUiObject.panel_MyInfo_Object.SetActive(false);
 
         RoomUIManager_GH.instance.roomUserIdSet(saveUserId);
-        RoomUIManager_GH.instance.OnLoad();
+        //서버가 응답하지 않으면 null 임시주석
+       //RoomUIManager_GH.instance.OnLoad();
+
+
+
 
     }
-
     //메인키를 누르면 모든 UI를 보여주게하자.
     public void ViewMain()
     {

@@ -15,6 +15,7 @@ using static MainUI;
 public class RegistInfo : MonoBehaviour
 {
     MainUI mainUI;
+    MainUIObject mainUiObject;
 
     GameObject if_ID_Obejct;
     GameObject if_Pass_Obejct;
@@ -42,6 +43,8 @@ public class RegistInfo : MonoBehaviour
     public string passText;
     public string nameText;
 
+    InputField inputRegistPass;
+
     // JSON 타입으로 정보 저장하기 위한 클래스
     [System.Serializable]
     public class UserInfo
@@ -49,6 +52,14 @@ public class RegistInfo : MonoBehaviour
         public string userId;
         public string userPassword;
         public string userName;
+        public string bigCategory;
+        public string smallCategory;
+        public string bigCategory2;
+        public string smallCategory2;
+        public string bigCategory3;
+        public string smallCategory3;
+
+       
     }
 
     // Start is called before the first frame update
@@ -56,6 +67,7 @@ public class RegistInfo : MonoBehaviour
     {
 
         mainUI = gameObject.GetComponent<MainUI>();
+        mainUiObject = gameObject.GetComponent<MainUIObject>();
 
         //인풋필드 아이디 오브젝트
         if_ID_Obejct = GameObject.Find("IF_Regist_ID");
@@ -86,11 +98,13 @@ public class RegistInfo : MonoBehaviour
         ph_Rigist_Name_Obejct = GameObject.Find("Ph_Regist_Name");
         if(ph_Rigist_Name_Obejct != null)ph_Regist_Name_Text = ph_Rigist_Name_Obejct.GetComponent<Text>();
 
-
         ph_Rigist_Name_Obejct = GameObject.Find("Ph_Regist_Name");
+
+        inputRegistPass = GameObject.Find("IF_Regist_Pass").GetComponent<InputField>();
 
         //mainUI.imgLogin_Object.SetActive(true);
 
+ 
 
     }
 
@@ -99,13 +113,16 @@ public class RegistInfo : MonoBehaviour
     {
 
     }*/
+    
     //세이브로컬레지스트제이슨
     public void SaveLocalRegistJSON()
     {
          idText = id_Regist_InputField.text;
+        print("회원등록ID" +  idText);
          passText = pass_Regist_InputField.text;
+        print("회원등록pass" + passText);
          nameText = name_Regist_InputField.text;
-
+        print("회원등록name" + nameText);
         // 파일 저장 경로
         string path = Application.dataPath + "/Resources/SaveRegist.json";
         string like = "미지정";
@@ -114,9 +131,13 @@ public class RegistInfo : MonoBehaviour
         {
             { "userId", idText },
             { "userPassword", passText },
-            { "userName", nameText },
+            { "userNickName", nameText },
+            { "likeCount", "0" },
+            { "bigCategory", like },
             { "smallCategory", like },
+            { "bigCategory2", like },
             { "smallCategory2", like },
+            { "bigCategory3", like },
             { "smallCategory3", like }
 
         };
@@ -137,13 +158,39 @@ public class RegistInfo : MonoBehaviour
             // 동일한 ID가 있는지 확인
             foreach (var user in userInfoList)
             {
+                if(idText =="")
+                {
+
+                    ph_Regist_ID_Text.text = "아이디를 입력하세요";
+                    ph_Regist_ID_Text.color = Color.red;
+                    print("아이디 미입력");
+                    return;
+                }
                 if (user["userId"] == idText)
                 {
                     id_Regist_InputField.text = "";
                     ph_Regist_ID_Text.text = "아이디가 중복됩니다";
                     ph_Regist_ID_Text.color = Color.red;
+                    print("아이디 중복");
                     return;
                 }
+                if (passText == "")
+                {
+                    ph_Regist_Pass_Text.text = "비밀번호를 입력하세요";
+                    ph_Regist_Pass_Text.color = Color.red;
+                    print("패스워드 미입력");
+                    return;
+                }
+                if (nameText == "")
+                {
+                    ph_Regist_Name_Text.text = "이름을를 입력하세요";
+                    ph_Regist_Name_Text.color = Color.red;
+                    print("이름 미입력");
+                    return;
+                }
+
+                
+                
             }
 
             // 새로운 유저 정보를 리스트에 추가
@@ -167,8 +214,8 @@ public class RegistInfo : MonoBehaviour
 
         // JSON 데이터를 파일에 저장
         File.WriteAllText(path, loadUserInfo);
-        print("SaveComplete" + newUser); 
-
+        print("SaveComplete" + newUser);
+        mainUI.NewRegistComplite();
 
         //서버에 post 요청하기
         //StartCoroutine(SaveServerRegistJSON(loadUserInfo));

@@ -103,6 +103,7 @@ public class NetworkManager_GH : MonoBehaviour
         {
             //Error의 이유를 출격
             Debug.LogError("Net Error : " + webRequest.error);
+            
         }
     }
 }
