@@ -72,6 +72,8 @@ public class DragManager_GH : MonoBehaviour
     // 방꾸 버튼
     public GameObject roomSetBut;
 
+    public SwipeUI_GH swipe;
+
     private void Awake()
     {
         //포인트 찍기
@@ -149,10 +151,8 @@ public class DragManager_GH : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Furniture") | 1 << LayerMask.NameToLayer("NoticeBoard") | 1 << LayerMask.NameToLayer("WallObject")))
         {
-<<<<<<< Updated upstream
             //룸패널이 켜져있을 때만 발동
-=======
->>>>>>> Stashed changes
+
             if (roomUIMag.onRoomPanel)
             {
                 // 오브젝트 옮기기
@@ -174,17 +174,10 @@ public class DragManager_GH : MonoBehaviour
                         if (colliders[i].gameObject != moveFurniture)
                         {
                             collFD = colliders[i].GetComponent<FurnitureData_GH>();
-<<<<<<< Updated upstream
                             for (int j = collFD.furnitureInfo.furniCurrentX; j < collFD.furnitureInfo.furniCurrentX + collFD.furnitureInfo.furniSizeX; j++)
                             {
                                 for (int k = collFD.furnitureInfo.furniCurrentZ; k < collFD.furnitureInfo.furniCurrentZ + collFD.furnitureInfo.furniSizeZ; k++)
-=======
-                            for (int j = collFD.furnitureInfo.furni_Current_X; j < collFD.furnitureInfo.furni_Current_X + collFD.furnitureInfo.furni_Size_X; j++)
-                            {
-                                for (int k = collFD.furnitureInfo.furni_Current_Z; k < collFD.furnitureInfo.furni_Current_Z + collFD.furnitureInfo.furni_Size_Z; k++)
->>>>>>> Stashed changes
                                 {
-
                                     donXZ[j][k] = true;
                                 }
                             }
@@ -196,16 +189,13 @@ public class DragManager_GH : MonoBehaviour
                 {
                     wallObject = hit.transform.gameObject;
                     wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
-<<<<<<< Updated upstream
                     beforeWallObPos = (int)wallObjectData.wallObjectInfo.furniPos - 1;
-=======
->>>>>>> Stashed changes
+
                 }
             }
             else
             {
                 // 방명록들어가기
-<<<<<<< Updated upstream
                 if (hit.transform.gameObject.layer == LayerMask.NameToLayer("NoticeBoard"))
                 {
                     noticeBoard.SetActive(true);
@@ -213,13 +203,6 @@ public class DragManager_GH : MonoBehaviour
                     roomSetBut.SetActive(false);
                 }
 
-=======
-                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("NoticeBoard") && !roomUIMag.onRoomPanel)
-                {
-                    noticeBoard.SetActive(true);
-                    onNotice = true;
-                }
->>>>>>> Stashed changes
             }
         }
 
@@ -375,10 +358,7 @@ public class DragManager_GH : MonoBehaviour
                 }
             }
         }
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
         if (wallObject != null)
         {
             wallObjectData = null;

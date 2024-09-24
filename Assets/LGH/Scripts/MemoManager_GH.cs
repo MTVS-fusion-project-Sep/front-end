@@ -109,7 +109,6 @@ public class MemoManager_GH : MonoBehaviour
             memoInfoList = JsonUtility.FromJson<MemoInfoList>(jsonData);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
-
         StartCoroutine(SetMemo());
         memoSwipe.SetScrollBarValue(0);
 
@@ -150,8 +149,6 @@ public class MemoManager_GH : MonoBehaviour
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Delete(HttpInfo));
 
-
-
         //현재 순서에 있는 메모를 삭제 시킨다.
         Destroy(memoList[memoSwipe.currentPage].gameObject);
         //메모의 총 숫자를 하나 낮춘다.
@@ -159,7 +156,6 @@ public class MemoManager_GH : MonoBehaviour
         memoSwipe.memoPageUpdate(memoCount);
         memoList.RemoveAt(memoSwipe.currentPage);
         memoSwipe.currentPage = memoCount - 1;
-
     }
 
 

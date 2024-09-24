@@ -71,7 +71,7 @@ public class RoomUIManager_GH : MonoBehaviour
     public WallObjectInfoList wallObjectInfoList;
 
     //타일 및 벽
-    public UserRoomInfo userRoomInfo;
+    public UserRoomInfodata userRoomInfo;
 
     public DragManager_GH dm;
 
@@ -101,10 +101,6 @@ public class RoomUIManager_GH : MonoBehaviour
     public void roomUserIdSet(string userID)
     {
         roomUserId = userID;
-    }
-    void Update()
-    {
-
     }
     public void OnFurniture()
     {
@@ -166,14 +162,12 @@ public class RoomUIManager_GH : MonoBehaviour
                 StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
             }
         }
-        print(cur_W_Index);
-        print(cur_T_Index);
+  
         // 방 데이터 보내기
         UserRoomInfo roomInfo = new UserRoomInfo();
         roomInfo.wallIndex = cur_W_Index;
         roomInfo.tileIndex = cur_T_Index;
         roomInfo.userId = roomUserId;
-
         HttpInfo roomHttpInfo = new HttpInfo();
         roomHttpInfo.url = "http://" + httpIP + ":" + httpPort + "/room-info";
         roomHttpInfo.body = JsonUtility.ToJson(roomInfo);
@@ -187,8 +181,6 @@ public class RoomUIManager_GH : MonoBehaviour
 
     public void OnLoad()
     {
-        //print("온로드");
-        //print(roomUserId);
         FurniLoad();
         RoomLoad();
         dm.onWallObjects = new bool[3];
@@ -202,7 +194,6 @@ public class RoomUIManager_GH : MonoBehaviour
         // 로그인하면 룸 유저 아이디를 기본으로 그냥 아이디로 바꾸는걸로 함수 구현
 
         // 또 로비에서 방 방문을 누르게 되면 그 해당 방 정보를 받아오도록 구현
-
 
         //받아올때 아이디 뒤에 붙이게
 
@@ -229,14 +220,27 @@ public class RoomUIManager_GH : MonoBehaviour
             wallObjectInfoList = JsonUtility.FromJson<WallObjectInfoList>(jsonData);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info2));
-
-        
-
+    }
+    void RoomLoad()
+    {
+        // 방정보 받아오기
+        HttpInfo info = new HttpInfo();
+        info.url = "http://" + httpIP + ":" + httpPort + "/room-info?userId=" + roomUserId;
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            print(downloadHandler.text);
+            string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
+            print(jsonData);
+            //jsonData를 PostInfoArray 형으로 바꾸자. todo리스트 어떻게 받을지 물어보기
+            userRoomInfo = JsonUtility.FromJson<UserRoomInfodata>(jsonData);
+            print("적용 " + userRoomInfo.data.wallIndex);
+            print("적용 " + userRoomInfo.data.tileIndex);
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
     }
 
     IEnumerator Setting()
     {
-
         yield return new WaitForSeconds(0.2f);
         //벽, 땅가구 데이터 세팅
         for (int i = 0; i < list_Furniture.Count; i++)
@@ -267,29 +271,20 @@ public class RoomUIManager_GH : MonoBehaviour
                 }
             }
         }
+        print("세팅2" + cur_W_Index);
+        print("세팅2" + cur_T_Index);
+
+        print("세팅" + userRoomInfo.data.wallIndex);
+        print("세팅" + userRoomInfo.data.tileIndex);
         dm.onWallObjects = new bool[3];
-        rooms[0].material = ui_Wall[userRoomInfo.wallIndex].GetComponent<Image>().material;
-        rooms[1].material = ui_Wall[userRoomInfo.wallIndex].GetComponent<Image>().material;
-        rooms[2].material = ui_Ground[userRoomInfo.tileIndex].GetComponent<Image>().material;
+        rooms[0].material = ui_Wall[userRoomInfo.data.wallIndex].GetComponent<Image>().material;
+        rooms[1].material = ui_Wall[userRoomInfo.data.wallIndex].GetComponent<Image>().material;
+        rooms[2].material = ui_Ground[userRoomInfo.data.tileIndex].GetComponent<Image>().material;
 
     }
 
 
-    void RoomLoad()
-    {
-        // 방정보 받아오기
-        HttpInfo info = new HttpInfo();
-        info.url = "http://" + httpIP + ":" + httpPort + "/room-info?userId=" + roomUserId;
-        info.onComplete = (DownloadHandler downloadHandler) =>
-        {
-            //print(downloadHandler.text);
-            string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-            //print(jsonData);
-            //jsonData를 PostInfoArray 형으로 바꾸자. todo리스트 어떻게 받을지 물어보기
-            //userRoomInfo = JsonUtility.FromJson<UserRoomInfo>(jsonData);
-        };
-        StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
-    }
+   
     public void OnExit()
     {
         OnLoad();
@@ -327,8 +322,6 @@ public class RoomUIManager_GH : MonoBehaviour
             Destroy(contentFurniture.transform.GetChild(i).gameObject);
         }
     }
-
-
     public void WallIndexSetting(int w_Index)
     {
         cur_W_Index = w_Index;
@@ -337,9 +330,6 @@ public class RoomUIManager_GH : MonoBehaviour
     {
         cur_T_Index = t_Index;
     }
-
-
-
 }
 [System.Serializable]
 public class UserRoomInfo
@@ -347,5 +337,11 @@ public class UserRoomInfo
     public int wallIndex;
     public int tileIndex;
     public string userId;
+}
+
+[System.Serializable]
+public class UserRoomInfodata
+{
+    public UserRoomInfo data;
 }
 

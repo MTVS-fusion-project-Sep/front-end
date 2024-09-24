@@ -42,15 +42,32 @@ public class SwipeUI_GH : MonoBehaviour
             scrollPageValues[i] = valueDistance * i;
         }
 
-        //maxPage = memoManag.memoCount;
+        maxPage = memoManag.memoCount;
     }
 
     void Start()
     {
         // 최초 시작할 때 0번 페이지를 볼 수 있도록 설정
-        //SetScrollBarValue(0);
+        SetScrollBarValue(0);
     }
 
+
+    public void test()
+    {
+        // 스크롤 되는 페이지의 각 value값을 지정하는 배열 메모리 할당
+        scrollPageValues = new float[memoManag.memoCount];
+
+        // 스크롤 되는 페이지 사이의 거리
+        valueDistance = 1f / (scrollPageValues.Length - 1f);
+
+        // 스크롤 되는 페이지의 각 value 위치 설 정 [0 <= value <= 1]
+        for (int i = 0; i < scrollPageValues.Length; ++i)
+        {
+            scrollPageValues[i] = valueDistance * i;
+        }
+
+        maxPage = memoManag.memoCount;
+    }
     public void SetScrollBarValue(int index)
     {
         currentPage = index;
@@ -61,7 +78,7 @@ public class SwipeUI_GH : MonoBehaviour
     void Update()
     {
         //최대 페이지의  수
-        maxPage = memoManag.memoCount;
+        //maxPage = memoManag.memoCount;
 
         UpdateInput();
         UpdatePageNum();

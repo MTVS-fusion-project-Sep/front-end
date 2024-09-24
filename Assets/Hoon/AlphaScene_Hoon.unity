@@ -4605,7 +4605,7 @@ MonoBehaviour:
   mainUiObject: {fileID: 0}
   idText: 
   passText: 
-  userNameText: 
+  nameText: 
   saveUserId: 
 --- !u!4 &1257657937
 Transform:
@@ -5834,7 +5834,7 @@ MonoBehaviour:
   passText: {fileID: 0}
   phID_Text: {fileID: 0}
   phPass_Text: {fileID: 0}
-  nameTextComp: {fileID: 0}
+  nameText: {fileID: 0}
   move_Lobby_Btn: {fileID: 0}
   id_InputField: {fileID: 0}
   pass_InputField: {fileID: 0}
