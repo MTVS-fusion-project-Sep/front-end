@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
-using Photon.Pun.Demo.SlotRacer.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using UnityEditor;
 //using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEditor;
+using Photon.Pun.Demo.SlotRacer.Utils;
 
 
 public class AIChatManager : MonoBehaviour
@@ -44,9 +44,6 @@ public class AIChatManager : MonoBehaviour
             textAIChat.text = "입력을 기다리는중...";
         }
     }
-
-
-
 
     //Request body
     void chatInfo()
@@ -115,8 +112,6 @@ public class AIChatManager : MonoBehaviour
             
         }
 
-
-
     }
 
     public void PostJsonAITest()
@@ -179,6 +174,8 @@ public class AIChatManager : MonoBehaviour
             else
             {
                 Debug.LogError("Error: " + request.error);
+                textAIChat.text = "AI의 연결불가...";
+                
             }
         }
     }
@@ -220,37 +217,5 @@ public class AIChatManager : MonoBehaviour
             }
         }
     }
-
-
-
-
-    /* //요청 초기화하기
-     UnityWebRequest request = new UnityWebRequest(url, "POST");
-         print("요청중");
-
-         // JSON 데이터를 담아 요청 생성
-         //byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(prompt);
-         //request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-         request.downloadHandler = new DownloadHandlerBuffer();
-         request.SetRequestHeader("Content-Type", "application/json");
-
-         // 요청 보내기
-         yield return request.SendWebRequest();
-
-         // 요청 결과 확인
-         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-         {
-             Debug.LogError("Error: " + request.error);
-         }
-         else
-         {
-             // 서버 응답 확인
-             string responseText = request.downloadHandler.text;
-             print("서버 응답: " + responseText);
-
-
-         }
-     }*/
-
 
 }

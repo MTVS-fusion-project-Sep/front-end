@@ -45,7 +45,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         PhotonNetwork.GameVersion = "1.0.0";
         //닉네임
         //PhotonNetwork.NickName = "CyworldAvata";
-        PhotonNetwork.NickName = MainUI.Instance.nameText;
+        PhotonNetwork.NickName = MainUI.Instance.userNameText;
         //화면동기화
         PhotonNetwork.AutomaticallySyncScene = true;
         // 접속을 서버에 요청하기
@@ -71,7 +71,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         // 실패 원인을 출력한다.
 
         print(MethodInfo.GetCurrentMethod().Name + " is call");
-        MainUI.Instance.mainUiObject.move_Lobby_Btn.interactable = true;
+        //MainUI.Instance.mainUiObject.move_Lobby_Btn.interactable = true;
 
     }
     //마스터연결 콜백
