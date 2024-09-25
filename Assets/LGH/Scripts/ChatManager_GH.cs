@@ -82,7 +82,7 @@ public class ChatManager_GH : MonoBehaviour
     {
         //초기 값을 비워준다.
         input_chat.text = "";
-        text_chatContent.text = "독종규현 : " + "최강성표님 환영합니다!" + "\n";
+        //text_chatContent.text = "독종규현 : " + "최강성표님 환영합니다!" + "\n";
         //인풋 필드의 제출 이벤트에 SendMyMessage 함수를 바인딩한다.
         sendmessage_but.onClick.AddListener(SendMyMessage);
         //enterRoom_but.onClick.AddListener(EnterRoom);

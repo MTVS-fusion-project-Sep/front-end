@@ -319,7 +319,7 @@ public class DragManager_GH : MonoBehaviour
                 {
                     if (hit.transform.gameObject == wallPos[i].gameObject)
                     {
-                        wallObjectData.wallObjectInfo.furniPos = (WallType)(i+1);
+                        wallObjectData.wallObjectInfo.furniPos = (WallType)(i + 1);
                         wallObjectData.SetWallPos(i, beforeWallObPos);
                     }
                 }
@@ -389,7 +389,11 @@ public class DragManager_GH : MonoBehaviour
     {
         noticeBoard.SetActive(false);
         onNotice = false;
-        roomSetBut.SetActive(true);
+        if (roomUIMag.selfRoom)
+        {
+            roomSetBut.SetActive(true);
+
+        }
     }
 
     public void RotateXZ()

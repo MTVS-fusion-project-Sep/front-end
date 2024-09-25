@@ -29,7 +29,7 @@ public class MemoManager_GH : MonoBehaviour
 
 
     //메모 저장 버튼 활성화
-    bool onSaveButton = false;
+    public bool onSaveButton = true;
 
 
     //메모 데이터를 받은 값을 저장
@@ -46,7 +46,7 @@ public class MemoManager_GH : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
     public void MemoWrite()
     {
@@ -70,19 +70,20 @@ public class MemoManager_GH : MonoBehaviour
 
     public void MemoSave()
     {
-        TMP_Text text = memoList[memoCount - 1].GetComponentInChildren<TMP_Text>();
-        TMP_InputField inputfield = memoList[memoCount - 1].GetComponentInChildren<TMP_InputField>();
+        MemoData_GH md = memoList[memoCount - 1].GetComponent<MemoData_GH>();
+        TMP_InputField inputfield = md.GetComponentInChildren<TMP_InputField>();
 
-        text.text = inputfield.text;
         inputfield.gameObject.SetActive(false);
         onSaveButton = true;
 
         // 새로운 메모 데이터 보내기
         MemoInfo_GH memoInfo = new MemoInfo_GH();
-        memoInfo.toUserId = "user1";
+        memoInfo.toUserId = RoomUIManager_GH.instance.roomId;
         memoInfo.content = inputfield.text;
-        memoInfo.fromUserId = "user1";
+        memoInfo.fromUserId = RoomUIManager_GH.instance.userId;
         memoInfo.registDate = DateTime.Now.ToString(("yyyy-MM-dd HH:mm"));
+
+        md.SetMemoContents(memoInfo.content, memoInfo.fromUserId, memoInfo.registDate);
 
         HttpInfo HttpInfo = new HttpInfo();
         HttpInfo.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book";
@@ -99,12 +100,12 @@ public class MemoManager_GH : MonoBehaviour
         //print(RoomUIManager_GH.instance.roomUserId);
         //메모 받아오기
         HttpInfo info = new HttpInfo();
-        info.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book/reader?readerId=" + RoomUIManager_GH.instance.roomUserId;
+        info.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book/reader?readerId=" + RoomUIManager_GH.instance.roomId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             //print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-            //print(jsonData);
+            print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자. 
             memoInfoList = JsonUtility.FromJson<MemoInfoList>(jsonData);
         };
@@ -120,7 +121,7 @@ public class MemoManager_GH : MonoBehaviour
         {
             Destroy(memoList[i]);
         }
-            memoList.Clear();
+        memoList.Clear();
         //print("메모 세팅");
         memoCount = memoInfoList.data.Count;
         //기록되어 있는 메모에 따른 메모 생성
@@ -136,16 +137,12 @@ public class MemoManager_GH : MonoBehaviour
     public void MemoDelete()
     {
         // 새로운 메모 데이터 보내기
-        MemoInfo_GH memoInfo = new MemoInfo_GH();
-        //memoInfo.toUserId = "이규현";
-
         HttpInfo HttpInfo = new HttpInfo();
         HttpInfo.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book?guestBookId=" + memoList[memoSwipe.currentPage].GetComponent<MemoData_GH>().memoInfo.id;
-        HttpInfo.body = JsonUtility.ToJson(memoInfo);
         HttpInfo.contentType = "application/json";
         HttpInfo.onComplete = (DownloadHandler downloadHandler) =>
         {
-            print(downloadHandler.text);
+            // print(downloadHandler.text);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Delete(HttpInfo));
 
@@ -166,21 +163,28 @@ public class MemoManager_GH : MonoBehaviour
         if (memoSwipe.currentPage + 1 == memoSwipe.maxPage && !onSaveButton)
         {
             memoButtons[0].SetActive(true);
+
             memoButtons[1].SetActive(false);
+
             memoButtons[2].SetActive(false);
+
         }
         else
         {
             memoButtons[0].SetActive(false);
-            memoButtons[1].SetActive(true);
-            memoButtons[2].SetActive(true);
+            if (RoomUIManager_GH.instance.selfRoom)
+            {
+                memoButtons[1].SetActive(false);
+                memoButtons[2].SetActive(true);
+            }
+            else
+            {
+                memoButtons[1].SetActive(true);
+                memoButtons[2].SetActive(false);
+            }
         }
     }
 
-    public void TestScend()
-    {
-        RoomUIManager_GH.instance.roomUserId = "user2";
-        SceneManager.LoadScene(4);
-    }
+
 }
 

@@ -8,6 +8,13 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using static System.Net.WebRequestMethods;
 
+// 유저 아이디돠 룸 아이디를 만든다.
+// 로그인을 하면 유저 아이디를 저장한다.
+// 또한 룸아이디와 유저아이디를 동일하게 한다.
+// 유저 아이디와 룸아이디가 동일하다면 체크를 하는 불값을 만든다.
+// 그리고 다를시에는 여러 UI와 기능들이 작동하지 않도록 한다.
+// = 1대1에서 유저룸 방문을 누를시에 바꿔주고 다시 로비를 누를시에 룸아이디를 다시 유저 아이디로 바꾼다.
+
 public class RoomUIManager_GH : MonoBehaviour
 {
     public static RoomUIManager_GH instance;
@@ -23,6 +30,8 @@ public class RoomUIManager_GH : MonoBehaviour
         }
         OnLoad();
     }
+
+    public MemoManager_GH MM;
     // 방 벽지 바꾸기
     public MeshRenderer[] rooms;
 
@@ -75,13 +84,19 @@ public class RoomUIManager_GH : MonoBehaviour
 
     public DragManager_GH dm;
 
+
     //현재의 벽과 땅 타일
     public int cur_W_Index = 0;
     public int cur_T_Index = 0;
 
     //유저 아이디 더미 데이터
-    public string roomUserId = "user1";
-    
+    public string roomId = "user2";
+    public string userId = "user1";
+
+    public bool selfRoom;
+
+    public SwipeUI_GH Swipe;
+
     void Start()
     {
 
@@ -94,13 +109,41 @@ public class RoomUIManager_GH : MonoBehaviour
             slotImage.sprite = ui_Furniture[i].sprite;
         }
 
+        //로그인할때 체크해주기=--------------------------------------------------------------------------------
+        if (roomId == userId)
+        {
+            selfRoom = true;
+        }
+        else
+        {
+            selfRoom = false;
+        }
+
         roomSettingPanel.SetActive(false);
-        roomSettingBut.gameObject.SetActive(true);
+        if (selfRoom)
+        {
+            roomSettingBut.gameObject.SetActive(true);
+        }
+        else
+        {
+            roomSettingBut.gameObject.SetActive(false);
+        }
+    }
+    private void Update()
+    {
+        if (roomId == userId)
+        {
+            selfRoom = true;
+        }
+        else
+        {
+            selfRoom = false;
+        }
     }
 
     public void roomUserIdSet(string userID)
     {
-        roomUserId = userID;
+        roomId = userID;
     }
     public void OnFurniture()
     {
@@ -135,7 +178,7 @@ public class RoomUIManager_GH : MonoBehaviour
             if (list_Furniture[i].layer == LayerMask.NameToLayer("Furniture"))
             {
                 FurnitureData_GH fd = list_Furniture[i].GetComponent<FurnitureData_GH>();
-                fd.furnitureInfo.userId = roomUserId;
+                fd.furnitureInfo.userId = roomId;
                 HttpInfo info = new HttpInfo();
                 info.url = "http://" + httpIP + ":" + httpPort + "/ground-furniture";
                 info.body = JsonUtility.ToJson(fd.furnitureInfo);
@@ -150,7 +193,7 @@ public class RoomUIManager_GH : MonoBehaviour
             else if (list_Furniture[i].layer == LayerMask.NameToLayer("WallObject"))
             {
                 WallObjectData_GH wd = list_Furniture[i].GetComponent<WallObjectData_GH>();
-                wd.wallObjectInfo.userId = roomUserId;
+                wd.wallObjectInfo.userId = roomId;
                 HttpInfo info = new HttpInfo();
                 info.url = "http://" + httpIP + ":" + httpPort + "/wall-furniture";
                 info.body = JsonUtility.ToJson(wd.wallObjectInfo);
@@ -162,12 +205,12 @@ public class RoomUIManager_GH : MonoBehaviour
                 StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
             }
         }
-  
+
         // 방 데이터 보내기
         UserRoomInfo roomInfo = new UserRoomInfo();
         roomInfo.wallIndex = cur_W_Index;
         roomInfo.tileIndex = cur_T_Index;
-        roomInfo.userId = roomUserId;
+        roomInfo.userId = roomId;
         HttpInfo roomHttpInfo = new HttpInfo();
         roomHttpInfo.url = "http://" + httpIP + ":" + httpPort + "/room-info";
         roomHttpInfo.body = JsonUtility.ToJson(roomInfo);
@@ -183,6 +226,7 @@ public class RoomUIManager_GH : MonoBehaviour
     {
         FurniLoad();
         RoomLoad();
+        MM.MemoLoad();
         dm.onWallObjects = new bool[3];
         StartCoroutine(Setting());
     }
@@ -198,7 +242,7 @@ public class RoomUIManager_GH : MonoBehaviour
         //받아올때 아이디 뒤에 붙이게
 
         HttpInfo info = new HttpInfo();
-        info.url = "http://" + httpIP + ":" + httpPort + "/ground-furniture/user?userId=" + roomUserId;
+        info.url = "http://" + httpIP + ":" + httpPort + "/ground-furniture/user?userId=" + roomId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             //print(downloadHandler.text);
@@ -210,7 +254,7 @@ public class RoomUIManager_GH : MonoBehaviour
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
 
         HttpInfo info2 = new HttpInfo();
-        info2.url = "http://" + httpIP + ":" + httpPort + "/wall-furniture/user?userId=" + roomUserId;
+        info2.url = "http://" + httpIP + ":" + httpPort + "/wall-furniture/user?userId=" + roomId;
         info2.onComplete = (DownloadHandler downloadHandler) =>
         {
             //print(downloadHandler.text);
@@ -225,7 +269,7 @@ public class RoomUIManager_GH : MonoBehaviour
     {
         // 방정보 받아오기
         HttpInfo info = new HttpInfo();
-        info.url = "http://" + httpIP + ":" + httpPort + "/room-info?userId=" + roomUserId;
+        info.url = "http://" + httpIP + ":" + httpPort + "/room-info?userId=" + roomId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             print(downloadHandler.text);
@@ -281,10 +325,11 @@ public class RoomUIManager_GH : MonoBehaviour
         rooms[1].material = ui_Wall[userRoomInfo.data.wallIndex].GetComponent<Image>().material;
         rooms[2].material = ui_Ground[userRoomInfo.data.tileIndex].GetComponent<Image>().material;
 
+        Swipe.test();
     }
 
 
-   
+
     public void OnExit()
     {
         OnLoad();

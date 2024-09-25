@@ -2240,7 +2240,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -200, y: 250}
+  m_AnchoredPosition: {x: 0, y: 250}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &153686231
@@ -2289,7 +2289,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1559749442}
         m_TargetAssemblyTypeName: MemoManager_GH, Assembly-CSharp
-        m_MethodName: memoWrite
+        m_MethodName: MemoWrite
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10738,6 +10738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6686e845300f50342b61aaa10955688d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MM: {fileID: 1559749442}
   rooms:
   - {fileID: 1990503727}
   - {fileID: 577731928}
@@ -10800,7 +10801,10 @@ MonoBehaviour:
   dm: {fileID: 140431428}
   cur_W_Index: 0
   cur_T_Index: 0
-  roomUserId: user1
+  roomId: user2
+  userId: user1
+  selfRoom: 0
+  Swipe: {fileID: 487148966}
 --- !u!4 &909881763
 Transform:
   m_ObjectHideFlags: 0
@@ -16377,7 +16381,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1559749442}
         m_TargetAssemblyTypeName: MemoManager_GH, Assembly-CSharp
-        m_MethodName: memoSave
+        m_MethodName: MemoSave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17655,6 +17659,7 @@ MonoBehaviour:
   - {fileID: 1444872207}
   - {fileID: 153686229}
   - {fileID: 1670585386}
+  onSaveButton: 1
   memoInfoList:
     data: []
   memoContents: {fileID: 487148962}
@@ -19339,7 +19344,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 200, y: 250}
+  m_AnchoredPosition: {x: 0, y: 250}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1670585388
@@ -19388,7 +19393,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1559749442}
         m_TargetAssemblyTypeName: MemoManager_GH, Assembly-CSharp
-        m_MethodName: memoDelete
+        m_MethodName: MemoDelete
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
