@@ -35,6 +35,7 @@ public class MainUIObject : MonoBehaviour
     //MyInfo btn
     public GameObject btn_MyInfo_Obejct;
     public GameObject img_RegistComplite_Object;
+    public GameObject write_MyMemo_Object;
 
     // Text elements
     public Text idText;
@@ -42,10 +43,14 @@ public class MainUIObject : MonoBehaviour
     public Text phID_Text;
     public Text phPass_Text;
     public Text nameTextComp;
+    public Text myMemo_TextComp;
+
     //아아디 필드
     public InputField id_InputField;
     //패스 필드
     public InputField pass_InputField;
+    //나의메모
+    public InputField writeMomo_Input;
 
     public Button move_Lobby_Btn;
     Button btn_LoginGet;
@@ -55,6 +60,9 @@ public class MainUIObject : MonoBehaviour
     Button btn_MoveLogin;
     Button btn_Regist;
     Button btn_ExitMenu;
+    Button btn_Write;
+
+    
 
     public bool isViewPass = false;
     public bool isViewExitMenu = false;
@@ -66,8 +74,10 @@ public class MainUIObject : MonoBehaviour
         Initialize();
         ButtonEvent();
         LikeTextCast();
+        Etc();
+        //마지막에 캐싱
         OFFUI();
-
+       
 
     }
     public void Initialize()
@@ -107,6 +117,15 @@ public class MainUIObject : MonoBehaviour
 
     }
 
+    public void Etc()
+    {
+        write_MyMemo_Object = GameObject.Find("IF_MyMemo");
+        writeMomo_Input = GameObject.Find("IF_MyMemo").GetComponent<InputField>();
+        myMemo_TextComp = GameObject.Find("Text_MyMemo").GetComponent<Text>();
+     
+
+    }
+
     public void ButtonEvent()
     {
         if(MainUI.Instance.loginCount != 0)
@@ -135,8 +154,12 @@ public class MainUIObject : MonoBehaviour
             //Btn_ExitMenu
             btn_ExitMenu = GameObject.Find("Btn_ExitMenu").GetComponent<Button>();
             btn_ExitMenu.onClick.AddListener(MainUI.Instance.ViewExitPanel);
+            //Btn_Write
+            btn_Write = GameObject.Find("Btn_ExitMenu").GetComponent<Button>();
+            btn_Write.onClick.AddListener(MainUI.Instance.ViewExitPanel);
+
         }
-       
+
 
     }
 
@@ -163,6 +186,7 @@ public class MainUIObject : MonoBehaviour
     public void OFFUI()
     {
         img_RegistComplite_Object.SetActive(false);
+        write_MyMemo_Object.SetActive(false);
     }
 
 }//클래스끝

@@ -198,7 +198,7 @@ public class RegistInfo : MonoBehaviour
 
             print("회원가입정보" + userInfo);
 
-            // 리스트를 다시 JSON 문자열로 변환, 로드저장
+            // 리스트를 다시 JSON 문자열로 변환
             loadUserInfo = JsonConvert.SerializeObject(userInfoList, Formatting.Indented);
 
         }

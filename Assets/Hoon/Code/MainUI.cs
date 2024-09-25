@@ -60,6 +60,7 @@ public class MainUI : MonoBehaviour
     bool isViewExitMenu = false;
     bool isViewMyInfo = false;
     bool isViewPanelLike = false;
+    bool isWriteMyMemo = false;
 
     //로비를 제외하고 버튼은 계속 유지합니다.
     // Start is called before the first frame update
@@ -177,7 +178,127 @@ public class MainUI : MonoBehaviour
     {
        
     }
+
+    public class Mymemo
+    {
+        public string userId;
+        public string MyMemo;
+    }
+
     
+    public void SaveJsonMyMemo()
+    {
+        //메모인풋켜기
+        if(isWriteMyMemo == false)
+        {
+            mainUiObject.write_MyMemo_Object.SetActive(true);
+            mainUiObject.writeMomo_Input.text = mainUiObject.myMemo_TextComp.text;
+            isWriteMyMemo = true;
+        }
+        //메모인풋끄기
+        else
+        {
+            mainUiObject.write_MyMemo_Object.SetActive(false);
+            //텍스트를 갱신
+            mainUiObject.myMemo_TextComp.text = mainUiObject.writeMomo_Input.text;
+            //결과를 저장하자.
+            string path = Application.dataPath + "/Resources/MyMeMo.json";
+            string loadUserInfo = System.IO.File.ReadAllText(path);
+            //정보를 Json으로 불러오기
+            List<Dictionary<string, string>> userInfoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserInfo);
+
+            //파일에 내용 없으면
+            if (loadUserInfo == "")
+            {
+                print("파일에 내용 없음");
+
+                // 파일에내용 없으면 신규작성
+                //newUserInfoList  Dictionary 만들기
+                List<Dictionary<string, string>> newUserInfoList = new List<Dictionary<string, string>>();
+                //newUserInfoList에 저장할 Dictionary 초기화
+                Dictionary<string, string> newUserInfo = new Dictionary<string, string>
+                {
+                     //idText = userID 값
+                    { "userId", idText },
+                     //MyMemo 는  mainUiObject.writeMomo_Input.text 값
+                    { "MyMemo", mainUiObject.writeMomo_Input.text }
+                };
+                //newUserInfoList 에 Dictionary 추가
+                newUserInfoList.Add(newUserInfo);
+
+                // JSON으로 변환하여 파일에 저장
+                string saveJson = JsonConvert.SerializeObject(newUserInfoList, Formatting.Indented);
+                System.IO.File.WriteAllText(path, saveJson);
+                print("신규 저장 완료: " + saveJson);
+
+            }
+            //파일내용 있으면
+            else
+            {
+                print("파일에 내용 있음" + loadUserInfo);
+
+
+                // 유저 정보가 있는지 확인
+                bool isUserFound = false;
+                
+                //리스트 순회
+                foreach (var userInfo in userInfoList)
+                {
+                    // 리스트에 일치하는지 값이 잇는지 확인하기
+                    if ((userInfo["userId"] == idText))
+                    {
+                        //일치하는 값이 있다면 mymemo value 가져오기
+                        //mymemo value 값을  mainUiObject.myMemo_TextComp.text 로 갱신
+                        //저장하기.
+
+                        //유저찾음
+                        isUserFound = true;
+                        //나가기
+                        break;
+
+
+                    }
+
+
+                }
+                //일치하는 유저가 없다면
+                if(!isUserFound)
+                {
+                    print("일치하는유저없음");
+
+                    //신규저장
+                    Dictionary<string, string> newUserInfo = new Dictionary<string, string>
+                    {
+                     //idText = userID 값
+                        { "userId", idText },
+                     //MyMemo 는  mainUiObject.writeMomo_Input.text 값
+                        { "MyMemo", mainUiObject.writeMomo_Input.text }
+                    };
+                    //기존 리스트에 신규정보 추가
+                    userInfoList.Add(newUserInfo);
+
+                    // JSON으로 변환하여 파일에 저장
+                    string saveJson = JsonConvert.SerializeObject(userInfoList, Formatting.Indented);
+                    //기존 string 에 신규유저 string을 더하고 저장
+                    saveJson = loadUserInfo + saveJson;
+                    System.IO.File.WriteAllText(path, saveJson);
+                    print("신규 유저정보 업데이트: " + saveJson);
+
+
+                }
+            
+            
+            }
+
+            //인풋박스 끄기
+            isWriteMyMemo = false;
+
+        }
+       
+    }
+
+
+
 
     //Http 통신 서버에 Get 요청
     public void GetJSONUserInfo()
@@ -1180,6 +1301,7 @@ public class MainUI : MonoBehaviour
 
             // 유저 정보가 있는지 확인하는 변수
             bool isUserFound = false;
+            
             //리스트파일을 순차검사
             foreach (var userInfo in userInfoList)
             {
@@ -1187,12 +1309,11 @@ public class MainUI : MonoBehaviour
                 //아이디와 패스워드가 일치하는지 확인
                 if (userInfo["userId"] == idText && userInfo["userPassword"] == passText)
                 {
+                    //정보표시해주기
+                    print("id, pass 일치");
                     //userId 저장하기
                     saveUserId = idText;
-                    //로그인해주기
-                    print("로그인 성공");
-                    //유저찾음
-                    isUserFound = true;
+                    
                     //이름변수에 이름을 저장
                     userNameText = userInfo["userNickName"];
                     print("내이름" + userNameText);
@@ -1240,9 +1361,11 @@ public class MainUI : MonoBehaviour
 
                     }
 
+                    //유저찾음
+                    isUserFound = true;
                     //로그인처리하기
                     Login();
-                    //print("로그인 완료");
+                    print("로그인 완료");
                     //루틴 나가기
                     break;
 
@@ -1510,12 +1633,85 @@ public class MainUI : MonoBehaviour
 
     }
     //로그인 img 회원가입 img 를 비활성
+
+    public void LoadJsonMyMemo()
+    {
+        string userId = idText;
+        string fileName = "MyMeMo.json";
+        string path = Application.dataPath + "/Resources/" + fileName;
+
+       
+        //파일이 없으면
+        if(!System.IO.File.Exists(path))
+        {
+            //파일생성
+            using (System.IO.FileStream fs = System.IO.File.Create(path))
+            {
+                // 파일을 닫아주기 위해 using 사용
+                print("신규메모생성");
+            }
+          
+
+        }
+        //파일이 있으면
+        else
+        {
+            //모든텍스트 가져오기
+            string loadUserMemo = System.IO.File.ReadAllText(path);
+            print("모든 메모 가져오기" + loadUserMemo);
+            print("idText 확인하기" + idText);
+            
+            // JSON 파일을 Dictionary 리스트로 변환
+            List<Dictionary<string, string>> userMemoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserMemo);
+            //print("유저정보량" + userInfoList.Count);
+
+            // 유저 정보가 있는지 확인하는 변수
+            bool isUserFound = false;
+
+            //리스트파일을 순차검사
+            foreach (var memo in userMemoList)
+            {
+
+                //아이디를 포함하고 있고 idText를 포함하고 있다면
+                if (memo.ContainsKey("userId") && memo["userId"] == idText)// && memo.ContainsKey("MyMemo"))
+                {
+                    print("아이디 있음");
+                   
+                    //유저찾음
+                    isUserFound = true;
+
+                    // 일치하는 유저 메모를 텍스트에 할당
+                    mainUiObject.myMemo_TextComp.text = memo["MyMemo"];
+                    print("상태메시지 " + memo["MyMemo"]);
+
+                    //나가기
+                    break;
+
+                }
+
+            }
+            if(!isUserFound)
+            {
+                mainUiObject.myMemo_TextComp.text = "상태메시지를 입력하세요";
+                print("상태메시지 없음");
+            }
+          
+        }
+      
+    }
+
+
+
     public void Login()
     {
         loginCount++;
         if (mainUiObject.imgLogin_Object != null) mainUiObject.imgLogin_Object.SetActive(false);
         //로그인에 입력한 텍스트 초기화
         ResetLoginText();
+        //상태메시지 로드
+        LoadJsonMyMemo();
+
+
         //이미지 회원가입 끄기
         mainUiObject.imgRegist_Object.SetActive(false);
         //내정보패널을 끄기

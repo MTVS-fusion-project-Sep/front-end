@@ -6148,13 +6148,16 @@ MonoBehaviour:
   thirdLikeObject: {fileID: 0}
   btn_MyInfo_Obejct: {fileID: 0}
   img_RegistComplite_Object: {fileID: 0}
+  write_MyMemo_Object: {fileID: 0}
   idText: {fileID: 0}
   passText: {fileID: 0}
   phID_Text: {fileID: 0}
   phPass_Text: {fileID: 0}
   nameTextComp: {fileID: 0}
+  myMemo_TextComp: {fileID: 0}
   id_InputField: {fileID: 0}
   pass_InputField: {fileID: 0}
+  writeMomo_Input: {fileID: 0}
   move_Lobby_Btn: {fileID: 0}
   isViewPass: 0
   isViewExitMenu: 0
@@ -9051,7 +9054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0.1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9217,7 +9220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &368803366255427926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12754,7 +12757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0.1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17101,7 +17104,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &4830533771103471464
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17549,7 +17552,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4604078244330124536}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1257657936}
+        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
+        m_MethodName: SaveJsonMyMemo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &5092117339831540094
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17849,7 +17864,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &5200297006734097975
 GameObject:
   m_ObjectHideFlags: 0
@@ -18246,7 +18261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0.1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18692,7 +18707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0.1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22937,7 +22952,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0.1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

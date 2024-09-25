@@ -76,11 +76,11 @@
     "userPassword": "c",
     "userNickName": "박근혜",
     "likeCount": 0,
-    "bigCategory": "미지정",
-    "smallCategory": "미지정",
-    "bigCategory2": "미지정",
-    "smallCategory2": "미지정",
-    "bigCategory3": "미지정",
-    "smallCategory3": "미지정"
+    "bigCategory": "문화",
+    "smallCategory": "공연",
+    "bigCategory2": "문화",
+    "smallCategory2": "영화",
+    "bigCategory3": "문화",
+    "smallCategory3": "음악"
   }
 ]
