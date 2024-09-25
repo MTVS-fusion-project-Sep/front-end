@@ -1,7 +1,7 @@
 [
   {
-    "userId": "bb",
-    "userPassword": "bb",
+    "userId": "b",
+    "userPassword": "b",
     "userNickName": "이재명",
     "likeCount": 0,
     "bigCategory": "문화",
@@ -40,12 +40,12 @@
     "userPassword": "aa",
     "userNickName": "독종규현",
     "likeCount": 0,
-    "bigCategory": "문화",
-    "smallCategory": "공연",
-    "bigCategory2": "문화",
-    "smallCategory2": "영화",
-    "bigCategory3": "문화",
-    "smallCategory3": "음악"
+    "bigCategory": "기술",
+    "smallCategory": "게임",
+    "bigCategory2": "기술",
+    "smallCategory2": "모바일",
+    "bigCategory3": "기술",
+    "smallCategory3": "로봇"
   },
   {
     "userId": "bb",
@@ -70,5 +70,17 @@
     "smallCategory2": "축구",
     "bigCategory3": "레저",
     "smallCategory3": "여행"
+  },
+  {
+    "userId": "c",
+    "userPassword": "c",
+    "userNickName": "박근혜",
+    "likeCount": 0,
+    "bigCategory": "문화",
+    "smallCategory": "공연",
+    "bigCategory2": "문화",
+    "smallCategory2": "영화",
+    "bigCategory3": "문화",
+    "smallCategory3": "음악"
   }
 ]
