@@ -1,7 +1,7 @@
-﻿[
+[
   {
     "userId": "a",
-    "MyMemo": "대통령 윤석열입니다."
+    "MyMemo": "윤석열 = 대통령"
   },
   {
     "userId": "b",
@@ -10,5 +10,13 @@
   {
     "userId": "c",
     "MyMemo": "전대통령 박근혜입니다."
+  },
+  {
+    "userId": "user1",
+    "MyMemo": "독종규현은 서울사람o"
+  },
+  {
+    "userId": "user2",
+    "MyMemo": "낭만승훈은 부산사람o"
   }
 ]

@@ -11,6 +11,7 @@ public class LobbyUI : MonoBehaviour
     GameObject btn_LobbyExit;
     MainUIObject mainUiObject;
     public Text userName;
+    public GameObject img_MoveScene_Object;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,14 @@ public class LobbyUI : MonoBehaviour
              
         }
 
+        //img_MoveScene_Object 캐싱
+        img_MoveScene_Object = GameObject.Find("Img_MoveScene");
+        print("img_MoveScene_Object 캐싱");
+
+        //1초뒤에 비활성
+        StartCoroutine(CloseUIDelay());
+        //img_MoveScene_Object.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -30,6 +39,19 @@ public class LobbyUI : MonoBehaviour
     {
         
     }*/
+    IEnumerator CloseUIDelay()
+    {
+        //1초뒤에 호출해주자.
+        yield return new WaitForEndOfFrame();
+
+        if (img_MoveScene_Object)
+        {
+            img_MoveScene_Object.SetActive(false);
+            print("img_MoveScene_Object 끄기");
+        }
+
+    }
+
     public void LobbyExit()
     {
         // 씬을 로드하고 씬 로드 완료 후 호출될 메서드를 이벤트에 등록

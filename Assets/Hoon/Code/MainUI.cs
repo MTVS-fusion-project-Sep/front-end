@@ -21,6 +21,7 @@ using static System.Net.WebRequestMethods;
 using Unity.VisualScripting;
 using UnityEngine.Rendering;
 using System.Linq;
+using static MainUI;
 
 
 public class MainUI : MonoBehaviour
@@ -107,6 +108,11 @@ public class MainUI : MonoBehaviour
     //category List
     List<string> myBigCategory = new List<string>();
     List<string> mySmallCategory = new List<string>();
+
+    //관심사 저장변수
+    Text firstLikeText;
+    Text secondLikeText;
+    Text thirdLikeText;
 
 
     private void Awake()
@@ -247,9 +253,14 @@ public class MainUI : MonoBehaviour
                     // 리스트에 일치하는지 값이 잇는지 확인하기
                     if ((userInfo["userId"] == idText))
                     {
-                        //일치하는 값이 있다면 mymemo value 가져오기
-                        //mymemo value 값을  mainUiObject.myMemo_TextComp.text 로 갱신
-                        //저장하기.
+                        //일치하는 값이 있다면 mymemo value 값을 갱신
+                        userInfo["MyMemo"] = mainUiObject.writeMomo_Input.text;
+                        //userInfoList.Add(userInfo);
+
+                        string saveJson = JsonConvert.SerializeObject(userInfoList, Formatting.Indented);
+                        //saveJson = loadUserInfo + saveJson;
+                        System.IO.File.WriteAllText(path, saveJson);
+                        print("신규 유저정보 업데이트: " + saveJson);
 
                         //유저찾음
                         isUserFound = true;
@@ -280,7 +291,7 @@ public class MainUI : MonoBehaviour
                     // JSON으로 변환하여 파일에 저장
                     string saveJson = JsonConvert.SerializeObject(userInfoList, Formatting.Indented);
                     //기존 string 에 신규유저 string을 더하고 저장
-                    saveJson = loadUserInfo + saveJson;
+                    //saveJson = loadUserInfo + saveJson;
                     System.IO.File.WriteAllText(path, saveJson);
                     print("신규 유저정보 업데이트: " + saveJson);
 
@@ -318,9 +329,7 @@ public class MainUI : MonoBehaviour
         StartCoroutine(CheckLoginFromServer(idText, passText));
     }
 
-    // 서버에서 JSON 데이터를 가져오기 위한 URL
-    string urlGetTest = "http://192.168.0.76:8080/user?userId=user1"; //같은아이피일때
-    string urlGetUser = "http://125.132.216.190:5544/user?userId=";
+    
   
     // JSON 데이터를 담을 클래스
     public class User
@@ -336,9 +345,13 @@ public class MainUI : MonoBehaviour
    //
     private IEnumerator CheckLoginFromServer(string idText, string passText)
     {
+        // 서버에서 JSON 데이터를 가져오기 위한 URL
+        string urlGetTest = "http://192.168.0.76:8080/user?userId="+ idText; //같은아이피일때
+        string urlGetUser = "http://125.132.216.190:15530/user?userId=" + idText;
 
-        print("Get userInfo");
-        UnityWebRequest request = UnityWebRequest.Get(urlGetUser+ idText);
+        print("Get userInfo" +  "id" + idText + "pass" + passText);
+        //Get 서버요청
+        UnityWebRequest request = UnityWebRequest.Get(urlGetUser);
 
         //콜백이 올때까지 기다린다.
         yield return request.SendWebRequest();
@@ -422,7 +435,8 @@ public class MainUI : MonoBehaviour
     // Get Like 
     public IEnumerator ServerGetLike()
     {
-        string url = "http://125.132.216.190:5544/interest-v2?userId=" + idText;
+        string type = "/interest-v2?userId=";
+        string url = "http://125.132.216.190:15530" + type + idText;
 
         UnityWebRequest request = UnityWebRequest.Get(url);
 
@@ -438,13 +452,95 @@ public class MainUI : MonoBehaviour
         //문제가 없다면
         else
         {
-            //print("서버 연결 성공");
+            print("Get Server Like 성공");
 
             // 서버로부터 받은 응답 데이터를 문자열로 변환
             string strResponse = request.downloadHandler.text;
-
             // 서버에서 받은 JSON 데이터 출력
             print("Get Like 서버 응답 데이터: " + strResponse);
+
+            //----------------------------------------------------------------------------------------
+            //post가 쌓이는 문제로 patch로 변경해서 해결해야함.
+            // JSON 문자열을 파싱하여 ResponseData 배열로 변환
+            //PostUserLike[] responseDataArray = JsonUtility.FromJson<PostUserLike[]>(strResponse);
+
+            // 배열의 첫 번째 요소에서 smallCategory 값을 가져와 firstLikeText에 설정
+            /* if (responseDataArray.Length > 0)
+             {
+                 Text firstLikeText = mainUiObject.firstLikeObject.GetComponent<Text>();
+                 Text secondLikeText = mainUiObject.secondLikeObject.GetComponent<Text>();
+                 Text thirdLikeText = mainUiObject.thirdLikeObject.GetComponent<Text>();
+
+                 firstLikeText.text = responseDataArray[0].smallCategory;
+                 secondLikeText.text = responseDataArray[0].smallCategory2;
+                 thirdLikeText.text = responseDataArray[0].smallCategory3;
+             }*/
+            //----------------------------------------------------------------------
+
+            //로컬데이터에 저정된 값으로 세팅해보자.
+            string path = Application.dataPath + "/Resources/SaveRegist.json";
+            string loadUserInfo = System.IO.File.ReadAllText(path);
+            print("loadUserInfo" + loadUserInfo);
+
+            //정보를 Json으로 불러오기
+            List<Dictionary<string, string>> userInfoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserInfo);
+            print("userInfoList 크기" + userInfoList.Count);
+            print("userInfoList 값" + userInfoList);
+
+
+            //리스트 순회
+            foreach (var userInfo in userInfoList)
+            {
+
+
+                // 리스트에 일치하는지 값이 잇는지 확인하기
+                if ((userInfo["userId"] == idText))
+                {
+                    print("아이디 찾았다" + idText);
+
+                    //관심사 텍스트 캐싱
+                    Text firstLikeText = mainUiObject.firstLikeObject.GetComponent<Text>();
+                    Text secondLikeText = mainUiObject.secondLikeObject.GetComponent<Text>();
+                    Text thirdLikeText = mainUiObject.thirdLikeObject.GetComponent<Text>();
+                    print("관심사 텍스트 캐싱");
+
+                    //print("smallCategory" + userInfo["smallCategory"]);
+
+                    //strResponse 에서 smallCategory, smallCategory2, smallCategory3 만 가져오기
+                   
+                    if (userInfo.ContainsKey("smallCategory"))
+                    {    //firstLikeText.text = smallCategory; 갱신
+                        firstLikeText.text = userInfo["smallCategory"];
+                    }
+                    else
+                    {
+                        firstLikeText.text = "미지정";
+                    }
+                    if (userInfo.ContainsKey("smallCategory2"))
+                    {     //secondLikeText.text = smallCategory2; 갱신
+                          secondLikeText.text = userInfo["smallCategory2"];
+                    }
+                    if (userInfo.ContainsKey("smallCategory3"))
+                    {
+                        //thirdLikeText.text = smallCategory3; 갱신
+                        thirdLikeText.text = userInfo["smallCategory3"];
+                    }
+
+
+
+
+                    break;
+
+                }
+
+            }
+
+
+
+          
+            
+           
+            
 
 
         }
@@ -731,7 +827,7 @@ public class MainUI : MonoBehaviour
                 print("JSON 파싱" + users);
 
                 //유저아이디확인
-                string userStr = saveUserId;
+                string userId = saveUserId;
                 print("유저 아이디 확인" + saveUserId);
 
                 // ID와 일치하는 부분 찾기
@@ -877,7 +973,8 @@ public class MainUI : MonoBehaviour
     // 서버에 사용자 관심사 정보 POST하기
     IEnumerator PostLikeTextToServer(PostUserLike postUserLike)
     {
-        string url = "http://125.132.216.190:5544/interest-v2"; // 실제 서버의 API URL로 변경
+        string type = "/interest-v2";
+        string url = "http://125.132.216.190:15530" + type; // 실제 서버의 API URL로 변경
 
         // JSON으로 직렬화
         string jsonData = JsonConvert.SerializeObject(postUserLike);
@@ -1777,7 +1874,7 @@ public class MainUI : MonoBehaviour
     public void ChatSceneLoad()
     {
         SceneManager.LoadScene(2);
-        ChatManager_GH.instance.roomUserIdSet(saveUserId);
+        //ChatManager_GH.instance.roomUserIdSet(saveUserId);
     }
     public void MainSceneLoad()
     {
