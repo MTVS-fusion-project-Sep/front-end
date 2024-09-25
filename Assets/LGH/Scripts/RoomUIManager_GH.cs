@@ -128,6 +128,7 @@ public class RoomUIManager_GH : MonoBehaviour
         {
             roomSettingBut.gameObject.SetActive(false);
         }
+        OnLoad();
     }
     private void Update()
     {
@@ -277,15 +278,13 @@ public class RoomUIManager_GH : MonoBehaviour
             print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자. todo리스트 어떻게 받을지 물어보기
             userRoomInfo = JsonUtility.FromJson<UserRoomInfodata>(jsonData);
-            print("적용 " + userRoomInfo.data.wallIndex);
-            print("적용 " + userRoomInfo.data.tileIndex);
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
     }
 
     IEnumerator Setting()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         //벽, 땅가구 데이터 세팅
         for (int i = 0; i < list_Furniture.Count; i++)
         {
@@ -298,6 +297,7 @@ public class RoomUIManager_GH : MonoBehaviour
                     if (list_Furniture[i].name == furnitureInfoList.data[j].furniName)
                     {
                         fd.furnitureInfo = furnitureInfoList.data[j];
+                        fd.OnPlaceSet();
                     }
                 }
             }
@@ -310,6 +310,7 @@ public class RoomUIManager_GH : MonoBehaviour
                     if (list_Furniture[i].name == wallObjectInfoList.data[j].furniName)
                     {
                         wd.wallObjectInfo = wallObjectInfoList.data[j];
+                        wd.OnWallObject();
                         wd.SetWallPos((int)wd.wallObjectInfo.furniPos - 1, (int)wd.wallObjectInfo.furniPos - 1);
                     }
                 }
@@ -325,7 +326,7 @@ public class RoomUIManager_GH : MonoBehaviour
         rooms[1].material = ui_Wall[userRoomInfo.data.wallIndex].GetComponent<Image>().material;
         rooms[2].material = ui_Ground[userRoomInfo.data.tileIndex].GetComponent<Image>().material;
 
-        Swipe.test();
+        Swipe.SetScroll();
     }
 
 

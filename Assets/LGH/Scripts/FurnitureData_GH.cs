@@ -10,6 +10,13 @@ public class FurnitureData_GH : MonoBehaviour
     {
         dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
         transform.position = new Vector3(dragM.ground_Xs[furnitureInfo.furniCurrentX].transform.position.x, 0.25f, dragM.ground_Zs[furnitureInfo.furniCurrentZ].transform.position.z);
+        OnPlaceSet();
+
+
+
+    }
+    public void OnPlaceSet()
+    {
         if (furnitureInfo.onPlace)
         {
             gameObject.SetActive(true);
@@ -18,8 +25,6 @@ public class FurnitureData_GH : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-
-       
     }
     private void Update()
     {
@@ -36,5 +41,6 @@ public class FurnitureData_GH : MonoBehaviour
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
             gameObject.transform.GetChild(1).gameObject.SetActive(false);
         }
+        OnPlaceSet();
     }
 }

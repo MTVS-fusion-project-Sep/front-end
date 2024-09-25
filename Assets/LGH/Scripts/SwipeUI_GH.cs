@@ -29,7 +29,7 @@ public class SwipeUI_GH : MonoBehaviour
 
     private void Awake()
     {
-        
+
         // 스크롤 되는 페이지의 각 value값을 지정하는 배열 메모리 할당
         scrollPageValues = new float[memoManag.memoCount];
 
@@ -52,7 +52,7 @@ public class SwipeUI_GH : MonoBehaviour
     }
 
 
-    public void test()
+    public void SetScroll()
     {
         // 스크롤 되는 페이지의 각 value값을 지정하는 배열 메모리 할당
         scrollPageValues = new float[memoManag.memoCount];
@@ -70,8 +70,12 @@ public class SwipeUI_GH : MonoBehaviour
     }
     public void SetScrollBarValue(int index)
     {
-        currentPage = index;
-        scrollBar.value = scrollPageValues[index];
+        if (index != 0)
+        {
+            currentPage = index;
+            scrollBar.value = scrollPageValues[index];
+
+        }
     }
 
 
@@ -101,13 +105,18 @@ public class SwipeUI_GH : MonoBehaviour
         {
             //터치 종료 지점 (swipe 방향 구분)
             endTouchX = Input.mousePosition.x;
-            UpdateSwipe();
+            if (maxPage > 0)
+            {
+                UpdateSwipe();
+
+            }
         }
 #endif
     }
 
     void UpdateSwipe()
     {
+
         // 너무 작은 거리를 움직였을 때는 Swipe X
         if (Mathf.Abs(startTouchX - endTouchX) < swipeDistance)
         {
@@ -139,11 +148,22 @@ public class SwipeUI_GH : MonoBehaviour
         }
         // currentIndex번째 페이지로 Swipe해서 이동
         StartCoroutine(OnSwipeOneStep(currentPage));
+
     }
 
     void UpdatePageNum()
     {
-        scrollPagecNum.text = $"{currentPage + 1}/{maxPage}";
+        if (maxPage > 0)
+        {
+            scrollPagecNum.text = $"{currentPage + 1}/{maxPage}";
+            scrollPagecNum.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -100f, 0);
+            SetScrollBarValue(0);
+        }
+        else
+        {
+            scrollPagecNum.text = "메모가 없습니다ㅠㅠ";
+            scrollPagecNum.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -700f, 0);
+        }
     }
 
     IEnumerator OnSwipeOneStep(int index)
@@ -159,7 +179,9 @@ public class SwipeUI_GH : MonoBehaviour
             current += Time.deltaTime;
             percent = current / swipeTime;
 
-            scrollBar.value = Mathf.Lerp(start, scrollPageValues[index], percent);
+            
+                scrollBar.value = Mathf.Lerp(start, scrollPageValues[index], percent);
+
 
             yield return null;
         }

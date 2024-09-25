@@ -175,7 +175,15 @@ public class MemoManager_GH : MonoBehaviour
             if (RoomUIManager_GH.instance.selfRoom)
             {
                 memoButtons[1].SetActive(false);
-                memoButtons[2].SetActive(true);
+                if (memoCount > 0)
+                {
+                    memoButtons[2].SetActive(true);
+                }
+                else
+                {
+                    memoButtons[2].SetActive(false);
+
+                }
             }
             else
             {

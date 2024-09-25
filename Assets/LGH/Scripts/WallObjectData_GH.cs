@@ -10,22 +10,21 @@ public class WallObjectData_GH : MonoBehaviour
 
     void Start()
     {
-        dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
-        if (wallObjectInfo.furniOnPlace)
-        {
-            gameObject.SetActive(true);
-        }
-        else
-        {
-            dragM.onWallObjects[(int)wallObjectInfo.furniPos - 1] = false;
-            gameObject.SetActive(false);
-        }
-        
+        OnWallObject();
+
         SetWallPos((int)wallObjectInfo.furniPos - 1 , (int)wallObjectInfo.furniPos - 1);
 
 
     }
     private void Update()
+    {
+        OnWallObject();
+
+        SetWallPos((int)wallObjectInfo.furniPos - 1, (int)wallObjectInfo.furniPos - 1);
+
+    }
+
+    public void OnWallObject()
     {
         dragM = GameObject.Find("DragManager").GetComponent<DragManager_GH>();
         if (wallObjectInfo.furniOnPlace)
@@ -37,11 +36,7 @@ public class WallObjectData_GH : MonoBehaviour
             dragM.onWallObjects[(int)wallObjectInfo.furniPos - 1] = false;
             gameObject.SetActive(false);
         }
-
-        SetWallPos((int)wallObjectInfo.furniPos - 1, (int)wallObjectInfo.furniPos - 1);
-
     }
-
     public void SetWallPos(int wallPos, int beforeWallPos)
     {
         //옮길 위치에 오브젝트가 없을 떄
