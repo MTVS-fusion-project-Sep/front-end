@@ -9,7 +9,6 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
 {
     CharacterController playerCharacterController;
 
-
     public float playerMoveSpeed = 3;
     public float playerRotSpeed = 500;
     public float trackingSpeed = 3;
@@ -38,6 +37,8 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
 
     Transform myName_Object;
     Text myName;
+    public string myId;
+
     void Start()
     {
         playerCharacterController = GetComponent<CharacterController>();
@@ -57,14 +58,13 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
         print("내이름" + myName.text);
         myName.text = photonView.Owner.NickName;
         print("오너의이름" + myName.text);
+        myId = MainUI.Instance.idText;
+        print("내아이디" + myId);
 
         /*myName_Object = transform.Find("Text_MyName");
         print("이름오브젝트" + myName_Object.name);
         if (myName == null) print("myName이 없음");
         */
-
-
-
 
 
     }
@@ -98,6 +98,7 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
 
                 //다른 애들 애니메이션 실행
                 photonView.RPC("ExpressionFeelingHiSync", RpcTarget.Others);
+                
             }
             //내거 아닌것
             

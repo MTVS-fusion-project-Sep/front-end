@@ -1,10 +1,12 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//Æ÷ÅæÀ» ¾²±âÀ§ÇØ Ãß°¡
+//í¬í†¤ ì‚¬ìš©
 using Photon.Pun;
+//í”Œë ˆì´ì–´ ë¦¬ìŠ¤íŠ¸ ì‚¬ìš©
+using Photon.Realtime;
 
-//µ¿±âÈ­ ¿ëµµ Å¬·¡½º¸¦ ºÎ¸ğ·Î MonoBehaviourPun
+//ë™ê¸°í™” ìš©ë„ í´ë˜ìŠ¤ë¥¼ ë¶€ëª¨ë¡œ MonoBehaviourPun
 public class GameManager : MonoBehaviourPun
 {
     // Start is called before the first frame update
@@ -12,30 +14,37 @@ public class GameManager : MonoBehaviourPun
     {
         StartCoroutine(SpawnPlayer());
 
-        // OnPhotonSerializeView ¿¡¼­ µ¥ÀÌÅÍ Àü¼Û ºóµµ¼ö ¼³Á¤ÇÏ±â (perSeconds) 
+        // OnPhotonSerializeView ì—ì„œ ë°ì´í„° ì „ì†¡ ë¹ˆë„ìˆ˜ ì„¤ì •í•˜ê¸° (perSeconds) 
         PhotonNetwork.SerializationRate = 30;
-        // ´ëºÎºĞÀÇ µ¥ÀÌÅÍ Àü¼Ûºóµµ (perSeconds). ÀÔÀå, Instantiate, Load, ³ª°¨
+        // ëŒ€ë¶€ë¶„ì˜ ë°ì´í„° ì „ì†¡ë¹ˆë„ (perSeconds). ì…ì¥, Instantiate, Load, ë‚˜ê°
         PhotonNetwork.SendRate = 30;
+
+        Player[] playerList= PhotonNetwork.PlayerList;
+
+        foreach (Player player in playerList)
+        {
+            Debug.Log("Player Name: " + player.NickName + ", Player ID: " + player.UserId);
+        }
 
     }
     IEnumerator SpawnPlayer()
     {
-        //·ë¿¡ ÀÔÀåÀÌ µÉ¶§±îÁö ±â´Ù¸°´Ù.
+        //ë£¸ì— ì…ì¥ì´ ë ë•Œê¹Œì§€ ê¸°ë‹¤ë¦°ë‹¤.
         yield return new WaitUntil(() => { return PhotonNetwork.InRoom; });
 
 
         Vector2 radomPos = Random.insideUnitCircle * 5.0f;
         Vector3 initPosition = new Vector3(radomPos.x, 1.0f, radomPos.y);
-        //ÇÃ·¹ÀÌ¾î »ı¼ºÇÏÀÚ, ÀÌ¸§,À§Ä¡.È¸Àü
+        //í”Œë ˆì´ì–´ ìƒì„±í•˜ì, ì´ë¦„,ìœ„ì¹˜.íšŒì „
         PhotonNetwork.Instantiate("Player", initPosition, Quaternion.identity);
 
-        // »ı¼ºÈÄ ¼ÒÀ¯±ÇÀ» OwnerÀÎ ÇÃ·¹ÀÌ¾î°Ô¸¸ ±ÇÇÑÀ»ÁÖÀÚ. Owner°¡ Á¢¼ÓÀ» Á¾·áÇÏ¸é °°ÀÌ »ç¶óÁü.
+        // ìƒì„±í›„ ì†Œìœ ê¶Œì„ Ownerì¸ í”Œë ˆì´ì–´ê²Œë§Œ ê¶Œí•œì„ì£¼ì. Ownerê°€ ì ‘ì†ì„ ì¢…ë£Œí•˜ë©´ ê°™ì´ ì‚¬ë¼ì§.
     }
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         
-    }
+    }*/
     
 
 
