@@ -341,7 +341,7 @@ MonoBehaviour:
   Input_OtherRoom_Object: {fileID: 656728457}
   Text_OtherRoom_Object: {fileID: 690546316}
   otherPlayer: {fileID: 0}
-  Ph_OtherRoom_Object: {fileID: 0}
+  ph_OtherRoom_Object: {fileID: 121406653}
   userId: 
 --- !u!4 &52260859
 Transform:

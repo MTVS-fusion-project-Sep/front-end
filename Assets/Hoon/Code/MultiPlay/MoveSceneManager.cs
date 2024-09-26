@@ -19,29 +19,10 @@ public class MoveSceneManager : MonoBehaviour
     }
 
     // Update is called once per frame
-   /* void Update()
-    {
-        
-    }*/
-    private void OnTriggerEnter(Collider other)
-    {
-        print("충돌됬다");
-        if (other.transform.name.Contains("Player"))
-        {
-            print("플레이어 충돌됬다");
+    /* void Update()
+     {
 
-            if(lobbyUI.img_MoveScene_Object)
-            {
-                lobbyUI.img_MoveScene_Object.SetActive(true);
-            }
-            else
-            {
-                lobbyUI.img_MoveScene_Object = GameObject.Find("Img_MoveScene");
-                lobbyUI.img_MoveScene_Object.SetActive(true);
-            }
-            
-        }
-    }
+     }*/
 
     public void MoveScene()
     {

@@ -10,13 +10,14 @@ using Photon.Realtime;
 using Unity.VisualScripting;
 using WebSocketSharp;
 using static MainUI;
+using Newtonsoft.Json;
 
 public class LobbyUI : MonoBehaviour
 {
     GameObject btn_LobbyExit;
     MainUIObject mainUiObject;
     MultiPlayerMove multiPlayerMove;
-    
+
 
     public Text userName;
     public GameObject img_MoveScene_Object;
@@ -24,19 +25,19 @@ public class LobbyUI : MonoBehaviour
     public GameObject Input_OtherRoom_Object;
     public GameObject Text_OtherRoom_Object;
     public GameObject otherPlayer;
-    public GameObject Ph_OtherRoom_Object;
+    public GameObject ph_OtherRoom_Object;
     public string userId;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
         btn_LobbyExit = GameObject.Find("Btn_LobbyExit");
-        
-        if(userName.text.Contains("User"))
+
+        if (userName.text.Contains("User"))
         {
             userName.text = "";
-             
+
         }
 
         //img_MoveScene_Object 캐싱
@@ -50,7 +51,7 @@ public class LobbyUI : MonoBehaviour
         //다른룸으로 이동 UI를 끄자.
         Img_MvoveOhterRoom.SetActive(false);
 
-       
+
     }
 
     // Update is called once per frame
@@ -81,7 +82,7 @@ public class LobbyUI : MonoBehaviour
         }
 
         //다른룸으로 이동 버튼
-        if(objectName == "Btn_MoveOtherRoom")
+        if (objectName == "Btn_MoveOtherRoom")
         {
             print("Btn_MoveOtherRoom object");
             //
@@ -89,15 +90,14 @@ public class LobbyUI : MonoBehaviour
             string userNickName = moveUserName.text;
             print("이동할방의 유저이름" + userNickName);
 
-
             //Input_OtherRoom .text 에서 닉네임으로 가져오자.
             InputField inputOtherRoom = Input_OtherRoom_Object.GetComponent<InputField>();
-            //inputOtherRoom.GetComponent<PlaceHolder>
-          
+            Text phText = ph_OtherRoom_Object.GetComponent<Text>();
+
             if (userNickName.IsNullOrEmpty())
             {
-                inputOtherRoom.text = "닉네임입력";
-                moveUserName.color = Color.red;
+                phText.text = "닉네임입력";
+                phText.color = Color.red;
                 //inputOtherRoom.text = color.red;
             }
             //뭐라도 적었다면
@@ -107,6 +107,7 @@ public class LobbyUI : MonoBehaviour
                 Player[] playerList = PhotonNetwork.PlayerList;
 
                 bool isUserStay = false;
+                //플레이어가 함.
                 foreach (Player players in playerList)
                 {
                     //닉네임이 일치한다면
@@ -116,49 +117,91 @@ public class LobbyUI : MonoBehaviour
                         //유저있음
                         isUserStay = true;
 
-                        //모든 포톤뷰를 찾고 owner 네임이 방주인과 일치하는 component를 찾자
-                        foreach (PhotonView view in FindObjectsOfType<PhotonView>())
+                        //저장경로
+                        string path = Application.dataPath + "/Resources/SaveRegist.json";
+                        if (System.IO.File.Exists(path))
                         {
-                            //방주인이 오너라면 
-                            if (view.Owner.NickName == userNickName)
+                            //pah의 모든 택스트를 가져오자.
+                            string loadUserInfo = System.IO.File.ReadAllText(path);
+                            print("JSON 파일 string으로 읽기" + loadUserInfo);
+
+                            // JSON 파일을 Dictionary 리스트로 변환
+                            List<Dictionary<string, string>> userInfoList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(loadUserInfo);
+                            //print("유저정보량" + userInfoList.Count);
+
+                            // 유저 정보가 있는지 확인하는 변수
+                            bool isUserFound = false;
+
+                            //리스트파일을 순차검사
+                            foreach (var userInfo in userInfoList)
                             {
-                                print("오너의 이름" + view.Owner.NickName);
-                                MultiPlayerMove multiPlayerMove = view.GetComponent<MultiPlayerMove>();
-                                string userId = multiPlayerMove.myId;
-                                print("userNickname"+ userNickName + "userId" + multiPlayerMove.myId);
+
+                                //이름이 방주인과 일치하는지 확인
+                                if (userInfo["userNickName"] == userNickName)
+                                {
+                                    //정보표시해주기
+                                    print("이름 일치");
+
+                                    //이름과 일치하는 id추력
+                                    print("이름과 일치하는 아이디" + userInfo["userId"]);
+                                    
+
+
+
+
+
+
+                                    /* print("메인UI에 저장된 이름 " + MainUI.Instance.idText);
+                                     //모든 포톤뷰를 찾고 owner.NickName 이 방주인과 일치하는 component를 찾자
+                                     foreach (PhotonView view in FindObjectsOfType<PhotonView>())
+                                     {
+                                         //내것이 아니고 오너 아이디가 입력한 유저일때 
+                                         if(view.Owner != null && view.Owner.NickName == userNickName && view.Owner != PhotonNetwork.LocalPlayer) 
+                                         {
+                                             print("오너의 이름" + view.Owner.NickName);
+
+                                             //view.Owner.NickName
+
+                                             MultiPlayerMove multiPlayerMove = view.GetComponent<MultiPlayerMove>();
+                                             string userId = multiPlayerMove.myId;
+                                             print("userNickname"+ userNickName + "userId" + userId);
+
+                                             //아이디를 찾았으면 나가기.
+                                             break;
+                                         }
+
+
+                                     }*/
+
+                                }
+
                             }
 
                         }
 
-                        break;
+                        //유저가 없다면
+                        if (!isUserStay)
+                        {
+                            print("유저가 없습니다");
+                            inputOtherRoom.text = "유저없음";
+                            moveUserName.color = Color.red;
+                        }
+
+
+
                     }
-                    //유저가 없다면
-                    if(!isUserStay)
-                    {
-                        print("유저가 없습니다");
-                        inputOtherRoom.text = "유저없음";
-                        moveUserName.color = Color.red;
-                    }
-                
+
                 }
-
             }
-            
-            
-
-            //닉네임이랑 일치하는 id를 가져오자.
-            //
-            //다른룸으로 이동하자.
-
         }
     }
-
     public void ColoseUI(string objectName)
     {
-        if(objectName  == "Btn_CloseUI")
+        if (objectName == "Btn_CloseUI")
         {
             Img_MvoveOhterRoom.SetActive(false);
         }
+
     }
 
 
@@ -181,13 +224,14 @@ public class LobbyUI : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.LoadScene(0);
     }
+
     // 씬이 로드된 후 호출되는 콜백 메서드
     //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 
         //StartCoroutine(WaitAndDisableObjects());
-            
+
     }
 
     // Coroutine을 사용하여 씬 로드 후 약간의 지연을 주고 오브젝트를 비활성화
@@ -210,7 +254,7 @@ public class LobbyUI : MonoBehaviour
             mainUiObject.imgLogin_Object.SetActive(false);
 
 
-           
+
             /*if (MainUI.Instance.imgLogin_Object)
             {
                 print("로그인이미지 있음");
@@ -238,13 +282,15 @@ public class LobbyUI : MonoBehaviour
         }
         else
         {
-            print("메인없음");            
+            print("메인없음");
         }
         // 이벤트 해제
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
-        
+
     }
+
+
 
 
 }//클래스끝
