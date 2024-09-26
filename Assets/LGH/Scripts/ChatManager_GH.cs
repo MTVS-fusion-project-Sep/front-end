@@ -76,7 +76,7 @@ public class ChatManager_GH : MonoBehaviour
         }
         RoomLoad();
     }
-   
+
     void Start()
     {
 
@@ -103,14 +103,9 @@ public class ChatManager_GH : MonoBehaviour
 
         //방생성 패널 키고
         roomCreatePanel.SetActive(false);
-       
-    }
-    void Update()
-    {
-   
 
-        
     }
+
     void RoomLoad()
     {
         //룸을 초기화 한다.
@@ -125,7 +120,7 @@ public class ChatManager_GH : MonoBehaviour
         info.url = RoomListURL;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
-           // print(downloadHandler.text);
+            // print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
             print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자.
@@ -151,7 +146,7 @@ public class ChatManager_GH : MonoBehaviour
 
     void RoomCancel()
     {
-        roomCreatePanel.SetActive(false) ;
+        roomCreatePanel.SetActive(false);
     }
 
     void RoomCreate()
@@ -201,22 +196,45 @@ public class ChatManager_GH : MonoBehaviour
         LoadChatLog(roomID, chatroom.chatInfoList, chatroom.pageNum);
     }
 
+    public void TooLoadChatLog(string roomID, ChatInfoList chatInfoList, int pageNum)
+    {
+        ChatInfoList chatInfoList2;
+        HttpInfo info = new HttpInfo();
+        info.url = RoomListURL + "/log?roomId=" + roomID + "&userId=" + DataManager_GH.instance.userId + "&page=" + pageNum;
+        info.onComplete = (DownloadHandler downloadHandler) =>
+        {
+            //print(downloadHandler.text);
+            string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
+            print(jsonData);
+            //jsonData를 PostInfoArray 형으로 바꾸자.
+            chatInfoList2 = JsonUtility.FromJson<ChatInfoList>(jsonData);
+            print(chatInfoList2.data.Count);
+            for (int i = 0; i < chatInfoList2.data.Count; i++)
+            {
+
+                chatroom.chatInfoList.data.Insert(i, chatInfoList.data[i]);
+            }
+
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
+    }
+
     //방 대화내용 불러오기
     void LoadChatLog(string roomID, ChatInfoList chatInfoList, int pageNum)
     {
 
 
         HttpInfo info = new HttpInfo();
-        info.url = RoomListURL + "/log?roomId=" + roomID +"&userId=" + DataManager_GH.instance.userId + "&page="+ pageNum;
+        info.url = RoomListURL + "/log?roomId=" + roomID + "&userId=" + DataManager_GH.instance.userId + "&page=" + pageNum;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             //print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
-             print(jsonData);
+            print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자.
             chatInfoList = JsonUtility.FromJson<ChatInfoList>(jsonData);
             chatroom.chatInfoList = chatInfoList;
-           
+
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
     }
