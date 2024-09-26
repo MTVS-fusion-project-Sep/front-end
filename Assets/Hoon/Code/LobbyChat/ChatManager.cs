@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 //포톤사용을 위해 추가
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.UI;
 using Unity.Services.Analytics.Internal;
-using Photon.Realtime;
+
 //커스텀 프롬퍼티 사용
 using ExitGames.Client.Photon;
 //DateTime을 쓰기위한 추가, C#
 using System;
 //이벤트 시스템 컨트롤 하자.
 using UnityEngine.EventSystems;
+using TMPro;
+
 
 
 //부모를 변경 MonoBehaviourPun, IOnEventCallback 인터페이스 추가 및 구현 (raiseEvent 콜백해주는 용도)
@@ -30,10 +33,13 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
     //Image img_chatBackground;
     bool isChatLog = false;
+    
 
 
     //상수처리 바이트 자료형으로 보낼 채팅이벤트 구분자. 번호는 자기자신이 커스텀
     const byte chattingEvent = 1;
+
+    public string saveMassage;
 
     //raiseEvent 를 사용하기 위해서 사전 등록, 이걸 등록하지 않으면 raiseEvent 를 보낼수 없음.
     private void OnEnable()
@@ -46,6 +52,9 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
     void Start()
     {
+        //text_ChatPack
+        
+
         //채팅윈도우끄기
         scroll_Chat_Object.SetActive(false);
         //인풋챗에 값이 있다면 비우자.
@@ -58,6 +67,7 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
         // 인풋 필드의 제출 이벤트에 SendMyMessage 함수를 바인딩한다. 딜리게이트
         //AddListen
         input_Chat.onSubmit.AddListener(SendMyMessage);
+
 
         // 좌측 하단으로 콘텐트 오브젝트의 피벗을 변경한다.
         //scrollChatWindow.content.pivot = Vector2.zero;
@@ -124,6 +134,7 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
             //결과 이벤트코드(1), 보낼내용(이름,내용,시간), 받는사람(모든사람), 통신방식(udp)
             PhotonNetwork.RaiseEvent(1, sendContent, eventOptions, SendOptions.SendUnreliable);
 
+
             //보냈는지 확인
             print("Send!");
             //EventSystem.current.SetSelectedGameObject(null);
@@ -141,6 +152,7 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
         //메시지 받았다면
         //print("Recieve!");
 
+        //텍스트를 메시지와 함께 업데이트하자
         //만일, 받은 이벤트가 채팅 이벤트라면
         if (photonEvent.Code == chattingEvent)
         {
@@ -151,13 +163,63 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
             string receiveMessage = $"[{receiveObejcts[2].ToString()}]:{receiveObejcts[0].ToString()}:{receiveObejcts[1].ToString()}";
 
             //현재텍스트에 메시지 넣기
-            text_ChatContent.text += receiveMessage+"\n";
+            text_ChatContent.text += receiveMessage + "\n";
+
+            //메시지를 임시 저장
+            saveMassage = receiveObejcts[1].ToString();
+            print("메시지 저장" + receiveObejcts[1].ToString());
+
             //채팅 메시지 초기화
             input_Chat.text = "";
 
         }
 
+        //보낸메시지 확인
+        print("text_ChatContent.text" + text_ChatContent.text);
+
+        //이벤트 보낸 사람의 객체를 얻자
+        print("보낸사람 찾기시작");
+        // 이벤트를 발생시킨 플레이어의 ActorNumber
+        int senderActorNumber = photonEvent.Sender;
+        // ActorNumber를 통해 Player 객체 얻기
+        Player senderPlayer = PhotonNetwork.CurrentRoom.GetPlayer(senderActorNumber);
+        if (senderPlayer != null)
+        {
+            // 해당 플레이어가 소유한 오브젝트 찾기
+            GameObject playerObject = FindPlayerObject(senderPlayer);
+
+            if (playerObject != null)
+            {
+                //Debug.Log($"Found player object for {senderPlayer.NickName}: {playerObject.name}");
+                Debug.Log($"Found player object for {senderPlayer.NickName}: {playerObject.name}");
+                // 오브젝트에 원하는 동작을 추가할 수 있습니다.
+
+                MultiPlayerMove multiPlayerMove = playerObject.GetComponent<MultiPlayerMove>();
+                print("보낸 플레이어의 MultiPlayerMove");
+                TextMeshProUGUI myMassageText = multiPlayerMove.textMesh_ChatPack.GetComponent<TextMeshProUGUI>();
+
+                //내가한말 말풍선으로 갱신
+                myMassageText.text = saveMassage;
+                //말풍선 보이게하자.
+                multiPlayerMove.panel_ChatPack.SetActive(true);
+                //5초 뒤에는 말풍선을 다시 끄자.
+
+                
+
+            }
+            else
+            {
+                Debug.Log("Player object not found.");
+            }
+
+        }
+        
+
     }
+
+  
+
+
 
     //이벤트가 끝아면 삭제
     private void OnDisable()
@@ -176,6 +238,25 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
         if()
 
     }*/
+
+    // PhotonView를 통해 특정 플레이어가 소유한 오브젝트 찾기
+    public GameObject FindPlayerObject(Player player)
+    {
+        foreach (PhotonView photonView in PhotonNetwork.PhotonViews)
+        {
+            // PhotonView의 소유자와 플레이어가 일치하는지 확인
+            if (photonView.Owner == player)
+            {
+                return photonView.gameObject; // 해당 플레이어의 오브젝트 반환
+            }
+        }
+        return null;
+    }
+
+
+
+
+
 
 
 }

@@ -64,7 +64,6 @@ public class LobbyUI : MonoBehaviour
     {
         otherPlayer = player;
 
-
     }
 
 
