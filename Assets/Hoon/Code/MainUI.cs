@@ -1414,6 +1414,8 @@ public class MainUI : MonoBehaviour
                     //이름변수에 이름을 저장
                     userNameText = userInfo["userNickName"];
                     print("내이름" + userNameText);
+                    idText = userInfo["userId"];
+                    print("내id" + idText);
                     //MyInfo UserName을 갱신
                     mainUiObject.nameTextComp.text = userNameText;
 

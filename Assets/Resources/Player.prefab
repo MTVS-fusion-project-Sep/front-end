@@ -290,6 +290,7 @@ MonoBehaviour:
   playerMoveSpeed: 3
   playerRotSpeed: 500
   trackingSpeed: 3
+  myId: 
 --- !u!114 &8371285699697760730
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
-[
+﻿[
   {
     "userId": "a",
-    "MyMemo": "윤석열 = 대통령"
+    "MyMemo": "윤석열 = 대통령ㅋㅋ"
   },
   {
     "userId": "b",
@@ -13,10 +13,14 @@
   },
   {
     "userId": "user1",
-    "MyMemo": "독종규현은 서울사람o"
+    "MyMemo": "독종규현은 서울사람x"
   },
   {
     "userId": "user2",
     "MyMemo": "낭만승훈은 부산사람o"
+  },
+  {
+    "userId": "gm",
+    "MyMemo": "백엔드는 최강형표"
   }
 ]

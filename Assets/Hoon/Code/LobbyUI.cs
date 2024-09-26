@@ -3,19 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Realtime;
+using Unity.VisualScripting;
+using WebSocketSharp;
+using static MainUI;
 
 public class LobbyUI : MonoBehaviour
 {
     GameObject btn_LobbyExit;
     MainUIObject mainUiObject;
+    MultiPlayerMove multiPlayerMove;
+    
+
     public Text userName;
     public GameObject img_MoveScene_Object;
+    public GameObject Img_MvoveOhterRoom;
+    public GameObject Input_OtherRoom_Object;
+    public GameObject Text_OtherRoom_Object;
+    public GameObject otherPlayer;
+    public GameObject Ph_OtherRoom_Object;
+    public string userId;
 
     // Start is called before the first frame update
     void Start()
     {
+        
         btn_LobbyExit = GameObject.Find("Btn_LobbyExit");
         
         if(userName.text.Contains("User"))
@@ -32,6 +47,10 @@ public class LobbyUI : MonoBehaviour
         StartCoroutine(CloseUIDelay());
         //img_MoveScene_Object.SetActive(false);
 
+        //다른룸으로 이동 UI를 끄자.
+        Img_MvoveOhterRoom.SetActive(false);
+
+       
     }
 
     // Update is called once per frame
@@ -39,6 +58,110 @@ public class LobbyUI : MonoBehaviour
     {
         
     }*/
+
+    public void SaveOntriggerPlayer(GameObject player)
+    {
+        otherPlayer = player;
+
+
+    }
+
+
+    public void MoveSceneController(string objectName)
+    {
+        print("씬컨트롤");
+
+        if (objectName == "MoveMyRoomObject")
+        {
+            PhotonView pv = otherPlayer.GetComponent<PhotonView>();
+            if (pv.IsMine)
+            {
+                Img_MvoveOhterRoom.SetActive(true);
+            }
+        }
+
+        //다른룸으로 이동 버튼
+        if(objectName == "Btn_MoveOtherRoom")
+        {
+            print("Btn_MoveOtherRoom object");
+            //
+            Text moveUserName = Text_OtherRoom_Object.GetComponent<Text>();
+            string userNickName = moveUserName.text;
+            print("이동할방의 유저이름" + userNickName);
+
+
+            //Input_OtherRoom .text 에서 닉네임으로 가져오자.
+            InputField inputOtherRoom = Input_OtherRoom_Object.GetComponent<InputField>();
+            //inputOtherRoom.GetComponent<PlaceHolder>
+          
+            if (userNickName.IsNullOrEmpty())
+            {
+                inputOtherRoom.text = "닉네임입력";
+                moveUserName.color = Color.red;
+                //inputOtherRoom.text = color.red;
+            }
+            //뭐라도 적었다면
+            else
+            {
+                //플레이어 리스트에서 이름을 가져오자.
+                Player[] playerList = PhotonNetwork.PlayerList;
+
+                bool isUserStay = false;
+                foreach (Player players in playerList)
+                {
+                    //닉네임이 일치한다면
+                    if (players.NickName == userNickName)
+                    {
+                        print("방주인 있습니다" + userNickName);
+                        //유저있음
+                        isUserStay = true;
+
+                        //모든 포톤뷰를 찾고 owner 네임이 방주인과 일치하는 component를 찾자
+                        foreach (PhotonView view in FindObjectsOfType<PhotonView>())
+                        {
+                            //방주인이 오너라면 
+                            if (view.Owner.NickName == userNickName)
+                            {
+                                print("오너의 이름" + view.Owner.NickName);
+                                MultiPlayerMove multiPlayerMove = view.GetComponent<MultiPlayerMove>();
+                                string userId = multiPlayerMove.myId;
+                                print("userNickname"+ userNickName + "userId" + multiPlayerMove.myId);
+                            }
+
+                        }
+
+                        break;
+                    }
+                    //유저가 없다면
+                    if(!isUserStay)
+                    {
+                        print("유저가 없습니다");
+                        inputOtherRoom.text = "유저없음";
+                        moveUserName.color = Color.red;
+                    }
+                
+                }
+
+            }
+            
+            
+
+            //닉네임이랑 일치하는 id를 가져오자.
+            //
+            //다른룸으로 이동하자.
+
+        }
+    }
+
+    public void ColoseUI(string objectName)
+    {
+        if(objectName  == "Btn_CloseUI")
+        {
+            Img_MvoveOhterRoom.SetActive(false);
+        }
+    }
+
+
     IEnumerator CloseUIDelay()
     {
         //1초뒤에 호출해주자.
