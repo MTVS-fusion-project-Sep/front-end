@@ -78,9 +78,9 @@ public class MemoManager_GH : MonoBehaviour
 
         // 새로운 메모 데이터 보내기
         MemoInfo_GH memoInfo = new MemoInfo_GH();
-        memoInfo.toUserId = RoomUIManager_GH.instance.roomId;
+        memoInfo.toUserId = DataManager_GH.instance.roomId;
         memoInfo.content = inputfield.text;
-        memoInfo.fromUserId = RoomUIManager_GH.instance.userId;
+        memoInfo.fromUserId = DataManager_GH.instance.userId;
         memoInfo.registDate = DateTime.Now.ToString(("yyyy-MM-dd HH:mm"));
 
         md.SetMemoContents(memoInfo.content, memoInfo.fromUserId, memoInfo.registDate);
@@ -100,7 +100,7 @@ public class MemoManager_GH : MonoBehaviour
         //print(RoomUIManager_GH.instance.roomUserId);
         //메모 받아오기
         HttpInfo info = new HttpInfo();
-        info.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book/reader?readerId=" + RoomUIManager_GH.instance.roomId;
+        info.url = "http://" + RoomUIManager_GH.instance.httpIP + ":" + RoomUIManager_GH.instance.httpPort + "/guest-book/reader?readerId=" + DataManager_GH.instance.roomId;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
             //print(downloadHandler.text);
