@@ -29,7 +29,7 @@ public class SwipeUI_GH : MonoBehaviour
 
     private void Awake()
     {
-        
+
         // 스크롤 되는 페이지의 각 value값을 지정하는 배열 메모리 할당
         scrollPageValues = new float[memoManag.memoCount];
 
@@ -42,26 +42,47 @@ public class SwipeUI_GH : MonoBehaviour
             scrollPageValues[i] = valueDistance * i;
         }
 
-        //maxPage = memoManag.memoCount;
+        maxPage = memoManag.memoCount;
     }
 
     void Start()
     {
         // 최초 시작할 때 0번 페이지를 볼 수 있도록 설정
-        //SetScrollBarValue(0);
+        SetScrollBarValue(0);
     }
 
+
+    public void SetScroll()
+    {
+        // 스크롤 되는 페이지의 각 value값을 지정하는 배열 메모리 할당
+        scrollPageValues = new float[memoManag.memoCount];
+
+        // 스크롤 되는 페이지 사이의 거리
+        valueDistance = 1f / (scrollPageValues.Length - 1f);
+
+        // 스크롤 되는 페이지의 각 value 위치 설 정 [0 <= value <= 1]
+        for (int i = 0; i < scrollPageValues.Length; ++i)
+        {
+            scrollPageValues[i] = valueDistance * i;
+        }
+
+        maxPage = memoManag.memoCount;
+    }
     public void SetScrollBarValue(int index)
     {
-        currentPage = index;
-        scrollBar.value = scrollPageValues[index];
+        if (index != 0)
+        {
+            currentPage = index;
+            scrollBar.value = scrollPageValues[index];
+
+        }
     }
 
 
     void Update()
     {
         //최대 페이지의  수
-        maxPage = memoManag.memoCount;
+        //maxPage = memoManag.memoCount;
 
         UpdateInput();
         UpdatePageNum();
@@ -84,13 +105,18 @@ public class SwipeUI_GH : MonoBehaviour
         {
             //터치 종료 지점 (swipe 방향 구분)
             endTouchX = Input.mousePosition.x;
-            UpdateSwipe();
+            if (maxPage > 0)
+            {
+                UpdateSwipe();
+
+            }
         }
 #endif
     }
 
     void UpdateSwipe()
     {
+
         // 너무 작은 거리를 움직였을 때는 Swipe X
         if (Mathf.Abs(startTouchX - endTouchX) < swipeDistance)
         {
@@ -122,11 +148,22 @@ public class SwipeUI_GH : MonoBehaviour
         }
         // currentIndex번째 페이지로 Swipe해서 이동
         StartCoroutine(OnSwipeOneStep(currentPage));
+
     }
 
     void UpdatePageNum()
     {
-        scrollPagecNum.text = $"{currentPage + 1}/{maxPage}";
+        if (maxPage > 0)
+        {
+            scrollPagecNum.text = $"{currentPage + 1}/{maxPage}";
+            scrollPagecNum.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -100f, 0);
+            SetScrollBarValue(0);
+        }
+        else
+        {
+            scrollPagecNum.text = "메모가 없습니다ㅠㅠ";
+            scrollPagecNum.gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, -700f, 0);
+        }
     }
 
     IEnumerator OnSwipeOneStep(int index)
@@ -142,7 +179,9 @@ public class SwipeUI_GH : MonoBehaviour
             current += Time.deltaTime;
             percent = current / swipeTime;
 
-            scrollBar.value = Mathf.Lerp(start, scrollPageValues[index], percent);
+            
+                scrollBar.value = Mathf.Lerp(start, scrollPageValues[index], percent);
+
 
             yield return null;
         }
