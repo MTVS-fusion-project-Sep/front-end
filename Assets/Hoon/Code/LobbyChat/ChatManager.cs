@@ -25,9 +25,11 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
     public InputField input_Chat;
     //
     public GameObject text_Chat_Object;
+    //
+    public GameObject scroll_Chat_Object;
 
     //Image img_chatBackground;
-    
+    bool isChatLog = false;
 
 
     //상수처리 바이트 자료형으로 보낼 채팅이벤트 구분자. 번호는 자기자신이 커스텀
@@ -44,6 +46,8 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
     void Start()
     {
+        //채팅윈도우끄기
+        scroll_Chat_Object.SetActive(false);
         //인풋챗에 값이 있다면 비우자.
         input_Chat.text = "";
         //누적된 챗 컨텐트가 있다면 비우자.
@@ -75,6 +79,22 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
              Cursor.visible = true;
          }*/
     }
+
+    public void ActiveChatLog()
+    {
+        if (isChatLog == false)
+        {
+            scroll_Chat_Object.SetActive(true);
+            isChatLog = true;
+        }
+        else
+        {
+            scroll_Chat_Object.SetActive(false);
+            isChatLog = false;
+        }
+    }
+
+
 
     //여기서 이벤트 매시지를 보냅니다.
     void SendMyMessage(string msg)

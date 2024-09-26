@@ -326,15 +326,11 @@ public class RegistInfo : MonoBehaviour
     // HTTP POST 요청을 보내는 메소드
     IEnumerator RegistPostJSON(string jsonData)
     {
-        string url = "http://192.168.0.76:8080/user"; // 서버 URL 변경 필요
-        string urlPot = "https://jsonplaceholder.typicode.com/posts/1";
-        string urlPostTest = "http://192.168.0.76:8080/user"; //같은아이피일때
-        string urlPostUser = "http://125.132.216.190:5544/user";
+        string url = "http://125.132.216.190:5544/user"; // 서버 URL 변경 필요
+        string urlPostUser = "http://125.132.216.190:15530/user";
 
         // HTTP POST 요청 준비
         //UnityWebRequest request = new UnityWebRequest(url, "POST");
-        //UnityWebRequest request = new UnityWebRequest(urlPot, "POST");
-        //UnityWebRequest request = new UnityWebRequest(urlPostTest, "POST");
         UnityWebRequest request = new UnityWebRequest(urlPostUser, "POST");
 
         // JSON 데이터를 담아 요청 생성
@@ -356,6 +352,8 @@ public class RegistInfo : MonoBehaviour
             // 서버 응답 확인
             string responseText = request.downloadHandler.text;
             print("서버 응답: " + responseText);
+            //로그인으로
+            mainUI.NewRegistComplite();
 
             // 서버 응답과 newUser가 같은지 확인
             if (responseText == jsonData)

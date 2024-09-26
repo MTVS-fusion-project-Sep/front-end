@@ -28,20 +28,22 @@ public class AIChatManager : MonoBehaviour
         
     }*/
 
-    bool isOpen = false;
+    public bool isOpen = false;
     public void OpenAIChat()
     {
         if (isOpen)
         {
            imgAIChat.SetActive(false);
             isOpen = false;
-            
+            print("CloseAiChat");
+
         }
         else
         {
             imgAIChat.SetActive(true);
             isOpen = true;
             textAIChat.text = "입력을 기다리는중...";
+            print("OpenAiChat");
         }
     }
 
