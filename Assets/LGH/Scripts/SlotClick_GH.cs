@@ -99,12 +99,14 @@ public class SlotClick_GH : MonoBehaviour
         rooms[0].material = slotImage.material;
         rooms[1].material = slotImage.material;
         RoomUIManager_GH.instance.WallIndexSetting(myIndex);
+        print(RoomUIManager_GH.instance.cur_W_Index);
     }
     void TileSet()
     {
         Image slotImage = RoomUIManager_GH.instance.ui_Ground[myIndex].GetComponent<Image>();
         rooms[2].material = slotImage.material;
         RoomUIManager_GH.instance.TileIndexSetting(myIndex);
+        print(RoomUIManager_GH.instance.cur_T_Index);
 
     }
 }

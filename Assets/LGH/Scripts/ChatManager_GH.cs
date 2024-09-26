@@ -7,7 +7,6 @@ using ExitGames.Client.Photon;
 using UnityEngine.EventSystems;
 using System;
 using Photon.Realtime;
-//using UnityEditor.VersionControl;
 using UnityEditor;
 using UnityEngine.Networking;
 using static System.Net.WebRequestMethods;
@@ -26,14 +25,11 @@ public class ChatManager_GH : MonoBehaviour
 
     public ChatConnector chatConnector;
     public ScrollRect scrollChatWindow;
-    public TMP_Text text_chatContent;
-    public TMP_InputField input_chat;
-    public Button sendmessage_but;
     public Button exitRoom_but;
     public RectTransform rectTransform;
 
     //룸 아이디
-    string roomId = "";
+    string chatRoomId = "";
     string userId = "user1";
 
 
@@ -54,6 +50,7 @@ public class ChatManager_GH : MonoBehaviour
     public Button roomCreateBut;
 
     public Button roomCreateOnBut;
+    public Button roomCancelOnBut;
 
 
     //방 생성
@@ -61,6 +58,11 @@ public class ChatManager_GH : MonoBehaviour
     public TMP_Dropdown createRoomCate;
     public Slider createRoomMaxCnt;
 
+    // 채팅방
+    public GameObject chatprefab;
+
+    //채팅방 리스트
+    public List<GameObject> chatList;
 
     private void Awake()
     {
@@ -74,22 +76,15 @@ public class ChatManager_GH : MonoBehaviour
         }
         RoomLoad();
     }
-    public void roomUserIdSet(string userID)
-    {
-        userId = userID;
-    }
+   
     void Start()
     {
-        //초기 값을 비워준다.
-        input_chat.text = "";
-        text_chatContent.text = "독종규현 : " + "최강성표님 환영합니다!" + "\n";
-        //인풋 필드의 제출 이벤트에 SendMyMessage 함수를 바인딩한다.
-        sendmessage_but.onClick.AddListener(SendMyMessage);
+
+
         //enterRoom_but.onClick.AddListener(EnterRoom);
 
         // 좌측 하단으로 콘텐트 오브젝트의 피봇을 변경한다.
         //scrollChatWindow.content.pivot = Vector2.zero;
-
 
         // 룸 새로고침 버튼에 함수 할당
         roomReloadBut.onClick.AddListener(RoomLoad);
@@ -100,25 +95,21 @@ public class ChatManager_GH : MonoBehaviour
         // 룸생성 버튼에 함수 할당
         roomCreateOnBut.onClick.AddListener(RoomCreateOn);
 
+        // 룸생성 취소 버튼에 할당
+        roomCancelOnBut.onClick.AddListener(RoomCancel);
+
         //룸을 받아온다.
         RoomLoad();
 
         //방생성 패널 키고
-        roomCreatePanel.SetActive(true);
-        //채팅 패널 끄기
-        chatPanel.SetActive(false);
-
+        roomCreatePanel.SetActive(false);
+       
     }
     void Update()
     {
-        //탭키를 누르면 인풋필드를 활성화 한다.
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            EventSystem.current.SetSelectedGameObject(input_chat.gameObject);
-            input_chat.OnPointerClick(new PointerEventData(EventSystem.current));
-            Cursor.lockState = CursorLockMode.Confined;
+   
 
-        }
+        
     }
     void RoomLoad()
     {
@@ -134,7 +125,7 @@ public class ChatManager_GH : MonoBehaviour
         info.url = RoomListURL;
         info.onComplete = (DownloadHandler downloadHandler) =>
         {
-            print(downloadHandler.text);
+           // print(downloadHandler.text);
             string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
             print(jsonData);
             //jsonData를 PostInfoArray 형으로 바꾸자.
@@ -155,7 +146,12 @@ public class ChatManager_GH : MonoBehaviour
         //방생성 패널 키고
         roomCreatePanel.SetActive(true);
         //채팅 패널 끄기
-        chatPanel.SetActive(false);
+        //chatPanel.SetActive(false);
+    }
+
+    void RoomCancel()
+    {
+        roomCreatePanel.SetActive(false) ;
     }
 
     void RoomCreate()
@@ -175,61 +171,58 @@ public class ChatManager_GH : MonoBehaviour
         };
         StartCoroutine(NetworkManager_GH.GetInstance().Post(info));
 
-        ////없애자===========================================================================================
-        //GameObject tt = Instantiate(roomListPrefab, roomContent.transform);
-        //RoomData_GH aa = tt.GetComponent<RoomData_GH>();
-        //aa.roomInfo.name = ti.name;
-        //aa.roomInfo.category = ti.category;
-        //aa.roomInfo.maxCnt = ti.maxCnt;
-        //aa.roomInfo.headCnt = 1;
-
     }
 
-    public void EnterRoom(string roomID)
+    GameObject go_chatroom;
+    ChatData_GH chatroom;
+
+    public void EnterRoom(string roomID, string roomName)
     {
-        //방생성 패널 끄기
-        roomCreatePanel.SetActive(false);
-        //채팅 패널 켜기
-        chatPanel.SetActive(true);
+        // 방 생성 prefab 생성
+        go_chatroom = Instantiate(chatprefab, GameObject.Find("Canvas").transform);
+        chatroom = go_chatroom.GetComponent<ChatData_GH>();
+        chatList.Add(go_chatroom);
+        // 생성된거에 이름의 룸네임으로 정의하기
+        chatroom.chatRoomName.text = roomName;
+        chatroom.chatInfo.roomID = roomID;
+        print("엔터룸" + roomID);
 
         string messageType = "ENTER";
-        roomId = roomID;
+        //chatRoomId = chatroom.chatInfo.roomID;
+        chatRoomId = roomID;
         // 유저 아이디 코드화하기 todo
-        string sender = userId;
+        string sender = DataManager_GH.instance.userId;
         string message = "";
 
-        chatConnector.SendMessageToServer(messageType, roomId, sender, message);
+        chatConnector.SendMessageToServer(messageType, chatRoomId, sender, message);
 
+        //채팅 데이터에 있는 리스트에 해당 채팅 대화 목록 넣기
+
+        LoadChatLog(roomID, chatroom.chatInfoList, chatroom.pageNum);
     }
-    void SendMyMessage()
+
+    //방 대화내용 불러오기
+    void LoadChatLog(string roomID, ChatInfoList chatInfoList, int pageNum)
     {
 
-        //통신 후 없애기
-        text_chatContent.text += "최강성표 : " + input_chat.text + "\n";
-        string messageType = "TALK";
-        string message = input_chat.text;
-        // 유저 아이디 코드화하기 todo
-        string sender = userId;
-        if (input_chat.text.Length > 0)
+
+        HttpInfo info = new HttpInfo();
+        info.url = RoomListURL + "/log?roomId=" + roomID +"&userId=" + DataManager_GH.instance.userId + "&page="+ pageNum;
+        info.onComplete = (DownloadHandler downloadHandler) =>
         {
-            chatConnector.SendMessageToServer(messageType, roomId, sender, message);
-            input_chat.text = "";
-        }
-
-
+            //print(downloadHandler.text);
+            string jsonData = "{ \"data\" : " + downloadHandler.text + "}";
+             print(jsonData);
+            //jsonData를 PostInfoArray 형으로 바꾸자.
+            chatInfoList = JsonUtility.FromJson<ChatInfoList>(jsonData);
+            chatroom.chatInfoList = chatInfoList;
+           
+        };
+        StartCoroutine(NetworkManager_GH.GetInstance().Get(info));
     }
 
-    public TMP_Text aaa;
-    public string bbb;
-    public void ReceivedMessage(string rm)
-    {
-        //print(bbb);
-        //bbb += rm + "\n";
-        //aaa.text += rm + "\n";
-        text_chatContent.text += rm + "\n";
-        //LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
-        //Canvas.ForceUpdateCanvases();
-    }
+
+
 
     public void MainSceneLode()
     {
@@ -247,6 +240,7 @@ public class RoomInfoList
 [System.Serializable]
 public class TestInfo
 {
+    public string roomId;
     public string name = "방이름";
     public string category = "요리";
     public int maxCnt = 35;

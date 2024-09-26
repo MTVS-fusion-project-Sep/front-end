@@ -72,6 +72,8 @@ public class DragManager_GH : MonoBehaviour
     // 방꾸 버튼
     public GameObject roomSetBut;
 
+    public SwipeUI_GH swipe;
+
     private void Awake()
     {
         //포인트 찍기
@@ -150,6 +152,7 @@ public class DragManager_GH : MonoBehaviour
         if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << LayerMask.NameToLayer("Furniture") | 1 << LayerMask.NameToLayer("NoticeBoard") | 1 << LayerMask.NameToLayer("WallObject")))
         {
             //룸패널이 켜져있을 때만 발동
+
             if (roomUIMag.onRoomPanel)
             {
                 // 오브젝트 옮기기
@@ -175,7 +178,6 @@ public class DragManager_GH : MonoBehaviour
                             {
                                 for (int k = collFD.furnitureInfo.furniCurrentZ; k < collFD.furnitureInfo.furniCurrentZ + collFD.furnitureInfo.furniSizeZ; k++)
                                 {
-
                                     donXZ[j][k] = true;
                                 }
                             }
@@ -188,6 +190,7 @@ public class DragManager_GH : MonoBehaviour
                     wallObject = hit.transform.gameObject;
                     wallObjectData = wallObject.GetComponent<WallObjectData_GH>();
                     beforeWallObPos = (int)wallObjectData.wallObjectInfo.furniPos - 1;
+
                 }
             }
             else
@@ -316,7 +319,7 @@ public class DragManager_GH : MonoBehaviour
                 {
                     if (hit.transform.gameObject == wallPos[i].gameObject)
                     {
-                        wallObjectData.wallObjectInfo.furniPos = (WallType)(i+1);
+                        wallObjectData.wallObjectInfo.furniPos = (WallType)(i + 1);
                         wallObjectData.SetWallPos(i, beforeWallObPos);
                     }
                 }
@@ -355,6 +358,7 @@ public class DragManager_GH : MonoBehaviour
                 }
             }
         }
+
         if (wallObject != null)
         {
             wallObjectData = null;
@@ -385,7 +389,11 @@ public class DragManager_GH : MonoBehaviour
     {
         noticeBoard.SetActive(false);
         onNotice = false;
-        roomSetBut.SetActive(true);
+        if (roomUIMag.selfRoom)
+        {
+            roomSetBut.SetActive(true);
+
+        }
     }
 
     public void RotateXZ()
