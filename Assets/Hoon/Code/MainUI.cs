@@ -1812,7 +1812,7 @@ public class MainUI : MonoBehaviour
 
 
         //이미지 회원가입 끄기
-        mainUiObject.imgRegist_Object.SetActive(false);
+        //mainUiObject.imgRegist_Object.SetActive(false);
         //내정보패널을 끄기
         mainUiObject.panel_MyInfo_Object.SetActive(false);
 

@@ -8887,8 +8887,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb0f0da21430c9e439134490f6847e0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userId: LGH
-  roomId: LGH
+  userId: user2
+  roomId: user2
 --- !u!114 &849626089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32644,7 +32644,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &5200297006734097975
 GameObject:
   m_ObjectHideFlags: 0
