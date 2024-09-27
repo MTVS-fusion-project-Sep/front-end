@@ -107,6 +107,19 @@ public class ChatData_GH : MonoBehaviour
 
 
     }
+
+    public void Test(ChatMessage receivedMessage)
+    {
+        StartCoroutine(Co_Test(receivedMessage));
+    }
+
+    IEnumerator Co_Test(ChatMessage receivedMessage)
+    {
+        yield return null;
+
+        ReceiveMessage(receivedMessage);
+    }
+
     public void ReceiveMessage(ChatMessage receivedMessage)
     {
         print(":생성해 생성");

@@ -247,6 +247,10 @@ public class ChatManager_GH : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+
+
+
+
 }
 
 [System.Serializable]
