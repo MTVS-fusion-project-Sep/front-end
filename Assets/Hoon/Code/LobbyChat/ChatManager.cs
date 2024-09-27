@@ -33,13 +33,14 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
     //Image img_chatBackground;
     bool isChatLog = false;
-    
+
 
 
     //상수처리 바이트 자료형으로 보낼 채팅이벤트 구분자. 번호는 자기자신이 커스텀
     const byte chattingEvent = 1;
 
     public string saveMassage;
+    public string ohterMassage;
 
     public MultiPlayerMove multiPlayerMove;
 
@@ -55,7 +56,7 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
     void Start()
     {
         //text_ChatPack
-        
+
 
         //채팅윈도우끄기
         scroll_Chat_Object.SetActive(false);
@@ -79,7 +80,7 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
     void Update()
     {
-        
+
         // 탭 키를 누르면 인풋 필드를 선택하게 한다.
         /* if (Input.GetKeyDown(KeyCode.Tab))
          {
@@ -114,7 +115,7 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
         if (input_Chat.text.Length > 0)
         {
-            
+
             //이벤트에 보낼 내용 중 시간값
             //현재시간을 시,분,초 로 나누어서 문자열로 보내자.
             string currentTime = DateTime.Now.ToString("hh:mm:ss");
@@ -174,59 +175,67 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
             //채팅 메시지 초기화
             input_Chat.text = "";
 
-        }
+            //보낸메시지 확인
+            print("text_ChatContent.text" + text_ChatContent.text);
 
-        //보낸메시지 확인
-        print("text_ChatContent.text" + text_ChatContent.text);
-
-        //이벤트 보낸 사람의 객체를 얻자
-        print("보낸사람 찾기시작");
-        // 이벤트를 발생시킨 플레이어의 ActorNumber
-        int senderActorNumber = photonEvent.Sender;
-        // ActorNumber를 통해 Player 객체 얻기
-        Player senderPlayer = PhotonNetwork.CurrentRoom.GetPlayer(senderActorNumber);
-        if (senderPlayer != null)
-        {
-            // 해당 플레이어가 소유한 오브젝트 찾기
-            GameObject playerObject = FindPlayerObject(senderPlayer);
-
-            if (playerObject != null)
+            //이벤트 보낸 사람의 객체를 얻자
+            print("보낸사람 찾기시작");
+            // 이벤트를 발생시킨 플레이어의 ActorNumber
+            int senderActorNumber = photonEvent.Sender;
+            // ActorNumber를 통해 Player 객체 얻기
+            Player senderPlayer = PhotonNetwork.CurrentRoom.GetPlayer(senderActorNumber);
+            
+            if (senderPlayer != null)
             {
-                //Debug.Log($"Found player object for {senderPlayer.NickName}: {playerObject.name}");
-                Debug.Log($"Found player object for {senderPlayer.NickName}: {playerObject.name}");
-                // 오브젝트에 원하는 동작을 추가할 수 있습니다.
+                // 해당 플레이어가 소유한 오브젝트 찾기
+                GameObject playerObject = FindPlayerObject(senderPlayer);
 
-                //멀티플레이어 컴포넌트 캐싱
-                multiPlayerMove  = playerObject.GetComponent<MultiPlayerMove>();
-                if(multiPlayerMove != null) print("보낸 플레이어의 MultiPlayerMove");
-                TextMeshProUGUI myMassageText = multiPlayerMove.textMesh_ChatPack.GetComponent<TextMeshProUGUI>();
+                if (playerObject != null)
+                {
+                    //Debug.Log($"Found player object for {senderPlayer.NickName}: {playerObject.name}");
+                    Debug.Log($"Found player object for {senderPlayer.NickName}: {playerObject.name}");
+                    // 오브젝트에 원하는 동작을 추가할 수 있습니다.
 
-                //내가한말 말풍선으로 갱신
-                myMassageText.text = saveMassage;
-                //말풍선 보이게하자.
-                multiPlayerMove.panel_ChatPack.SetActive(true);
-                //5초 뒤에는 말풍선을 다시 끄자.
-                StartCoroutine(ClosChatPack(playerObject));
-                print("말풍선 끄기 시작");
+                    //멀티플레이어 컴포넌트 캐싱
+                    multiPlayerMove = playerObject.GetComponent<MultiPlayerMove>();
+                    if (multiPlayerMove != null) print("보낸 플레이어의 MultiPlayerMove");
+                    TextMeshProUGUI myMassageText = multiPlayerMove.textMesh_ChatPack.GetComponent<TextMeshProUGUI>();
+
+                    //내가한말 말풍선으로 갱신
+                    myMassageText.text = saveMassage;
+
+                    //말한 플레이어 포톤퓨 가져오기
+                    PhotonView pv = playerObject.GetComponent<PhotonView>();
+
+
+                    //말풍선 보이게하자.
+                    multiPlayerMove.panel_ChatPack.SetActive(true);
+                    myMassageText.text = saveMassage;  // 내가 보낸 메시지
+
+
+
+                    //5초 뒤에는 말풍선을 다시 끄자.
+                    StartCoroutine(ClosChatPack(playerObject));
+                    print("말풍선 끄기 시작");
+
+                }
+                else
+                {
+                    Debug.Log("Player object not found.");
+                }
 
             }
-            else
-            {
-                Debug.Log("Player object not found.");
-            }
 
         }
-        
-
     }
 
-  
+
     IEnumerator ClosChatPack(GameObject player)
     {
         yield return new WaitForSeconds(5);
         print("받은 플레이어" + player);
 
-        
+
         print("말풍선끄기");
         //multiPlayerMove = player.GetComponent<MultiPlayerMove>();
         multiPlayerMove.panel_ChatPack.SetActive(false);
@@ -240,7 +249,7 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
             multiPlayerMove.panel_ChatPack.SetActive(false);
 
         }
-          
+
 
 
     }
