@@ -1879,7 +1879,6 @@ public class MainUI : MonoBehaviour
     public void ChatSceneLoad()
     {
         SceneManager.LoadScene(2);
-        //ChatManager_GH.instance.roomUserIdSet(saveUserId);
     }
     public void MainSceneLoad()
     {

@@ -52,7 +52,7 @@ public class ChatData_GH : MonoBehaviour
             SendMyMessage();
         }
 
-        if (con_rec.anchoredPosition.y < 0 && pageLoad && pageNum != 0)
+        if (con_rec.anchoredPosition.y < -5 && pageLoad && pageNum != 0)
         {
             pageLoad = false;
             ReloadMessage();
