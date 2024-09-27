@@ -1816,9 +1816,12 @@ public class MainUI : MonoBehaviour
         //내정보패널을 끄기
         mainUiObject.panel_MyInfo_Object.SetActive(false);
 
-        RoomUIManager_GH.instance.roomUserIdSet(saveUserId);
+        //규가 추가---------------------
+        DataManager_GH.instance.userId = saveUserId;
+        DataManager_GH.instance.roomId = saveUserId;
+
         //서버가 응답하지 않으면 null 임시주석
-       //RoomUIManager_GH.instance.OnLoad();
+       RoomUIManager_GH.instance.OnLoad();
 
 
 
