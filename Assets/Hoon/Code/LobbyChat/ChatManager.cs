@@ -41,6 +41,8 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
 
     public string saveMassage;
 
+    public MultiPlayerMove multiPlayerMove;
+
     //raiseEvent 를 사용하기 위해서 사전 등록, 이걸 등록하지 않으면 raiseEvent 를 보낼수 없음.
     private void OnEnable()
     {
@@ -194,8 +196,9 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
                 Debug.Log($"Found player object for {senderPlayer.NickName}: {playerObject.name}");
                 // 오브젝트에 원하는 동작을 추가할 수 있습니다.
 
-                MultiPlayerMove multiPlayerMove = playerObject.GetComponent<MultiPlayerMove>();
-                print("보낸 플레이어의 MultiPlayerMove");
+                //멀티플레이어 컴포넌트 캐싱
+                multiPlayerMove  = playerObject.GetComponent<MultiPlayerMove>();
+                if(multiPlayerMove != null) print("보낸 플레이어의 MultiPlayerMove");
                 TextMeshProUGUI myMassageText = multiPlayerMove.textMesh_ChatPack.GetComponent<TextMeshProUGUI>();
 
                 //내가한말 말풍선으로 갱신
@@ -203,8 +206,8 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
                 //말풍선 보이게하자.
                 multiPlayerMove.panel_ChatPack.SetActive(true);
                 //5초 뒤에는 말풍선을 다시 끄자.
-
-                
+                StartCoroutine(ClosChatPack(playerObject));
+                print("말풍선 끄기 시작");
 
             }
             else
@@ -218,6 +221,30 @@ public class ChatManager : MonoBehaviourPun, IOnEventCallback
     }
 
   
+    IEnumerator ClosChatPack(GameObject player)
+    {
+        yield return new WaitForSeconds(5);
+        print("받은 플레이어" + player);
+
+        
+        print("말풍선끄기");
+        //multiPlayerMove = player.GetComponent<MultiPlayerMove>();
+        multiPlayerMove.panel_ChatPack.SetActive(false);
+        if (multiPlayerMove != null)
+        {
+            print("멀티플레이어 없음");
+        }
+        else
+        {
+            //말풍선끄기
+            multiPlayerMove.panel_ChatPack.SetActive(false);
+
+        }
+          
+
+
+    }
+
 
 
 
