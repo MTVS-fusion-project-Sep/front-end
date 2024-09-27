@@ -68,7 +68,7 @@ public class MainUIObject : MonoBehaviour
     public bool isViewExitMenu = false;
     
 
-    void Start()
+    void Awake()
     {
         print("MainObjectStart");
         Initialize();
