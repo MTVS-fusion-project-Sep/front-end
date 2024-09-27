@@ -827,6 +827,7 @@ MonoBehaviour:
   onWallObjects: 000000
   beforeWallObPos: 0
   roomSetBut: {fileID: 234571678}
+  swipe: {fileID: 0}
 --- !u!1 &150361103
 GameObject:
   m_ObjectHideFlags: 0
@@ -4704,10 +4705,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6686e845300f50342b61aaa10955688d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MM: {fileID: 0}
   rooms:
   - {fileID: 1990503727}
   - {fileID: 577731928}
   - {fileID: 355122526}
+  HoonCan: {fileID: 3560729644796018879}
   httpIP: 125.132.216.190
   httpPort: 5544
   ui_Furniture:
@@ -4759,13 +4762,17 @@ MonoBehaviour:
   wallObjectInfoList:
     data: []
   userRoomInfo:
-    wallIndex: 0
-    tileIndex: 0
-    userId: 
+    data:
+      wallIndex: 0
+      tileIndex: 0
+      userId: 
   dm: {fileID: 140431428}
   cur_W_Index: 0
   cur_T_Index: 0
-  roomUserId: user1
+  selfRoom: 0
+  Swipe: {fileID: 0}
+  loding_Pan: {fileID: 0}
+  save_Pan: {fileID: 0}
 --- !u!4 &909881763
 Transform:
   m_ObjectHideFlags: 0
@@ -8119,6 +8126,7 @@ MonoBehaviour:
   - {fileID: 1444872207}
   - {fileID: 153686229}
   - {fileID: 1670585386}
+  onSaveButton: 1
   memoInfoList:
     data: []
   memoContents: {fileID: 487148962}

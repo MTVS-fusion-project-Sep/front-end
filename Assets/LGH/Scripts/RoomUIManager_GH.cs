@@ -18,6 +18,7 @@ using static System.Net.WebRequestMethods;
 public class RoomUIManager_GH : MonoBehaviour
 {
     public static RoomUIManager_GH instance;
+
     private void Awake()
     {
         if (instance == null)
@@ -36,6 +37,8 @@ public class RoomUIManager_GH : MonoBehaviour
     // 방 벽지 바꾸기
     public MeshRenderer[] rooms;
 
+    public GameObject HoonCan;
+    public GameObject ChatCan;
 
     //http
     public string httpIP = "125.132.216.190";
@@ -122,13 +125,19 @@ public class RoomUIManager_GH : MonoBehaviour
         }
 
         roomSettingPanel.SetActive(false);
+
         if (selfRoom)
         {
             roomSettingBut.gameObject.SetActive(true);
+            ChatCan.SetActive(false);
+
         }
         else
         {
             roomSettingBut.gameObject.SetActive(false);
+            HoonCan.SetActive(false);
+            ChatCan.SetActive(false);
+
         }
         OnLoad();
     }

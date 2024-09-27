@@ -16,6 +16,8 @@ using UnityEngine.SceneManagement;
 // 이벤트를 추가해주는 인터페이스 추가
 public class ChatManager_GH : MonoBehaviour
 {
+    public GameObject chatCan;
+
     public GameObject roomListPanel;
     public GameObject chatPanel;
     public GameObject roomCreatePanel;
@@ -79,8 +81,11 @@ public class ChatManager_GH : MonoBehaviour
 
     void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
 
-
+            chatCan.SetActive(false);
+        }
         //enterRoom_but.onClick.AddListener(EnterRoom);
 
         // 좌측 하단으로 콘텐트 오브젝트의 피봇을 변경한다.
@@ -174,7 +179,7 @@ public class ChatManager_GH : MonoBehaviour
     public void EnterRoom(string roomID, string roomName)
     {
         // 방 생성 prefab 생성
-        go_chatroom = Instantiate(chatprefab, GameObject.Find("Canvas").transform);
+        go_chatroom = Instantiate(chatprefab, GameObject.Find("ChatCanvas").transform);
         chatroom = go_chatroom.GetComponent<ChatData_GH>();
         chatList.Add(go_chatroom);
         // 생성된거에 이름의 룸네임으로 정의하기
@@ -248,6 +253,15 @@ public class ChatManager_GH : MonoBehaviour
     }
 
 
+    public void ExitChat()
+    {
+        chatCan.SetActive(false);
+    }
+    public void ChatonCan()
+    {
+        chatCan.SetActive(true);
+
+    }
 
 
 

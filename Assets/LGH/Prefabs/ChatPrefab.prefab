@@ -342,6 +342,7 @@ GameObject:
   - component: {fileID: 3284049941784916918}
   - component: {fileID: 7070057932965154046}
   - component: {fileID: 299115418380357138}
+  - component: {fileID: 559795310972186510}
   m_Layer: 5
   m_Name: But_exitRoom
   m_TagString: Untagged
@@ -463,6 +464,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &559795310972186510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2298509170498974996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f45c83c46627a347b75ccdd4e7415e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maingame: {fileID: 2517204238593268867}
 --- !u!1 &2517204238593268867
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,7 +581,7 @@ MonoBehaviour:
   TextInChat: {fileID: 8924163618085056942}
   input_chat: {fileID: 3793658760082121794}
   sendmessage_but: {fileID: 1230422616287516489}
-  chatConnector: {fileID: 0}
+  chats: []
   recMesPre: {fileID: 5875485364220745296, guid: b76050cfcd6eb1348b7cf61845f50f61, type: 3}
   senderMesPre: {fileID: 5248942439052500033, guid: ebf7f09632b45c04ead2dffe9a44706e, type: 3}
   pageNum: 0

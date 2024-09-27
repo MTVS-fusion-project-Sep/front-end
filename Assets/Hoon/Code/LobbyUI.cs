@@ -143,11 +143,13 @@ public class LobbyUI : MonoBehaviour
 
                                     //이름과 일치하는 id추력
                                     print("이름과 일치하는 아이디" + userInfo["userId"]);
-                                    
 
 
 
+                                    DataManager_GH.instance.RoomIdUpdate(userInfo["userId"]);
 
+
+                                    SceneManager.LoadScene(0);
 
 
                                     /* print("메인UI에 저장된 이름 " + MainUI.Instance.idText);
