@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 5096578788311692381}
   - component: {fileID: 4026201708933567141}
   - component: {fileID: 7723066341968901301}
-  - component: {fileID: 3572127858657888171}
+  - component: {fileID: 4175228144041369101}
   - component: {fileID: 8371285699697760730}
   m_Layer: 0
   m_Name: Player
@@ -260,7 +260,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 3572127858657888171}
+  - {fileID: 4175228144041369101}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df31817dbb94704f90f3af8fcf357c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3572127858657888171
+--- !u!114 &4175228144041369101
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -285,13 +285,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2468765698405002005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 540ee1d47641adf44bbad2e642e33f7e, type: 3}
+  m_Script: {fileID: 11500000, guid: bb8d08051542c1e4f9d28aa2f60da8e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerMoveSpeed: 3
   playerRotSpeed: 500
   trackingSpeed: 3
-  myId: 
 --- !u!114 &8371285699697760730
 MonoBehaviour:
   m_ObjectHideFlags: 0

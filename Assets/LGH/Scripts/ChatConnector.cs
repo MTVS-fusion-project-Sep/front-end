@@ -112,13 +112,10 @@ public class ChatConnector : MonoBehaviour
     {
         DisconncectServer();
     }
-    void OnMessageReceived(ChatMessage receivedMessage)
+    void OnMessageReceived(string mesassge)
     {
         // 웹소켓 통신이 비동기적으로 처리되었다면, UI 업데이트는 메인 스레드에서 해야 함
-        UnityMainThred_GH.Instance().Enqueue(() => 
-        {
-            StartCoroutine(Co_Test(receivedMessage));
-        });
+        UnityMainThred_GH.Instance().Enqueue(mesassge);
     }
 
     IEnumerator Co_Test(ChatMessage receivedMessage)
@@ -147,7 +144,7 @@ public class ChatConnector : MonoBehaviour
             // 서버에서 받은 메시지를 ChatMessage 객체로 변환
             ChatMessage receivedMessage = JsonUtility.FromJson<ChatMessage>(jsonData);
 
-            DataManager_GH.instance.Test(jsonData);
+            OnMessageReceived(jsonData);
 
             //OnMessageReceived(receivedMessage);
 

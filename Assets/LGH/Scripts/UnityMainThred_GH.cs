@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UnityMainThred_GH : MonoBehaviour
 {
-    private static readonly Queue<Action> _executionQueue = new Queue<Action>();
+    private static readonly Queue<string> _executionQueue = new Queue<string>();
 
     private void Update()
     {
@@ -13,16 +13,26 @@ public class UnityMainThred_GH : MonoBehaviour
         {
             while (_executionQueue.Count > 0)
             {
-                _executionQueue.Dequeue().Invoke();
+                _executionQueue.Dequeue();
             }
         }
     }
 
-    public void Enqueue(Action action)
+    public string GetStgring()
+    {
+        while (_executionQueue.Count > 0)
+        {
+            return _executionQueue.Dequeue();
+        }
+
+        return "";
+    }
+
+    public void Enqueue(string str)
     {
         lock (_executionQueue)
         {
-            _executionQueue.Enqueue(action);
+            _executionQueue.Enqueue(str);
         }
     }
 

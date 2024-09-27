@@ -145,6 +145,8 @@ public class ChatData_GH : MonoBehaviour
             selfChat.userContents.text = receivedMessage.message;
             chats.Add(selfChat.gameObject);
         }
+        con_rec.anchoredPosition = new Vector3(0, con_rec.sizeDelta.y - 710, 0);
+        
     }
     IEnumerator SetChat()
     {
