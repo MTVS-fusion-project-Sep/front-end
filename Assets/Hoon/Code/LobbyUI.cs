@@ -71,6 +71,9 @@ public class LobbyUI : MonoBehaviour
     {
         print("씬컨트롤");
 
+        
+
+
         if (objectName == "MoveMyRoomObject")
         {
             PhotonView pv = otherPlayer.GetComponent<PhotonView>();
