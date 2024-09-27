@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Hoon/AlphaScene_Hoon.unity
+    path: Assets/Hoon/BeforeScene/AlphaScene_Hoon.unity
     guid: be71697a597219d469bc6d6c8eaa7f94
   - enabled: 1
     path: Assets/Hoon/HoonLobbyScene.unity

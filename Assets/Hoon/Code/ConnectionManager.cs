@@ -15,11 +15,33 @@ using UnityEngine.SceneManagement;
 //부모를 MonoBehaviourPunCallbacks 바꿉니다. 
 public class ConnectionManager : MonoBehaviourPunCallbacks
 {
-    
+
+
+    public static ConnectionManager Instance;
+
     //MainUIObject mainUIObject;
     //RoomInfo 리스트 초기화 
     List<RoomInfo> cachedRoomList = new List<RoomInfo>();
     string roomName = "LobbyTest";
+
+    private void Awake()
+    {
+        //인스턴스가 없으면
+        if (Instance == null)
+        {
+            //나를 생성
+            Instance = this;
+            // 오브젝트를 파괴하지 않고 유지. // 필요에 따라 추가
+            DontDestroyOnLoad(gameObject);
+
+        }
+        else
+        {
+            //인스턴스가 잇으면 삭제
+            Destroy(gameObject);
+        }
+    }
+
 
 
     // Start is called before the first frame update

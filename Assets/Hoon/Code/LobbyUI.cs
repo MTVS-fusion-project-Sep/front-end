@@ -71,7 +71,26 @@ public class LobbyUI : MonoBehaviour
     {
         print("씬컨트롤");
 
-        
+        //챗이동 오브젝트와 충돌
+        if(objectName == "MoveChatRoomObject")
+        {
+            PhotonView pv = otherPlayer.GetComponent<PhotonView>();
+            if (pv.IsMine)
+            {
+                img_MoveScene_Object.SetActive(true);
+            }
+        }
+
+        //이동씬 오브젝트
+        if(objectName == "Btn_MoveScene")
+        {
+            PhotonView pv = otherPlayer.GetComponent<PhotonView>();
+            if (pv.IsMine)
+            {
+                print("채팅씬으로 이동");
+                MainUI.Instance.ChatSceneLoad();
+            }
+        }
 
 
         if (objectName == "MoveMyRoomObject")
@@ -202,6 +221,7 @@ public class LobbyUI : MonoBehaviour
         if (objectName == "Btn_CloseUI")
         {
             Img_MvoveOhterRoom.SetActive(false);
+            img_MoveScene_Object.SetActive(false);
         }
 
     }
