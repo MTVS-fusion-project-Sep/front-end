@@ -167,11 +167,6 @@ public class LobbyUI : MonoBehaviour
                                     print("이름과 일치하는 아이디" + userInfo["userId"]);
                                     
 
-
-
-
-
-
                                     /* print("메인UI에 저장된 이름 " + MainUI.Instance.idText);
                                      //모든 포톤뷰를 찾고 owner.NickName 이 방주인과 일치하는 component를 찾자
                                      foreach (PhotonView view in FindObjectsOfType<PhotonView>())
