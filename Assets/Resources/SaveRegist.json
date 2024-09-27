@@ -88,12 +88,12 @@
     "userPassword": "user1",
     "userNickName": "독종규현",
     "likeCount": 0,
-    "bigCategory": "레저",
-    "smallCategory": "야구",
-    "bigCategory2": "건강",
-    "smallCategory2": "영양제",
-    "bigCategory3": "기술",
-    "smallCategory3": "게임"
+    "bigCategory": "문화",
+    "smallCategory": "공연",
+    "bigCategory2": "문화",
+    "smallCategory2": "영화",
+    "bigCategory3": "문화",
+    "smallCategory3": "음악"
   },
   {
     "userId": "user2",
