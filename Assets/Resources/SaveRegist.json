@@ -124,12 +124,12 @@
     "userPassword": "123",
     "userNickName": null,
     "likeCount": 0,
-    "bigCategory": null,
-    "smallCategory": null,
-    "bigCategory2": null,
-    "smallCategory2": null,
-    "bigCategory3": null,
-    "smallCategory3": null
+    "bigCategory": "생활",
+    "smallCategory": "음식",
+    "bigCategory2": "생활",
+    "smallCategory2": "패션",
+    "bigCategory3": "생활",
+    "smallCategory3": "부동산"
   },
   {
     "userId": "sh12",
