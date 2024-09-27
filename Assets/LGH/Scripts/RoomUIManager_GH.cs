@@ -142,6 +142,8 @@ public class RoomUIManager_GH : MonoBehaviour
         {
             selfRoom = false;
         }
+
+        
     }
 
     public void roomUserIdSet(string userID)
@@ -233,6 +235,8 @@ public class RoomUIManager_GH : MonoBehaviour
         MM.MemoLoad();
         dm.onWallObjects = new bool[3];
         StartCoroutine(Setting());
+
+        
     }
 
     void FurniLoad()
@@ -331,7 +335,14 @@ public class RoomUIManager_GH : MonoBehaviour
 
         Swipe.SetScroll();
         loding_Pan.SetActive(false);
-
+        if (selfRoom)
+        {
+            roomSettingBut.gameObject.SetActive(true);
+        }
+        else
+        {
+            roomSettingBut.gameObject.SetActive(false);
+        }
     }
 
 
