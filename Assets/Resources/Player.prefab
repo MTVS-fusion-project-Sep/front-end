@@ -262,6 +262,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 3572127858657888171}
+  - {fileID: 136078284985267676}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -319,6 +320,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e38954533060f8246a2874fb0ca57ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMoveSpeed: 3
+  playerRotSpeed: 500
+  trackingSpeed: 3
+  myId: 
+  panel_ChatPack: {fileID: 0}
+  textMesh_ChatPack: {fileID: 0}
 --- !u!1 &4556301523398048860
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,6 +816,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: a35e140a46a879a44a70fd9881d1e27a, type: 2}
+    - target: {fileID: 5866666021909216657, guid: f4ead63a817d87045a42c5bc9322f14a, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
