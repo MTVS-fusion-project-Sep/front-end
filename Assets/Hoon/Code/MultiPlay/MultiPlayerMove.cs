@@ -4,6 +4,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using System;
 using System.Xml.Linq;
+using TMPro;
 
 public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
 {
@@ -38,9 +39,19 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
     Transform myName_Object;
     Text myName;
     public string myId;
+    GameObject chatManager_Object;
+    ChatManager chatManagerComp;
+
+    public GameObject panel_ChatPack;
+    public GameObject textMesh_ChatPack;
+    string playerText;
+
 
     void Start()
     {
+        chatManager_Object = GameObject.Find("ChatManager");
+        chatManagerComp = chatManager_Object.GetComponent<ChatManager>();
+
         playerCharacterController = GetComponent<CharacterController>();
         photonView_Comp = GetComponent<PhotonView>();
         //if (photonView_Comp != null) print("포톤뷰 있어요");
@@ -66,6 +77,37 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
         if (myName == null) print("myName이 없음");
         */
 
+        if(textMesh_ChatPack != null)
+        {
+            //내가 한말 저장
+
+            TextMeshProUGUI tmpComponent = textMesh_ChatPack.GetComponent<TextMeshProUGUI>();
+            if(tmpComponent == null)
+            {
+                print("TextMeshPro 없음");
+
+            }
+            else
+            {
+                playerText = tmpComponent.text;
+            }
+          
+
+        }
+        else
+        {
+            textMesh_ChatPack.transform.Find("Text_ChatPack");
+            // TextMeshPro 컴포넌트가 존재하는지 확인
+            TextMeshProUGUI tmpComponent = textMesh_ChatPack.GetComponent<TextMeshProUGUI>();
+            //내가 한말 저장
+            playerText = tmpComponent.text;
+
+        }
+
+        //패널 감추자
+        panel_ChatPack.SetActive(false);
+        //챗 말풍선 감추기
+        //textMesh_ChatPack.SetActive(false);
 
     }
 
@@ -83,7 +125,6 @@ public class MultiPlayerMove : MonoBehaviourPun , IPunObservable
 
 
     }
-
 
 
     void ExpressionFeelingHi()

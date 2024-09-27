@@ -4759,7 +4759,7 @@ MonoBehaviour:
   wallObjectInfoList:
     data: []
   userRoomInfo:
-    wallIndex: 5
+    wallIndex: 0
     tileIndex: 0
     userId: 
   dm: {fileID: 140431428}
@@ -13662,7 +13662,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1368b0b16802c99478b8ee3114d51c4d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b5207df0f66ba734f982204698aced1a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -19586,7 +19586,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &4830533771103471464
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20347,7 +20347,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &5200297006734097975
 GameObject:
   m_ObjectHideFlags: 0

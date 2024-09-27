@@ -118,8 +118,9 @@ GameObject:
   - component: {fileID: 5096578788311692381}
   - component: {fileID: 4026201708933567141}
   - component: {fileID: 7723066341968901301}
-  - component: {fileID: 4175228144041369101}
+  - component: {fileID: 3572127858657888171}
   - component: {fileID: 8371285699697760730}
+  - component: {fileID: 136078284985267676}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -260,7 +261,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 4175228144041369101}
+  - {fileID: 3572127858657888171}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -276,7 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df31817dbb94704f90f3af8fcf357c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4175228144041369101
+--- !u!114 &3572127858657888171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -285,12 +286,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2468765698405002005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb8d08051542c1e4f9d28aa2f60da8e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 540ee1d47641adf44bbad2e642e33f7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerMoveSpeed: 3
   playerRotSpeed: 500
   trackingSpeed: 3
+  myId: 
+  panel_ChatPack: {fileID: 8053874386970545616}
+  textMesh_ChatPack: {fileID: 5841748214091447125}
 --- !u!114 &8371285699697760730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +305,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2373dbacec775041bee2fce58dd0b16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &136078284985267676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2468765698405002005}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e38954533060f8246a2874fb0ca57ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4556301523398048860
@@ -330,8 +346,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4556301523398048860}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000014305115}
+  m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5258623772893980642}
@@ -370,7 +386,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bc32e6adaebe145408c83ea9c0774edb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6f9c72b5ffe95624b94de924024bd1ba, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -395,8 +411,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 40
-    m_Bottom: 160
+    m_Top: 50
+    m_Bottom: 140
   m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
@@ -440,8 +456,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1, y: 0.25}
+  m_AnchoredPosition: {x: 0, y: -0.063}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5250825265260584415
 CanvasRenderer:
@@ -473,7 +489,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 3
+    m_FontSize: 2
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1
@@ -497,7 +513,7 @@ GameObject:
   - component: {fileID: 571458360076800546}
   - component: {fileID: 6285943249356582694}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_ChatPack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -512,7 +528,7 @@ RectTransform:
   m_GameObject: {fileID: 5841748214091447125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6684187869808753215}
@@ -550,7 +566,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\uD558\uC774"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a380724a35dfd8544aa9ca9b6cd67abf, type: 2}
   m_sharedMaterial: {fileID: -8807543399339128704, guid: a380724a35dfd8544aa9ca9b6cd67abf, type: 2}
@@ -559,8 +575,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -577,15 +593,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 1024
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -654,10 +670,10 @@ RectTransform:
   - {fileID: 6684187869808753215}
   m_Father: {fileID: 3805993273982814642}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.205}
-  m_SizeDelta: {x: 459.13, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.708}
+  m_SizeDelta: {x: 1500, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4907173690210049190
 CanvasRenderer:
@@ -724,11 +740,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
+    m_Left: 230
+    m_Right: 230
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
